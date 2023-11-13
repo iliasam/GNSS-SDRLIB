@@ -48,6 +48,8 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 
 	sdr->acq.peakr_max_fin = sdr->acq.peakr_max;
 
+	//SDRPRINTF("%lu Mb\n", (buffloc / 1000000));
+
     /* display acquisition results */
     SDRPRINTF("%s, C/N0=%4.1f, peak=%3.1f, codei=%5d, freq=%8.1f\n",
         sdr->satstr,sdr->acq.cn0,sdr->acq.peakr,sdr->acq.acqcodei,
@@ -79,8 +81,8 @@ extern int checkacquisition(double *P, sdrch_t *sdr)
     int maxi,codei,freqi,exinds,exinde;
     double maxP,maxP2,meanP;
 
-    maxP=maxvd(P,sdr->nsamp*sdr->acq.nfreq,-1,-1,&maxi);
-    ind2sub(maxi,sdr->nsamp,sdr->acq.nfreq,&codei,&freqi);
+    maxP=maxvd(P,sdr->nsamp*sdr->acq.nfreq,-1,-1,&maxi);//max value and maxi<=index
+    ind2sub(maxi,sdr->nsamp,sdr->acq.nfreq,&codei,&freqi);//index to subscribe, find codei and freqi
 
     /* C/N0 calculation */
     /* excluded index */
