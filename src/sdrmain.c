@@ -332,6 +332,10 @@ extern void *sdrthread(void *arg)
 				{
 					//Using Parameters1
                     pll(sdr,&sdr->trk.prm1,sdr->ctime); /* PLL */
+
+					//sdr->trk.carrfreq = 4093236;
+					//sdr->trk.carrfreq = 4092000 + 1230;
+
                     dll(sdr,&sdr->trk.prm1,sdr->ctime); /* DLL */
                     sdr->trk.flagloopfilter=1;
                 }

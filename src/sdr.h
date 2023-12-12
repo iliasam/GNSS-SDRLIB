@@ -568,6 +568,8 @@ typedef struct {
     sdrnav_t nav;        /* navigation struct */
     int flagacq;         /* acquisition flag */
     int flagtrk;         /* tracking flag */
+
+	double debugP;
 } sdrch_t;
 
 /* sdr plotting struct */

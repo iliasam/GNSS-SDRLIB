@@ -54,8 +54,10 @@ extern void *syncthread(void * arg)
         mlock(hobsmtx);
 
         /* copy all tracking data */
-        for (i=nsat=0;i<sdrini.nch;i++) {
-            if (sdrch[i].nav.flagdec&&sdrch[i].nav.sdreph.eph.week!=0) {
+        for (i=nsat=0;i<sdrini.nch;i++) 
+		{
+            if (sdrch[i].nav.flagdec&&sdrch[i].nav.sdreph.eph.week != 0) 
+			{
                 memcpy(&trk[nsat],&sdrch[i].trk,sizeof(sdrch[i].trk));
                 isat[nsat]=i;
                 nsat++;
@@ -67,7 +69,8 @@ extern void *syncthread(void * arg)
         /* find minimum tow channel (most distant satellite) */
         oldreftow=reftow;
         reftow=3600*24*7;
-        for (i=0;i<nsat;i++) {
+        for (i=0;i<nsat;i++) 
+		{
             if (trk[i].tow[0]<reftow)
                 reftow=trk[i].tow[0];
         }
@@ -125,6 +128,17 @@ extern void *syncthread(void * arg)
         }
         sdrout.nsat=nsat;
         sdrobs2obsd(obs,nsat,sdrout.obsd);
+
+		for (i = 0; i < nsat; i++)
+		{
+			for (int i1 = 0; i1 < 5; i1++)
+			{
+				if (sdrch[i1].prn == obs[i].prn)
+				{
+					sdrch[i1].debugP = obs[i].P;
+				}
+			}
+		}
 
 		// SEND!
 

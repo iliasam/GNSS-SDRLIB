@@ -398,7 +398,7 @@ extern void sendsbas(sdrsbas_t *sbas, sdrsoc_t *soc)
 void writelog_header(FILE *fp, sdrtrk_t *trk)
 {
     int i,ind[64]={0},n=trk->corrn;
-    fprintf(fp,"Cnt,Tow,IP,QP,sumI,sumQ");
+    fprintf(fp,"Cnt,Tow,IP,QP");
 
     /* generating correlation points indices */
     for (i=0;i<n;i++) {
@@ -437,7 +437,7 @@ extern void writelog(FILE *fp, sdrtrk_t *trk,sdrnav_t *nav)
     fprintf(fp,"%"PRIu64",%f,%f,%f",
         trk->cntout[0],trk->tow[0],trk->II[0],trk->QQ[0]);
 #endif
-    fprintf(fp,",%f,%f",trk->sumI[0],trk->sumQ[0]);
+    //fprintf(fp,",%f,%f",trk->sumI[0],trk->sumQ[0]);
 
 	double tmpVal[100];
 	memset(tmpVal, 0, sizeof(tmpVal));
@@ -448,7 +448,8 @@ extern void writelog(FILE *fp, sdrtrk_t *trk,sdrnav_t *nav)
 		fprintf(fp,",%f",trk->II[ind[i]]);
     fprintf(fp,",%f,%f,%f",trk->codefreq,trk->codeErr,trk->codeNco);
     fprintf(fp,",%f,%f,%f",trk->carrfreq,trk->carrPhaseErr,trk->carrNco);
-    fprintf(fp,",%f,%f",trk->freqErr,trk->L[0]);
+    fprintf(fp,",%f,%f",trk->freqErr,trk->L[0]);//carr phase
+	//fprintf(fp, ",%f,%f", trk->freqErr, trk->remcode);
     fprintf(fp,",%d,%d,%d,%d,%d,%d",
         nav->flagsync,nav->flagsyncf,nav->flagtow,nav->flagdec,
         trk->flagloopfilter,nav->swsync);

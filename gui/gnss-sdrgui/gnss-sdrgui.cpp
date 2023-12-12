@@ -62,6 +62,12 @@ int SDR::get_sat_info(int index, char * info)
 				info += sprintf(info, "Preample found ");
 			}
 
+			//double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
+			//info += sprintf(info, "Freq. err: %i Hz", (int)err_hz);
+
+			info += sprintf(info, "P: %.3e ", sdrch[index].debugP);
+
+			/*
 			if (sdrch[index].prn > 100)
 			{
 				double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
@@ -83,6 +89,7 @@ int SDR::get_sat_info(int index, char * info)
 
 			int track_time_s = sdrch[index].trk.track_cnt / 1000;//i'm not sure if it is correct for non GPS
 			info += sprintf(info, "Trk. time=%i s ", track_time_s);
+			*/
 		}
 	}
 	

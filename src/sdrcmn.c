@@ -1102,10 +1102,12 @@ extern void correlator(const char *data, int dtype, double ti, int n,
 
     /* mix local carrier - process n points of the data*/
     *remp = mixcarr(data, dtype, ti, n, carr_freq, phi0, dataI, dataQ);
+	//*remp = mixcarr(data, dtype, ti, n, carr_freq, 0, dataI, dataQ);
 
 	//ci= ti*crate; 1/ci is a number of ADC samples in one chip
     /* resampling original PRN code */
     *remc = rescode(codein, coden, coff, smax, ti*crate, n, code_e);
+
 
     /* multiply code and integrate */
 	//code_ptr = code_e + sample[ns-1];

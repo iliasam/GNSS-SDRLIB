@@ -158,7 +158,7 @@ extern void dll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
     sdr->trk.codeNco+=prm->dllaw*(codeErr-sdr->trk.codeErr)+
         prm->dllw2*dt*codeErr;
 
-    /* carrier aiding */
+    /* carrier aiding? Looks like code aiding */
     sdr->trk.codefreq = sdr->crate - sdr->trk.codeNco +
         (sdr->trk.carrfreq-sdr->f_if-sdr->foffset) / (sdr->f_cf/sdr->crate);
     sdr->trk.codeErr=codeErr;
