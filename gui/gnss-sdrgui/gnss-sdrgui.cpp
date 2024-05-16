@@ -65,13 +65,15 @@ int SDR::get_sat_info(int index, char * info)
 			//double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
 			//info += sprintf(info, "Freq. err: %i Hz", (int)err_hz);
 
-			info += sprintf(info, "P: %.3e ", sdrch[index].debugP);
+			//info += sprintf(info, "T: %f ", sdrch[index].debugT);
+			//info += sprintf(info, "T=%lu ", (uint64_t)sdrch[index].nav.firstsf);
 
-			/*
+			double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
+			info += sprintf(info, "Freq.: %i Hz ", (int)err_hz);
+
 			if (sdrch[index].prn > 100)
 			{
-				double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
-				info += sprintf(info, "Freq. err: %i Hz", (int)err_hz);
+
 			}
 			else
 			{
@@ -89,7 +91,7 @@ int SDR::get_sat_info(int index, char * info)
 
 			int track_time_s = sdrch[index].trk.track_cnt / 1000;//i'm not sure if it is correct for non GPS
 			info += sprintf(info, "Trk. time=%i s ", track_time_s);
-			*/
+			
 		}
 	}
 	

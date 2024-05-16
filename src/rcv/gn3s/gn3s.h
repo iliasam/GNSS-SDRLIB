@@ -17,7 +17,7 @@
 //#define GN3S_DECIMATE      1      /* decimate mode */
 #define GN3S_PACK          1      /* pack mode */
 #define GN3S_BUFFSIZE      32*512 /* buffer size: 16 kB */
-#define GN3S_FILE_READ_RATIO	35
+#define GN3S_FILE_READ_RATIO	20
 
 
 /* global functions */

@@ -57,6 +57,7 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 
     /* set acquisition result */
     if (sdr->flagacq) {
+		SDRPRINTF("ACQ FOUND for %s", sdr->satstr);
         /* set buffer location at top of code */
         buffloc+=-(i+1) * sdr->nsamp + sdr->acq.acqcodei;
         sdr->trk.carrfreq=sdr->acq.acqfreq;

@@ -182,14 +182,14 @@ extern void setobsdata(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt,
     shiftdata(&trk->cntout[1],&trk->cntout[0],sizeof(uint64_t),OBSINTERPN-1);
     shiftdata(&trk->remcout[1],&trk->remcout[0],sizeof(double),OBSINTERPN-1);
 
-    trk->tow[0]=sdr->nav.firstsftow+
-        (double)(cnt-sdr->nav.firstsfcnt)*sdr->ctime;
+    trk->tow[0]=sdr->nav.firstsftow +
+        (double)(cnt-sdr->nav.firstsfcnt) * sdr->ctime;
     trk->codei[0]=buffloc;
     trk->cntout[0]=cnt;
     trk->remcout[0]=trk->oldremcode*sdr->f_sf/trk->codefreq;
 
     /* doppler */
-    trk->D[0]=-(trk->carrfreq-sdr->f_if-sdr->foffset);
+    trk->D[0]=-(trk->carrfreq - sdr->f_if - sdr->foffset);
 
     /* carrier phase */
     if (!trk->flagremcarradd) {

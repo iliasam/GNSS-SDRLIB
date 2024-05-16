@@ -345,7 +345,7 @@ namespace gnsssdrgui {
     private: System::Windows::Forms::Button^  b_radar;
 public: System::Windows::Forms::CheckBox^  chk_E22;
 public: System::Windows::Forms::CheckBox^  chk_E25;
-private: System::Windows::Forms::Panel^  panelSysStrl;
+private: System::Windows::Forms::Panel^  panelSysCtrl;
 private: System::Windows::Forms::Timer^  timerUpdateGUI;
 public: System::Windows::Forms::CheckBox^  chk_E27;
 public: System::Windows::Forms::CheckBox^  chk_E14;
@@ -591,7 +591,7 @@ private:
 			this->tb_lat = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->b_radar = (gcnew System::Windows::Forms::Button());
-			this->panelSysStrl = (gcnew System::Windows::Forms::Panel());
+			this->panelSysCtrl = (gcnew System::Windows::Forms::Panel());
 			this->timerUpdateGUI = (gcnew System::Windows::Forms::Timer(this->components));
 			this->chk_DispTrackCycles = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_input->SuspendLayout();
@@ -608,7 +608,7 @@ private:
 			this->gb_bds->SuspendLayout();
 			this->gb_sbs->SuspendLayout();
 			this->gb_misc->SuspendLayout();
-			this->panelSysStrl->SuspendLayout();
+			this->panelSysCtrl->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gb_input
@@ -3206,18 +3206,21 @@ private:
 			this->b_radar->UseVisualStyleBackColor = true;
 			this->b_radar->Click += gcnew System::EventHandler(this, &maindlg::b_radar_Click);
 			// 
-			// panelSysStrl
+			// panelSysCtrl
 			// 
-			this->panelSysStrl->Controls->Add(this->gb_gps);
-			this->panelSysStrl->Controls->Add(this->gb_qzs);
-			this->panelSysStrl->Controls->Add(this->gb_sbs);
-			this->panelSysStrl->Controls->Add(this->gb_glo);
-			this->panelSysStrl->Controls->Add(this->gb_bds);
-			this->panelSysStrl->Controls->Add(this->gb_gal);
-			this->panelSysStrl->Location = System::Drawing::Point(428, 8);
-			this->panelSysStrl->Name = L"panelSysStrl";
-			this->panelSysStrl->Size = System::Drawing::Size(450, 505);
-			this->panelSysStrl->TabIndex = 63;
+			this->panelSysCtrl->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->panelSysCtrl->Controls->Add(this->gb_gps);
+			this->panelSysCtrl->Controls->Add(this->gb_qzs);
+			this->panelSysCtrl->Controls->Add(this->gb_sbs);
+			this->panelSysCtrl->Controls->Add(this->gb_glo);
+			this->panelSysCtrl->Controls->Add(this->gb_bds);
+			this->panelSysCtrl->Controls->Add(this->gb_gal);
+			this->panelSysCtrl->Location = System::Drawing::Point(428, 8);
+			this->panelSysCtrl->Name = L"panelSysCtrl";
+			this->panelSysCtrl->Size = System::Drawing::Size(450, 505);
+			this->panelSysCtrl->TabIndex = 63;
 			// 
 			// timerUpdateGUI
 			// 
@@ -3242,7 +3245,7 @@ private:
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(883, 517);
 			this->Controls->Add(this->chk_DispTrackCycles);
-			this->Controls->Add(this->panelSysStrl);
+			this->Controls->Add(this->panelSysCtrl);
 			this->Controls->Add(this->gb_misc);
 			this->Controls->Add(this->chk_monitor);
 			this->Controls->Add(this->rb_spec2);
@@ -3254,7 +3257,6 @@ private:
 			this->Controls->Add(this->gb_setting);
 			this->Controls->Add(this->gb_output);
 			this->Controls->Add(this->gb_input);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"maindlg";
@@ -3289,7 +3291,7 @@ private:
 			this->gb_sbs->PerformLayout();
 			this->gb_misc->ResumeLayout(false);
 			this->gb_misc->PerformLayout();
-			this->panelSysStrl->ResumeLayout(false);
+			this->panelSysCtrl->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -3856,7 +3858,7 @@ private:
                 gb_qzs->Enabled=false;
                 gb_sbs->Enabled=false;
                 chk_spec->Enabled=true;
-				panelSysStrl->Visible = false;
+				panelSysCtrl->Visible = false;
 				this->TextBoxMonitor->Visible = true;
 
 				timerUpdateGUI->Enabled = true;
@@ -3888,6 +3890,10 @@ private:
 		this->TextBoxMonitor->Location = System::Drawing::Point(428, 8);
 		this->TextBoxMonitor->Name = L"ControlMonitor";
 		this->TextBoxMonitor->Size = System::Drawing::Size(450, 505);
+		this->TextBoxMonitor->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top 
+			| System::Windows::Forms::AnchorStyles::Bottom)
+			| System::Windows::Forms::AnchorStyles::Left)
+			| System::Windows::Forms::AnchorStyles::Right));
 		this->Controls->Add(this->TextBoxMonitor);
 		this->TextBoxMonitor->Visible = false;
 		this->TextBoxMonitor->ReadOnly = true;
@@ -4023,7 +4029,7 @@ private:
                 gb_sbs->Enabled=true;
                 chk_spec->Checked=false;
                 chk_spec->Enabled=false;
-				panelSysStrl->Visible = true;
+				panelSysCtrl->Visible = true;
 				timerUpdateGUI->Enabled = true;
 				this->TextBoxMonitor->Visible = false;
             }

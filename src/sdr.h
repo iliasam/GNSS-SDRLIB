@@ -518,9 +518,9 @@ typedef struct {
     int update;          /* decode interval (ms) */
     int *bitsync;        /* frame bits synchronization count */
     int synci;           /* frame bits synchronization index */
-    uint64_t firstsf;    /* first subframe location (sample) */
-    uint64_t firstsfcnt; /* first subframe count */
-    double firstsftow;   /* tow of first subframe */
+    uint64_t firstsf;    /* first subframe location (sample). This value set once only! */
+    uint64_t firstsfcnt; /* first subframe count. This value set once only! */
+    double firstsftow;   /* tow of first subframe. This value set once only!*/
     int polarity;        /* bit polarity */
     int flagpol;         /* bit polarity flag (only used in L1-SAIF) */
     void *fec;           /* FEC (fec.h)  */
@@ -569,7 +569,8 @@ typedef struct {
     int flagacq;         /* acquisition flag */
     int flagtrk;         /* tracking flag */
 
-	double debugP;
+	double debugP;		/* Calculated pseudorange, (m) debug only */
+	double debugT;		/* debug only */
 } sdrch_t;
 
 /* sdr plotting struct */

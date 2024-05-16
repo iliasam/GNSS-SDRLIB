@@ -350,12 +350,14 @@ extern void sendrtcmobs(obsd_t *obsd, sdrsoc_t *soc, int nsat)
     rtcm.time=obsd[0].time;
     rtcm.obs.n=nsat;
     rtcm.obs.data=obsd;
+
     
     /* GPS rtcm msm */
     gen_rtcm3(&rtcm,1077,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }
+
     /* QZSS rtcm msm */
     gen_rtcm3(&rtcm,1117,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
