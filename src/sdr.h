@@ -56,6 +56,9 @@
 #include "gn3s/simple_rf.h"
 #include "bladerf/libbladeRF.h"
 #include "rtlsdr/rtl-sdr.h"
+#ifdef HACKRF
+	#include "hackrf/hackrf.h"
+#endif
 
 #if defined(GUI)
 #include "../gui/gnss-sdrgui/maindlg.h"

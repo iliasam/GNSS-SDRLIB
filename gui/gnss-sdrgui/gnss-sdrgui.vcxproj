@@ -109,7 +109,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GUI;GN3S;BLADERF;RTLSDR;SSE2_ENABLE;FFTMTX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GUI;GN3S;BLADERF;RTLSDR;HACKRF;SSE2_ENABLE;FFTMTX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsManaged>true</CompileAsManaged>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -203,6 +203,7 @@
     <ClCompile Include="..\..\src\rcv\GN3S\fx2.cpp" />
     <ClCompile Include="..\..\src\rcv\gn3s\gn3s.cpp" />
     <ClCompile Include="..\..\src\rcv\gn3s\simple_rf.cpp" />
+    <ClCompile Include="..\..\src\rcv\hackrf\hackrf.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\convenience.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\rtlsdr.c" />
     <ClCompile Include="..\..\src\sdracq.c" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\..\src\rcv\GN3S\fx2.h" />
     <ClInclude Include="..\..\src\rcv\gn3s\gn3s.h" />
     <ClInclude Include="..\..\src\rcv\gn3s\simple_rf.h" />
+    <ClInclude Include="..\..\src\rcv\hackrf\hackrf.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr_export.h" />
     <ClInclude Include="..\..\src\sdr.h" />

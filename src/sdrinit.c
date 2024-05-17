@@ -362,6 +362,7 @@ extern int initpltstruct(sdrplt_t *acq, sdrplt_t *trk, sdrch_t *sdr)
                 scale=5.0; break;
             case FEND_RTLSDR:
             case FEND_FRTLSDR:
+			case FEND_HACKRF:
                 scale=3.5; break;
         }
         setyrange(trk,0,sdr->trk.loop*sdr->nsamp/4000*scale);
@@ -702,6 +703,11 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
         sdr->foffset=f_cf*sdrini.rtlsdrppmerr*1e-6;
 		sdr->f_cf = f_cf; /* carrier frequency */
     } 
+	else if (sdrini.fend == FEND_HACKRF)
+	{
+		sdr->foffset = f_cf * sdrini.rtlsdrppmerr*1e-6;
+		sdr->f_cf = f_cf; /* carrier frequency */
+	}
 	else 
 	{
         sdr->f_cf=f_cf; /* carrier frequency */

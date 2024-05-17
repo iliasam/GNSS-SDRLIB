@@ -726,13 +726,13 @@ private:
 			this->cmb_input->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->cmb_input->FormattingEnabled = true;
-			this->cmb_input->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
-				L"GN3Sv2", L"GN3Sv3", L"RTL-SDR", L"BladeRF", L"Simple 8B",
+			this->cmb_input->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
+				L"GN3Sv2", L"GN3Sv3", L"RTL-SDR", L"BladeRF", L"Simple 8B", L"HackRF One",
 					L"File (STEREO)", L"File (GN3Sv2)", L"File (GN3Sv3)", L"File (RTL-SDR)", L"File (BladeRF)", L"File"
 			});
 			this->cmb_input->Location = System::Drawing::Point(69, 16);
 			this->cmb_input->Name = L"cmb_input";
-			this->cmb_input->Size = System::Drawing::Size(100, 23);
+			this->cmb_input->Size = System::Drawing::Size(136, 23);
 			this->cmb_input->TabIndex = 0;
 			this->cmb_input->SelectedIndexChanged += gcnew System::EventHandler(this, &maindlg::comb_input_SelectedIndexChanged);
 			// 
@@ -3671,6 +3671,40 @@ private:
                      config->tb_pll2="20.0";
                      config->tb_fll2="50.0";
                      break;
+
+
+				 case FEND_HACKRF: /* RTLSDR */
+					 cb_freq_L1();
+
+					 tb_input1->Enabled = false;
+					 b_input1->Enabled = false;
+					 l_input1->Enabled = false;
+					 tb_input2->Enabled = false;
+					 b_input2->Enabled = false;
+					 chk_input2->Enabled = false;
+					 l_input2->Enabled = false;
+					 rb_f1IQ->Checked = true;
+					 rb_f2IQ->Checked = true;
+					 tb_f1sf->Text = "8.000";
+					 tb_f1if->Text = "0.0";
+					 tb_f2sf->Text = "0.0";
+					 tb_f2if->Text = "0.0";
+
+					 chk_input2->Checked = false;
+					 chk_input2->Enabled = false;
+
+					 ppm_enable();
+
+					 disable_FE2();
+
+					 config->tb_corrn = "4";
+					 config->tb_corrd = "1";
+					 config->tb_corrp = "1";
+					 config->tb_dll2 = "2.0";
+					 config->tb_pll2 = "20.0";
+					 config->tb_fll2 = "50.0";
+					 break;
+
                  case FEND_BLADERF: /* BladeRF */
                      cb_freq_L1();
 

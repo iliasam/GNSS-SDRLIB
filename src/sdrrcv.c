@@ -161,6 +161,27 @@ extern int rcvinit(sdrini_t *ini)
         break;
 #endif
 
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		if (hackrf_init() < 0) 
+			return -1; /* hackrf initialization */
+
+		/* frontend buffer size */
+		sdrstat.fendbuffsize = HACKRF_DATABUFF_SIZE; /* frontend buff size */
+		hackrf_set_rx_buf(sdrstat.fendbuffsize);
+		sdrstat.buffsize = 2 * HACKRF_DATABUFF_SIZE * MEMBUFFLEN; /* total */
+
+		/* memory allocation */
+		sdrstat.buff = (uint8_t*)malloc(sdrstat.buffsize);
+		if (NULL == sdrstat.buff) 
+		{
+			SDRPRINTF("error: failed to allocate memory for the buffer\n");
+			return -1;
+		}
+		break;
+#endif
+
 	case FEND_SIMPLE8B:
 		if (simple_rf_init() < 0) 
 			return -1;
@@ -247,6 +268,13 @@ extern int rcvquit(sdrini_t *ini)
         rtlsdr_quit();
         break;
 #endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		hackrf_quit();
+		break;
+#endif
 	case FEND_SIMPLE8B:
 		simple_rf_quit();
 		break;
@@ -332,6 +360,16 @@ extern int rcvgrabdata(sdrini_t *ini)
         sleepms(5);
         break;/* File */
 #endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		if (hackrf_start() < 0) {
+			SDRPRINTF("error: hackrf...\n");
+			return -1;
+		}
+		break;
+#endif
     case FEND_FILE:
         file_pushtomembuf(); /* copy to membuffer */
         sleepms(5);
@@ -396,6 +434,13 @@ extern int rcvgetbuff(sdrini_t *ini, uint64_t buffloc, int n, int ftype,
     case FEND_FRTLSDR: 
         rtlsdr_getbuff(buffloc,n,expbuf);
         break;
+#endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		hackrf_getbuff(buffloc, n, expbuf);
+		break;
 #endif
     /* File */
     case FEND_FILE:
