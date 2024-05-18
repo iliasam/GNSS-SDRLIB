@@ -357,6 +357,28 @@ public: System::Windows::Forms::CheckBox^  chk_E9;
 public: System::Windows::Forms::CheckBox^  chk_RestoreAcq;
 public: System::Windows::Forms::CheckBox^  chk_E7;
 public: System::Windows::Forms::CheckBox^  chk_DispTrackCycles;
+public: System::Windows::Forms::CheckBox^  chk_E29;
+public: System::Windows::Forms::CheckBox^  chk_E28;
+public: System::Windows::Forms::CheckBox^  chk_E26;
+public: System::Windows::Forms::CheckBox^  chk_E24;
+public: System::Windows::Forms::CheckBox^  chk_E23;
+public: System::Windows::Forms::CheckBox^  chk_E18;
+public: System::Windows::Forms::CheckBox^  chk_E17;
+public: System::Windows::Forms::CheckBox^  chk_E16;
+public: System::Windows::Forms::CheckBox^  chk_E15;
+public: System::Windows::Forms::CheckBox^  chk_E13;
+public: System::Windows::Forms::CheckBox^  chk_E10;
+public: System::Windows::Forms::CheckBox^  chk_E8;
+public: System::Windows::Forms::CheckBox^  chk_E6;
+public: System::Windows::Forms::CheckBox^  chk_E5;
+public: System::Windows::Forms::CheckBox^  chk_E3;
+public: System::Windows::Forms::CheckBox^  chk_E1;
+public: System::Windows::Forms::CheckBox^  chk_E36;
+public: System::Windows::Forms::CheckBox^  chk_E34;
+public: System::Windows::Forms::CheckBox^  chk_E33;
+public: System::Windows::Forms::CheckBox^  chk_E31;
+public: System::Windows::Forms::CheckBox^  chk_E35;
+public: System::Windows::Forms::CheckBox^  chk_E32;
 
 
 
@@ -594,6 +616,28 @@ private:
 			this->panelSysCtrl = (gcnew System::Windows::Forms::Panel());
 			this->timerUpdateGUI = (gcnew System::Windows::Forms::Timer(this->components));
 			this->chk_DispTrackCycles = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E1 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E3 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E5 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E6 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E8 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E10 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E13 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E15 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E16 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E17 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E18 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E23 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E24 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E26 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E28 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E29 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E36 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E34 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E33 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E31 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E35 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E32 = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_input->SuspendLayout();
 			this->gb_output->SuspendLayout();
 			this->gb_setting->SuspendLayout();
@@ -727,8 +771,8 @@ private:
 				static_cast<System::Byte>(204)));
 			this->cmb_input->FormattingEnabled = true;
 			this->cmb_input->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
-				L"GN3Sv2", L"GN3Sv3", L"RTL-SDR", L"BladeRF", L"Simple 8B", L"HackRF One",
-					L"File (STEREO)", L"File (GN3Sv2)", L"File (GN3Sv3)", L"File (RTL-SDR)", L"File (BladeRF)", L"File"
+				L"GN3Sv2", L"GN3Sv3", L"RTL-SDR", L"BladeRF", L"Simple 8B",
+					L"HackRF One", L"File (STEREO)", L"File (GN3Sv2)", L"File (GN3Sv3)", L"File (RTL-SDR)", L"File (BladeRF)", L"File"
 			});
 			this->cmb_input->Location = System::Drawing::Point(69, 16);
 			this->cmb_input->Name = L"cmb_input";
@@ -1884,7 +1928,7 @@ private:
 			this->gb_qzs->Controls->Add(this->chk_Q01);
 			this->gb_qzs->Controls->Add(this->chk_TYPE_L1CAQZS);
 			this->gb_qzs->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_qzs->Location = System::Drawing::Point(7, 377);
+			this->gb_qzs->Location = System::Drawing::Point(7, 415);
 			this->gb_qzs->Name = L"gb_qzs";
 			this->gb_qzs->Size = System::Drawing::Size(432, 42);
 			this->gb_qzs->TabIndex = 26;
@@ -2309,6 +2353,28 @@ private:
 			// 
 			// gb_gal
 			// 
+			this->gb_gal->Controls->Add(this->chk_E36);
+			this->gb_gal->Controls->Add(this->chk_E34);
+			this->gb_gal->Controls->Add(this->chk_E33);
+			this->gb_gal->Controls->Add(this->chk_E31);
+			this->gb_gal->Controls->Add(this->chk_E35);
+			this->gb_gal->Controls->Add(this->chk_E32);
+			this->gb_gal->Controls->Add(this->chk_E29);
+			this->gb_gal->Controls->Add(this->chk_E28);
+			this->gb_gal->Controls->Add(this->chk_E26);
+			this->gb_gal->Controls->Add(this->chk_E24);
+			this->gb_gal->Controls->Add(this->chk_E23);
+			this->gb_gal->Controls->Add(this->chk_E18);
+			this->gb_gal->Controls->Add(this->chk_E17);
+			this->gb_gal->Controls->Add(this->chk_E16);
+			this->gb_gal->Controls->Add(this->chk_E15);
+			this->gb_gal->Controls->Add(this->chk_E13);
+			this->gb_gal->Controls->Add(this->chk_E10);
+			this->gb_gal->Controls->Add(this->chk_E8);
+			this->gb_gal->Controls->Add(this->chk_E6);
+			this->gb_gal->Controls->Add(this->chk_E5);
+			this->gb_gal->Controls->Add(this->chk_E3);
+			this->gb_gal->Controls->Add(this->chk_E1);
 			this->gb_gal->Controls->Add(this->chk_E7);
 			this->gb_gal->Controls->Add(this->chk_E9);
 			this->gb_gal->Controls->Add(this->chk_E21);
@@ -2330,7 +2396,7 @@ private:
 			this->gb_gal->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
 			this->gb_gal->Location = System::Drawing::Point(7, 210);
 			this->gb_gal->Name = L"gb_gal";
-			this->gb_gal->Size = System::Drawing::Size(432, 80);
+			this->gb_gal->Size = System::Drawing::Size(432, 118);
 			this->gb_gal->TabIndex = 59;
 			this->gb_gal->TabStop = false;
 			this->gb_gal->Text = L"Galileo";
@@ -2340,7 +2406,7 @@ private:
 			this->chk_E7->AutoSize = true;
 			this->chk_E7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E7->Location = System::Drawing::Point(91, 57);
+			this->chk_E7->Location = System::Drawing::Point(262, 38);
 			this->chk_E7->Name = L"chk_E7";
 			this->chk_E7->Size = System::Drawing::Size(39, 17);
 			this->chk_E7->TabIndex = 67;
@@ -2352,7 +2418,7 @@ private:
 			this->chk_E9->AutoSize = true;
 			this->chk_E9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E9->Location = System::Drawing::Point(131, 57);
+			this->chk_E9->Location = System::Drawing::Point(345, 38);
 			this->chk_E9->Name = L"chk_E9";
 			this->chk_E9->Size = System::Drawing::Size(39, 17);
 			this->chk_E9->TabIndex = 66;
@@ -2364,7 +2430,7 @@ private:
 			this->chk_E21->AutoSize = true;
 			this->chk_E21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E21->Location = System::Drawing::Point(219, 37);
+			this->chk_E21->Location = System::Drawing::Point(10, 77);
 			this->chk_E21->Name = L"chk_E21";
 			this->chk_E21->Size = System::Drawing::Size(45, 17);
 			this->chk_E21->TabIndex = 65;
@@ -2376,7 +2442,7 @@ private:
 			this->chk_E4->AutoSize = true;
 			this->chk_E4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E4->Location = System::Drawing::Point(50, 57);
+			this->chk_E4->Location = System::Drawing::Point(136, 38);
 			this->chk_E4->Name = L"chk_E4";
 			this->chk_E4->Size = System::Drawing::Size(39, 17);
 			this->chk_E4->TabIndex = 64;
@@ -2388,7 +2454,7 @@ private:
 			this->chk_E2->AutoSize = true;
 			this->chk_E2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E2->Location = System::Drawing::Point(10, 57);
+			this->chk_E2->Location = System::Drawing::Point(52, 38);
 			this->chk_E2->Name = L"chk_E2";
 			this->chk_E2->Size = System::Drawing::Size(39, 17);
 			this->chk_E2->TabIndex = 63;
@@ -2400,7 +2466,7 @@ private:
 			this->chk_E30->AutoSize = true;
 			this->chk_E30->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E30->Location = System::Drawing::Point(391, 37);
+			this->chk_E30->Location = System::Drawing::Point(388, 77);
 			this->chk_E30->Name = L"chk_E30";
 			this->chk_E30->Size = System::Drawing::Size(45, 17);
 			this->chk_E30->TabIndex = 62;
@@ -2412,7 +2478,7 @@ private:
 			this->chk_E14->AutoSize = true;
 			this->chk_E14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E14->Location = System::Drawing::Point(91, 37);
+			this->chk_E14->Location = System::Drawing::Point(136, 57);
 			this->chk_E14->Name = L"chk_E14";
 			this->chk_E14->Size = System::Drawing::Size(45, 17);
 			this->chk_E14->TabIndex = 61;
@@ -2424,7 +2490,7 @@ private:
 			this->chk_E27->AutoSize = true;
 			this->chk_E27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E27->Location = System::Drawing::Point(306, 37);
+			this->chk_E27->Location = System::Drawing::Point(262, 77);
 			this->chk_E27->Name = L"chk_E27";
 			this->chk_E27->Size = System::Drawing::Size(45, 17);
 			this->chk_E27->TabIndex = 60;
@@ -2436,7 +2502,7 @@ private:
 			this->chk_E25->AutoSize = true;
 			this->chk_E25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E25->Location = System::Drawing::Point(264, 37);
+			this->chk_E25->Location = System::Drawing::Point(178, 77);
 			this->chk_E25->Name = L"chk_E25";
 			this->chk_E25->Size = System::Drawing::Size(45, 17);
 			this->chk_E25->TabIndex = 59;
@@ -2448,7 +2514,7 @@ private:
 			this->chk_E22->AutoSize = true;
 			this->chk_E22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E22->Location = System::Drawing::Point(179, 37);
+			this->chk_E22->Location = System::Drawing::Point(52, 77);
 			this->chk_E22->Name = L"chk_E22";
 			this->chk_E22->Size = System::Drawing::Size(45, 17);
 			this->chk_E22->TabIndex = 58;
@@ -2486,7 +2552,7 @@ private:
 			this->chk_E20->AutoSize = true;
 			this->chk_E20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E20->Location = System::Drawing::Point(136, 37);
+			this->chk_E20->Location = System::Drawing::Point(388, 57);
 			this->chk_E20->Name = L"chk_E20";
 			this->chk_E20->Size = System::Drawing::Size(45, 17);
 			this->chk_E20->TabIndex = 27;
@@ -2498,7 +2564,7 @@ private:
 			this->chk_E19->AutoSize = true;
 			this->chk_E19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E19->Location = System::Drawing::Point(351, 37);
+			this->chk_E19->Location = System::Drawing::Point(346, 57);
 			this->chk_E19->Name = L"chk_E19";
 			this->chk_E19->Size = System::Drawing::Size(45, 17);
 			this->chk_E19->TabIndex = 26;
@@ -2510,7 +2576,7 @@ private:
 			this->chk_E12->AutoSize = true;
 			this->chk_E12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E12->Location = System::Drawing::Point(50, 37);
+			this->chk_E12->Location = System::Drawing::Point(52, 57);
 			this->chk_E12->Name = L"chk_E12";
 			this->chk_E12->Size = System::Drawing::Size(45, 17);
 			this->chk_E12->TabIndex = 25;
@@ -2522,7 +2588,7 @@ private:
 			this->chk_E11->AutoSize = true;
 			this->chk_E11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E11->Location = System::Drawing::Point(10, 37);
+			this->chk_E11->Location = System::Drawing::Point(10, 57);
 			this->chk_E11->Name = L"chk_E11";
 			this->chk_E11->Size = System::Drawing::Size(45, 17);
 			this->chk_E11->TabIndex = 24;
@@ -2578,7 +2644,7 @@ private:
 			this->gb_bds->Controls->Add(this->chk_TYPE_B1I);
 			this->gb_bds->Controls->Add(this->chk_CALL);
 			this->gb_bds->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_bds->Location = System::Drawing::Point(7, 295);
+			this->gb_bds->Location = System::Drawing::Point(7, 334);
 			this->gb_bds->Name = L"gb_bds";
 			this->gb_bds->Size = System::Drawing::Size(432, 83);
 			this->gb_bds->TabIndex = 60;
@@ -2833,7 +2899,7 @@ private:
 			this->gb_sbs->Controls->Add(this->chk_TYPE_SBASL1);
 			this->gb_sbs->Controls->Add(this->chk_SALL);
 			this->gb_sbs->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_sbs->Location = System::Drawing::Point(7, 418);
+			this->gb_sbs->Location = System::Drawing::Point(7, 457);
 			this->gb_sbs->Name = L"gb_sbs";
 			this->gb_sbs->Size = System::Drawing::Size(432, 83);
 			this->gb_sbs->TabIndex = 61;
@@ -3219,7 +3285,7 @@ private:
 			this->panelSysCtrl->Controls->Add(this->gb_gal);
 			this->panelSysCtrl->Location = System::Drawing::Point(428, 8);
 			this->panelSysCtrl->Name = L"panelSysCtrl";
-			this->panelSysCtrl->Size = System::Drawing::Size(450, 505);
+			this->panelSysCtrl->Size = System::Drawing::Size(450, 545);
 			this->panelSysCtrl->TabIndex = 63;
 			// 
 			// timerUpdateGUI
@@ -3239,11 +3305,275 @@ private:
 			this->chk_DispTrackCycles->Text = L"Disp. track cycles";
 			this->chk_DispTrackCycles->UseVisualStyleBackColor = true;
 			// 
+			// chk_E1
+			// 
+			this->chk_E1->AutoSize = true;
+			this->chk_E1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E1->Location = System::Drawing::Point(10, 38);
+			this->chk_E1->Name = L"chk_E1";
+			this->chk_E1->Size = System::Drawing::Size(39, 17);
+			this->chk_E1->TabIndex = 68;
+			this->chk_E1->Text = L"E1";
+			this->chk_E1->UseVisualStyleBackColor = true;
+			// 
+			// chk_E3
+			// 
+			this->chk_E3->AutoSize = true;
+			this->chk_E3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E3->Location = System::Drawing::Point(94, 38);
+			this->chk_E3->Name = L"chk_E3";
+			this->chk_E3->Size = System::Drawing::Size(39, 17);
+			this->chk_E3->TabIndex = 69;
+			this->chk_E3->Text = L"E3";
+			this->chk_E3->UseVisualStyleBackColor = true;
+			// 
+			// chk_E5
+			// 
+			this->chk_E5->AutoSize = true;
+			this->chk_E5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E5->Location = System::Drawing::Point(178, 38);
+			this->chk_E5->Name = L"chk_E5";
+			this->chk_E5->Size = System::Drawing::Size(39, 17);
+			this->chk_E5->TabIndex = 70;
+			this->chk_E5->Text = L"E5";
+			this->chk_E5->UseVisualStyleBackColor = true;
+			// 
+			// chk_E6
+			// 
+			this->chk_E6->AutoSize = true;
+			this->chk_E6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E6->Location = System::Drawing::Point(220, 38);
+			this->chk_E6->Name = L"chk_E6";
+			this->chk_E6->Size = System::Drawing::Size(39, 17);
+			this->chk_E6->TabIndex = 71;
+			this->chk_E6->Text = L"E6";
+			this->chk_E6->UseVisualStyleBackColor = true;
+			// 
+			// chk_E8
+			// 
+			this->chk_E8->AutoSize = true;
+			this->chk_E8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E8->Location = System::Drawing::Point(303, 38);
+			this->chk_E8->Name = L"chk_E8";
+			this->chk_E8->Size = System::Drawing::Size(39, 17);
+			this->chk_E8->TabIndex = 72;
+			this->chk_E8->Text = L"E8";
+			this->chk_E8->UseVisualStyleBackColor = true;
+			// 
+			// chk_E10
+			// 
+			this->chk_E10->AutoSize = true;
+			this->chk_E10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E10->Location = System::Drawing::Point(388, 38);
+			this->chk_E10->Name = L"chk_E10";
+			this->chk_E10->Size = System::Drawing::Size(45, 17);
+			this->chk_E10->TabIndex = 73;
+			this->chk_E10->Text = L"E10";
+			this->chk_E10->UseVisualStyleBackColor = true;
+			// 
+			// chk_E13
+			// 
+			this->chk_E13->AutoSize = true;
+			this->chk_E13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E13->Location = System::Drawing::Point(94, 57);
+			this->chk_E13->Name = L"chk_E13";
+			this->chk_E13->Size = System::Drawing::Size(45, 17);
+			this->chk_E13->TabIndex = 74;
+			this->chk_E13->Text = L"E13";
+			this->chk_E13->UseVisualStyleBackColor = true;
+			// 
+			// chk_E15
+			// 
+			this->chk_E15->AutoSize = true;
+			this->chk_E15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E15->Location = System::Drawing::Point(178, 57);
+			this->chk_E15->Name = L"chk_E15";
+			this->chk_E15->Size = System::Drawing::Size(45, 17);
+			this->chk_E15->TabIndex = 75;
+			this->chk_E15->Text = L"E15";
+			this->chk_E15->UseVisualStyleBackColor = true;
+			// 
+			// chk_E16
+			// 
+			this->chk_E16->AutoSize = true;
+			this->chk_E16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E16->Location = System::Drawing::Point(220, 57);
+			this->chk_E16->Name = L"chk_E16";
+			this->chk_E16->Size = System::Drawing::Size(45, 17);
+			this->chk_E16->TabIndex = 76;
+			this->chk_E16->Text = L"E16";
+			this->chk_E16->UseVisualStyleBackColor = true;
+			// 
+			// chk_E17
+			// 
+			this->chk_E17->AutoSize = true;
+			this->chk_E17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E17->Location = System::Drawing::Point(262, 57);
+			this->chk_E17->Name = L"chk_E17";
+			this->chk_E17->Size = System::Drawing::Size(45, 17);
+			this->chk_E17->TabIndex = 77;
+			this->chk_E17->Text = L"E17";
+			this->chk_E17->UseVisualStyleBackColor = true;
+			// 
+			// chk_E18
+			// 
+			this->chk_E18->AutoSize = true;
+			this->chk_E18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E18->Location = System::Drawing::Point(303, 57);
+			this->chk_E18->Name = L"chk_E18";
+			this->chk_E18->Size = System::Drawing::Size(45, 17);
+			this->chk_E18->TabIndex = 78;
+			this->chk_E18->Text = L"E18";
+			this->chk_E18->UseVisualStyleBackColor = true;
+			// 
+			// chk_E23
+			// 
+			this->chk_E23->AutoSize = true;
+			this->chk_E23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E23->Location = System::Drawing::Point(94, 77);
+			this->chk_E23->Name = L"chk_E23";
+			this->chk_E23->Size = System::Drawing::Size(45, 17);
+			this->chk_E23->TabIndex = 79;
+			this->chk_E23->Text = L"E23";
+			this->chk_E23->UseVisualStyleBackColor = true;
+			// 
+			// chk_E24
+			// 
+			this->chk_E24->AutoSize = true;
+			this->chk_E24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E24->Location = System::Drawing::Point(136, 77);
+			this->chk_E24->Name = L"chk_E24";
+			this->chk_E24->Size = System::Drawing::Size(45, 17);
+			this->chk_E24->TabIndex = 80;
+			this->chk_E24->Text = L"E24";
+			this->chk_E24->UseVisualStyleBackColor = true;
+			// 
+			// chk_E26
+			// 
+			this->chk_E26->AutoSize = true;
+			this->chk_E26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E26->Location = System::Drawing::Point(220, 77);
+			this->chk_E26->Name = L"chk_E26";
+			this->chk_E26->Size = System::Drawing::Size(45, 17);
+			this->chk_E26->TabIndex = 81;
+			this->chk_E26->Text = L"E26";
+			this->chk_E26->UseVisualStyleBackColor = true;
+			// 
+			// chk_E28
+			// 
+			this->chk_E28->AutoSize = true;
+			this->chk_E28->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E28->Location = System::Drawing::Point(303, 77);
+			this->chk_E28->Name = L"chk_E28";
+			this->chk_E28->Size = System::Drawing::Size(45, 17);
+			this->chk_E28->TabIndex = 82;
+			this->chk_E28->Text = L"E28";
+			this->chk_E28->UseVisualStyleBackColor = true;
+			// 
+			// chk_E29
+			// 
+			this->chk_E29->AutoSize = true;
+			this->chk_E29->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E29->Location = System::Drawing::Point(346, 77);
+			this->chk_E29->Name = L"chk_E29";
+			this->chk_E29->Size = System::Drawing::Size(45, 17);
+			this->chk_E29->TabIndex = 83;
+			this->chk_E29->Text = L"E29";
+			this->chk_E29->UseVisualStyleBackColor = true;
+			// 
+			// chk_E36
+			// 
+			this->chk_E36->AutoSize = true;
+			this->chk_E36->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E36->Location = System::Drawing::Point(220, 97);
+			this->chk_E36->Name = L"chk_E36";
+			this->chk_E36->Size = System::Drawing::Size(45, 17);
+			this->chk_E36->TabIndex = 89;
+			this->chk_E36->Text = L"E36";
+			this->chk_E36->UseVisualStyleBackColor = true;
+			// 
+			// chk_E34
+			// 
+			this->chk_E34->AutoSize = true;
+			this->chk_E34->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E34->Location = System::Drawing::Point(136, 97);
+			this->chk_E34->Name = L"chk_E34";
+			this->chk_E34->Size = System::Drawing::Size(45, 17);
+			this->chk_E34->TabIndex = 88;
+			this->chk_E34->Text = L"E34";
+			this->chk_E34->UseVisualStyleBackColor = true;
+			// 
+			// chk_E33
+			// 
+			this->chk_E33->AutoSize = true;
+			this->chk_E33->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E33->Location = System::Drawing::Point(94, 97);
+			this->chk_E33->Name = L"chk_E33";
+			this->chk_E33->Size = System::Drawing::Size(45, 17);
+			this->chk_E33->TabIndex = 87;
+			this->chk_E33->Text = L"E33";
+			this->chk_E33->UseVisualStyleBackColor = true;
+			// 
+			// chk_E31
+			// 
+			this->chk_E31->AutoSize = true;
+			this->chk_E31->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E31->Location = System::Drawing::Point(10, 97);
+			this->chk_E31->Name = L"chk_E31";
+			this->chk_E31->Size = System::Drawing::Size(45, 17);
+			this->chk_E31->TabIndex = 86;
+			this->chk_E31->Text = L"E31";
+			this->chk_E31->UseVisualStyleBackColor = true;
+			// 
+			// chk_E35
+			// 
+			this->chk_E35->AutoSize = true;
+			this->chk_E35->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E35->Location = System::Drawing::Point(178, 97);
+			this->chk_E35->Name = L"chk_E35";
+			this->chk_E35->Size = System::Drawing::Size(45, 17);
+			this->chk_E35->TabIndex = 85;
+			this->chk_E35->Text = L"E35";
+			this->chk_E35->UseVisualStyleBackColor = true;
+			// 
+			// chk_E32
+			// 
+			this->chk_E32->AutoSize = true;
+			this->chk_E32->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E32->Location = System::Drawing::Point(52, 97);
+			this->chk_E32->Name = L"chk_E32";
+			this->chk_E32->Size = System::Drawing::Size(45, 17);
+			this->chk_E32->TabIndex = 84;
+			this->chk_E32->Text = L"E32";
+			this->chk_E32->UseVisualStyleBackColor = true;
+			// 
 			// maindlg
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(883, 517);
+			this->ClientSize = System::Drawing::Size(883, 557);
 			this->Controls->Add(this->chk_DispTrackCycles);
 			this->Controls->Add(this->panelSysCtrl);
 			this->Controls->Add(this->gb_misc);

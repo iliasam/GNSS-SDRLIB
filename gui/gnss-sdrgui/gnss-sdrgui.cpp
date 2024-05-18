@@ -52,6 +52,8 @@ int SDR::get_sat_info(int index, char * info)
 		else
 		{
 			//Tracking stable
+			double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
+			info += sprintf(info, "Freq.: %i Hz ", (int)err_hz);
 
 			if (sdrch[index].nav.flagtow)
 			{
@@ -62,18 +64,13 @@ int SDR::get_sat_info(int index, char * info)
 				info += sprintf(info, "Preample found ");
 			}
 
-			//double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
-			//info += sprintf(info, "Freq. err: %i Hz", (int)err_hz);
-
 			//info += sprintf(info, "T: %f ", sdrch[index].debugT);
 			//info += sprintf(info, "T=%lu ", (uint64_t)sdrch[index].nav.firstsf);
 
-			double err_hz = sdrch[index].trk.carrfreq - sdrch[index].f_if - sdrch[index].foffset;
-			info += sprintf(info, "Freq.: %i Hz ", (int)err_hz);
-
 			if (sdrch[index].prn > 100)
 			{
-
+				double err_hz_ppm = err_hz / sdrch[index].f_cf * 1e6;
+				info += sprintf(info, "F. err.: %.02f ppm ", err_hz_ppm);
 			}
 			else
 			{
@@ -154,6 +151,7 @@ System::Void SDR::start(System::Object^ obj)
     sdrini.trkfllb[1]=str2double(form->config->tb_fll2,split);
 
     /* channel setting */ /* GPS */
+	
     setsdrini(form->chk_G01->Checked, 1,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
     setsdrini(form->chk_G02->Checked, 2,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
     setsdrini(form->chk_G03->Checked, 3,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
@@ -186,6 +184,7 @@ System::Void SDR::start(System::Object^ obj)
     setsdrini(form->chk_G30->Checked,30,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
     setsdrini(form->chk_G31->Checked,31,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
     setsdrini(form->chk_G32->Checked,32,SYS_GPS,form->rb_G_FE2->Checked,form->chk_TYPE_L1CA->Checked,false,false,&sdrini);
+	
 
     /* channel setting */ /* GLONASS */
     setsdrini(form->chk_R_7->Checked,-7,SYS_GLO,form->rb_R_FE2->Checked,form->chk_TYPE_G1->Checked,false,false,&sdrini);
@@ -204,20 +203,21 @@ System::Void SDR::start(System::Object^ obj)
     setsdrini(form->chk_R6->Checked, 6,SYS_GLO,form->rb_R_FE2->Checked,form->chk_TYPE_G1->Checked,false,false,&sdrini);
 
     /* channel setting */ /* GAL */
-    setsdrini(form->chk_E11->Checked,11,SYS_GAL,form->rb_E_FE2->Checked,form->chk_TYPE_E1B->Checked,false,false,&sdrini);
-    setsdrini(form->chk_E12->Checked,12,SYS_GAL,form->rb_E_FE2->Checked,form->chk_TYPE_E1B->Checked,false,false,&sdrini);
-    setsdrini(form->chk_E19->Checked,19,SYS_GAL,form->rb_E_FE2->Checked,form->chk_TYPE_E1B->Checked,false,false,&sdrini);
-    setsdrini(form->chk_E20->Checked,20,SYS_GAL,form->rb_E_FE2->Checked,form->chk_TYPE_E1B->Checked,false,false,&sdrini);
-	setsdrini(form->chk_E22->Checked,22,SYS_GAL,form->rb_E_FE2->Checked,form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E25->Checked, 25, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E27->Checked, 27, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E14->Checked, 14, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E30->Checked, 30, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E2->Checked, 2, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E4->Checked, 4, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E21->Checked, 21, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E9->Checked, 9, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
-	setsdrini(form->chk_E7->Checked, 7, SYS_GAL, form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
+	for each (Object^ var_obj in form->gb_gal->Controls)
+	{
+		if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+		{
+			System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+			if (chkObj->Name->Contains("chk_E") && !chkObj->Name->Contains("chk_EALL"))
+			{
+				String^ chk_name = chkObj->Name;
+				chk_name = chk_name->Remove(0, 5);
+				int prn_num = Convert::ToInt16(chk_name);
+				setsdrini(chkObj->Checked, prn_num, SYS_GAL, 
+					form->rb_E_FE2->Checked, form->chk_TYPE_E1B->Checked, false, false, &sdrini);
+			}
+		}
+	}
 
     /* channel setting */ /* BeiDou */
     setsdrini(form->chk_C01->Checked, 1,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
