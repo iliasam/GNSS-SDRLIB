@@ -204,6 +204,7 @@
     <ClCompile Include="..\..\src\rcv\gn3s\gn3s.cpp" />
     <ClCompile Include="..\..\src\rcv\gn3s\simple_rf.cpp" />
     <ClCompile Include="..\..\src\rcv\hackrf\hackrf.c" />
+    <ClCompile Include="..\..\src\rcv\hackrf\hackrf_gnss.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\convenience.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\rtlsdr.c" />
     <ClCompile Include="..\..\src\sdracq.c" />
@@ -236,6 +237,7 @@
     <ClInclude Include="..\..\src\rcv\gn3s\gn3s.h" />
     <ClInclude Include="..\..\src\rcv\gn3s\simple_rf.h" />
     <ClInclude Include="..\..\src\rcv\hackrf\hackrf.h" />
+    <ClInclude Include="..\..\src\rcv\hackrf\hackrf_gnss.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr_export.h" />
     <ClInclude Include="..\..\src\sdr.h" />

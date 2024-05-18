@@ -24,7 +24,8 @@ void stream_callback_rtlsdr(unsigned char *buf, uint32_t len, void *ctx)
     sdrstat.buffcnt++;
     unmlock(hreadmtx);
 
-    if (sdrstat.stopflag) rtlsdr_cancel_async(dev);
+    if (sdrstat.stopflag) 
+		rtlsdr_cancel_async(dev);
 }
 /* rtlsdr initialization -------------------------------------------------------
 * search front end and initialization
@@ -167,7 +168,7 @@ extern void rtlsdr_getbuff(uint64_t buffloc, int n, char *expbuf)
     unmlock(hbuffmtx);
 }
 /* push data to memory buffer --------------------------------------------------
-* push data to memory buffer from binary IF file
+* push data to memory buffer from binary IF FILE<<<<<<<<<<
 * args   : none
 * return : none
 *-----------------------------------------------------------------------------*/

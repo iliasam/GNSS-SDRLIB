@@ -8,7 +8,7 @@
 /* sdr tracking function -------------------------------------------------------
 * sdr tracking function called from sdr channel thread
 * args   : sdrch_t *sdr      I/O sdr channel struct
-*          uint64_t buffloc  I   buffer location
+*          uint64_t buffloc  I   buffer location, samples
 *          uint64_t cnt      I   counter of sdr channel thread
 * return : uint64_t              current buffer location
 *-----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ extern uint64_t sdrtracking(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
 			SDRPRINTF("Tracking: Currsample < 0\n");
 		}
 		//Copy sdr->currnsamp samples of data to the "data" buffer
-        rcvgetbuff(&sdrini, buffloc,sdr->currnsamp,sdr->ftype,sdr->dtype,data);
+        rcvgetbuff(&sdrini, buffloc,sdr->currnsamp, sdr->ftype, sdr->dtype, data);
 
 		//Copy II/QQ to oldI/oldQ before calculating new  II/QQ
         memcpy(sdr->trk.oldI,sdr->trk.II,1+2*sdr->trk.corrn*sizeof(double));

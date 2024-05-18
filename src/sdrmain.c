@@ -275,7 +275,10 @@ extern void *sdrthread(void *arg)
     sdrplt_t pltacq={0},plttrk={0};
 	/* Time is ms? */ 
 	uint64_t cnt = 0;
-    uint64_t buffloc=0,bufflocnow=0,loopcnt=0;
+
+	// Value in samples
+	uint64_t buffloc = 0;
+	uint64_t bufflocnow = 0, loopcnt = 0;
     double *acqpower=NULL;
     FILE* fp=NULL;
     char fname[100];

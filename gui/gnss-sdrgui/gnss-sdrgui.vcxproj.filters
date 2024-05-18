@@ -141,6 +141,9 @@
     <ClCompile Include="..\..\src\rcv\gn3s\simple_rf.cpp">
       <Filter>sdr\rcv\gn3s</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rcv\hackrf\hackrf_gnss.c">
+      <Filter>sdr\rcv\hackrf</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rcv\hackrf\hackrf.c">
       <Filter>sdr\rcv\hackrf</Filter>
     </ClCompile>
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rcv\gn3s\simple_rf.h">
       <Filter>sdr\rcv\gn3s</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rcv\hackrf\hackrf_gnss.h">
+      <Filter>sdr\rcv\hackrf</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rcv\hackrf\hackrf.h">
       <Filter>sdr\rcv\hackrf</Filter>

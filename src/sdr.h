@@ -45,8 +45,10 @@
 #pragma comment(lib,"fec/libfec.a")
 #pragma comment(lib,"fft/libfftw3f-3.lib")
 #pragma comment(lib,"usb/libusb.lib")
+#pragma comment(lib,"usb/libusb-1.0.lib")
 #pragma comment(lib,"bladerf/bladeRF.lib")
 #pragma comment(lib,"rtlsdr/rtlsdr.lib")
+#pragma comment(lib,"pthread/pthreadVC2.lib")
 
 #include "fec/fec.h"
 #include "fft/fftw3.h"
@@ -57,7 +59,7 @@
 #include "bladerf/libbladeRF.h"
 #include "rtlsdr/rtl-sdr.h"
 #ifdef HACKRF
-	#include "hackrf/hackrf.h"
+	#include "hackrf/hackrf_gnss.h"
 #endif
 
 #if defined(GUI)
@@ -367,7 +369,7 @@ typedef struct {
     int stopflag;        /* stop flag */
     int specflag;        /* spectrum flag */
     int buffsize;        /* data buffer size */
-    int fendbuffsize;    /* front end data buffer size */
+    int fendbuffsize;    /* front end data buffer size, in samples */
     unsigned char *buff; /* IF data buffer, raw data from the frontend get here */
     unsigned char *buff2;/* IF data buffer (for file input) */
     uint64_t buffcnt;    /* current buffer location, incremented when one "packet" is received from radio or read from file */
