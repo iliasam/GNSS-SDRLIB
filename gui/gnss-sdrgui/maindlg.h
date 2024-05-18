@@ -3347,197 +3347,76 @@ private:
                      tb_saif_port->Enabled=false;
                  }
              }
-    private: System::Void chk_GALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_GALL->Checked) {
-                     chk_G01->Checked=true;
-                     chk_G02->Checked=true;
-                     chk_G03->Checked=true;
-                     chk_G04->Checked=true;
-                     chk_G05->Checked=true;
-                     chk_G06->Checked=true;
-                     chk_G07->Checked=true;
-                     chk_G08->Checked=true;
-                     chk_G09->Checked=true;
-                     chk_G10->Checked=true;
-                     chk_G11->Checked=true;
-                     chk_G12->Checked=true;
-                     chk_G13->Checked=true;
-                     chk_G14->Checked=true;
-                     chk_G15->Checked=true;
-                     chk_G16->Checked=true;
-                     chk_G17->Checked=true;
-                     chk_G18->Checked=true;
-                     chk_G19->Checked=true;
-                     chk_G20->Checked=true;
-                     chk_G21->Checked=true;
-                     chk_G22->Checked=true;
-                     chk_G23->Checked=true;
-                     chk_G24->Checked=true;
-                     chk_G25->Checked=true;
-                     chk_G26->Checked=true;
-                     chk_G27->Checked=true;
-                     chk_G28->Checked=true;
-                     chk_G29->Checked=true;
-                     chk_G30->Checked=true;
-                     chk_G31->Checked=true;
-                     chk_G32->Checked=true;
-                 } else {
-                     chk_G01->Checked=false;
-                     chk_G02->Checked=false;
-                     chk_G03->Checked=false;
-                     chk_G04->Checked=false;
-                     chk_G05->Checked=false;
-                     chk_G06->Checked=false;
-                     chk_G07->Checked=false;
-                     chk_G08->Checked=false;
-                     chk_G09->Checked=false;
-                     chk_G10->Checked=false;
-                     chk_G11->Checked=false;
-                     chk_G12->Checked=false;
-                     chk_G13->Checked=false;
-                     chk_G14->Checked=false;
-                     chk_G15->Checked=false;
-                     chk_G16->Checked=false;
-                     chk_G17->Checked=false;
-                     chk_G18->Checked=false;
-                     chk_G19->Checked=false;
-                     chk_G20->Checked=false;
-                     chk_G21->Checked=false;
-                     chk_G22->Checked=false;
-                     chk_G23->Checked=false;
-                     chk_G24->Checked=false;
-                     chk_G25->Checked=false;
-                     chk_G26->Checked=false;
-                     chk_G27->Checked=false;
-                     chk_G28->Checked=false;
-                     chk_G29->Checked=false;
-                     chk_G30->Checked=false;
-                     chk_G31->Checked=false;
-                     chk_G32->Checked=false;
-                 }
-             }
-    private: System::Void chk_RALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_RALL->Checked) {
-                     chk_R_7->Checked=true;
-                     chk_R_6->Checked=true;
-                     chk_R_5->Checked=true;
-                     chk_R_4->Checked=true;
-                     chk_R_3->Checked=true;
-                     chk_R_2->Checked=true;
-                     chk_R_1->Checked=true;
-                     chk_R0->Checked=true;
-                     chk_R1->Checked=true;
-                     chk_R2->Checked=true;
-                     chk_R3->Checked=true;
-                     chk_R4->Checked=true;
-                     chk_R5->Checked=true;
-                     chk_R6->Checked=true;
-                 } else {
-                     chk_R_7->Checked=false;
-                     chk_R_6->Checked=false;
-                     chk_R_5->Checked=false;
-                     chk_R_4->Checked=false;
-                     chk_R_3->Checked=false;
-                     chk_R_2->Checked=false;
-                     chk_R_1->Checked=false;
-                     chk_R0->Checked=false;
-                     chk_R1->Checked=false;
-                     chk_R2->Checked=false;
-                     chk_R3->Checked=false;
-                     chk_R4->Checked=false;
-                     chk_R5->Checked=false;
-                     chk_R6->Checked=false;
-                 }
-             }
-    private: System::Void chk_EALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_EALL->Checked) {
-                     chk_E11->Checked=true;
-                     chk_E12->Checked=true;
-                     chk_E19->Checked=true;
-                     chk_E20->Checked=true;
-                 } else {
-                     chk_E11->Checked=false;
-                     chk_E12->Checked=false;
-                     chk_E19->Checked=false;
-                     chk_E20->Checked=false;
-                 }
-             }
-    private: System::Void chk_CALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_CALL->Checked) {
-                     chk_C01->Checked=true;
-                     chk_C02->Checked=true;
-                     chk_C03->Checked=true;
-                     chk_C04->Checked=true;
-                     chk_C05->Checked=true;
-                     chk_C06->Checked=true;
-                     chk_C07->Checked=true;
-                     chk_C08->Checked=true;
-                     chk_C09->Checked=true;
-                     chk_C10->Checked=true;
-                     chk_C11->Checked=true;
-                     chk_C12->Checked=true;
-                     chk_C13->Checked=true;
-                     chk_C14->Checked=true;
-                 } else {
-                     chk_C01->Checked=false;
-                     chk_C02->Checked=false;
-                     chk_C03->Checked=false;
-                     chk_C04->Checked=false;
-                     chk_C05->Checked=false;
-                     chk_C06->Checked=false;
-                     chk_C07->Checked=false;
-                     chk_C08->Checked=false;
-                     chk_C09->Checked=false;
-                     chk_C10->Checked=false;
-                     chk_C11->Checked=false;
-                     chk_C12->Checked=false;
-                     chk_C13->Checked=false;
-                     chk_C14->Checked=false;
-                 }
-             }
-    private: System::Void chk_SALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_SALL->Checked) {
-                     chk_S120->Checked=true;
-                     chk_S121->Checked=true;
-                     chk_S122->Checked=true;
-                     chk_S123->Checked=true;
-                     chk_S124->Checked=true;
-                     chk_S125->Checked=true;
-                     chk_S126->Checked=true;
-                     chk_S127->Checked=true;
-                     chk_S128->Checked=true;
-                     chk_S129->Checked=true;
-                     chk_S130->Checked=true;
-                     chk_S131->Checked=true;
-                     chk_S132->Checked=true;
-                     chk_S133->Checked=true;
-                     chk_S134->Checked=true;
-                     chk_S135->Checked=true;
-                     chk_S136->Checked=true;
-                     chk_S137->Checked=true;
-                     chk_S138->Checked=true;
-                 } else {
-                     chk_S120->Checked=false;
-                     chk_S121->Checked=false;
-                     chk_S122->Checked=false;
-                     chk_S123->Checked=false;
-                     chk_S124->Checked=false;
-                     chk_S125->Checked=false;
-                     chk_S126->Checked=false;
-                     chk_S127->Checked=false;
-                     chk_S128->Checked=false;
-                     chk_S129->Checked=false;
-                     chk_S130->Checked=false;
-                     chk_S131->Checked=false;
-                     chk_S132->Checked=false;
-                     chk_S133->Checked=false;
-                     chk_S134->Checked=false;
-                     chk_S135->Checked=false;
-                     chk_S136->Checked=false;
-                     chk_S137->Checked=false;
-                     chk_S138->Checked=false;
-                 }
-             }
+    private: System::Void chk_GALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_gps->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_G"))
+				{
+					chkObj->Checked = chk_GALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_RALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		for each (Object^ var_obj in gb_glo->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_R"))
+				{
+					chkObj->Checked = chk_RALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_EALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_gal->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_E"))
+				{
+					chkObj->Checked = chk_EALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_CALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_bds->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_C"))
+				{
+					chkObj->Checked = chk_CALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_SALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		for each (Object^ var_obj in gb_sbs->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_S"))
+				{
+					chkObj->Checked = chk_SALL->Checked;
+				}
+			}
+		}
+	}
     private: System::Void comb_input_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 
                  config->tb_corrn="5";
