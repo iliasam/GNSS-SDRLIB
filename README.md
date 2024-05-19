@@ -22,7 +22,9 @@ This fork has such changes:
  * Acquisition threshold is set to 1.8 (comparing to 3.0 in original)
  * Acquisition process is started if tracking is lost
  * Added displaying number of tracking processing cycles in one second.
- 
+
+>> See "Releases" to get executable version for Windows.  
+  
 GUI interface after start:  
 <img src="https://github.com/iliasam/GNSS-SDRLIB/blob/master/Images/p1.png">  
   
