@@ -689,7 +689,7 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     sdr->ctime=sdr->clen/sdr->crate;
     sdr->nsamp=(int)(sampling_rate_hz * sdr->ctime);
     sdr->nsampchip=(int)(sdr->nsamp/sdr->clen);
-    satno2id(sdr->sat,sdr->satstr);
+    satno2id(sdr->sat, sdr->satstr);
 
     /* set carrier frequency */
     if (ctype==CTYPE_G1) 

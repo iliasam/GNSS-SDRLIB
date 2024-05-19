@@ -163,9 +163,9 @@ extern int hackrf_sdr_initconf(void)
 		return res;
 	}
 
-	uint8_t amp_gain_on = 1;
+	uint8_t amp_gain_on = 0;
 	uint16_t lna_gain = 40;
-	uint16_t vga_gain = 42;
+	uint16_t vga_gain = 40;
 
 	lna_gain = (((lna_gain + 7) / 8) * 8);
 	vga_gain = (((vga_gain + 1) / 2) * 2);

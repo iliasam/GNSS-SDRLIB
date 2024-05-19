@@ -312,7 +312,7 @@ extern void *sdrthread(void *arg)
             acqpower=(double*)calloc(sizeof(double),sdr->nsamp*sdr->acq.nfreq);
 
             /* fft correlation. One of results is moving buffer position (buffloc)*/
-            buffloc=sdraccuisition(sdr,acqpower);
+            buffloc=sdraccuisition(sdr,acqpower, sdrini.acq_threshold);
 
             /* plot aquisition result */
             if (sdr->flagacq&&sdrini.pltacq) 

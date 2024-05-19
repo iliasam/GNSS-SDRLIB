@@ -138,6 +138,7 @@ System::Void SDR::start(System::Object^ obj)
         sdrini.f_cf[1]=0.0;
     }
     sdrini.rtlsdrppmerr=Convert::ToInt32(form->tb_clk->Text);
+	sdrini.acq_threshold = Convert::ToDouble(form->nud_acq_threshold->Value);
 
     /* tracking setting */
     sdrini.trkcorrn=Convert::ToInt32(form->config->tb_corrn);

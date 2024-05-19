@@ -158,7 +158,7 @@ extern "C" {
 #define LOOP_SBAS     2                /* loop interval */
 #define LOOP_LEX      4                /* loop interval */
 		
-#define TRACK_LOST_SUMM	25.0			/* Threshold of I-summ, whele treking loss is detected*/
+#define TRACK_LOST_SUMM	25.0			/* Threshold of I-summ, where traking loss is detected*/
 #define TRACK_RESTORE_TIME_MS	(10000)
 
 /* navigation parameter */
@@ -362,6 +362,7 @@ typedef struct {
     int rtlsdrppmerr;    /* clock collection for RTL-SDR */
 	int use_restore_acq; /* Restore acqusition */
 	int dispay_track_cycles; /* Display tracking cycles at Monitor page */
+	double acq_threshold; //Acquisition threshold
 } sdrini_t;
 
 /* sdr current state struct */
@@ -678,8 +679,8 @@ extern void *syncthread(void * arg);
 #endif
 
 /* sdracq.c ------------------------------------------------------------------*/
-extern uint64_t sdraccuisition(sdrch_t *sdr, double *power);
-extern int checkacquisition(double *P, sdrch_t *sdr);
+extern uint64_t sdraccuisition(sdrch_t *sdr, double *power, float threshold);
+extern int checkacquisition(double *P, sdrch_t *sdr, float threshold);
 
 
 /* sdrtrk.c ------------------------------------------------------------------*/

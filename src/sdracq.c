@@ -11,7 +11,7 @@
 *          double *power    O   normalized correlation power vector (2D array)
 * return : uint64_t             current buffer location
 *-----------------------------------------------------------------------------*/
-extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
+extern uint64_t sdraccuisition(sdrch_t *sdr, double *power, float threshold)
 {
     int i;
     char *data;
@@ -39,7 +39,7 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
             sdr->acq.nfreq,sdr->crate,sdr->acq.nfft,sdr->xcode,power);
 
         /* check acquisition result */
-        if (checkacquisition(power,sdr))
+        if (checkacquisition(power,sdr, threshold))
 		{
             sdr->flagacq=ON;
             break;
@@ -77,7 +77,7 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 * return : int                  acquisition flag (0: not acquired, 1: acquired) 
 * note : first/second peak ratio and c/n0 computation
 *-----------------------------------------------------------------------------*/
-extern int checkacquisition(double *P, sdrch_t *sdr)
+extern int checkacquisition(double *P, sdrch_t *sdr, float threshold)
 {
     int maxi,codei,freqi,exinds,exinde;
     double maxP,maxP2,meanP;
@@ -107,5 +107,5 @@ extern int checkacquisition(double *P, sdrch_t *sdr)
 	if (sdr->acq.peakr > sdr->acq.peakr_max)
 		sdr->acq.peakr_max = sdr->acq.peakr;
 
-    return (sdr->acq.peakr > ACQTH);
+    return (sdr->acq.peakr > threshold);
 }
