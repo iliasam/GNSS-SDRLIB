@@ -29,6 +29,20 @@ int SDR::get_sat_count(System::Void)
 	return satCount;
 }
 
+uint8_t count_eph_bits(int index)
+{
+	//Count bits
+	uint8_t eph_state = sdrch[index].nav.sdreph.received_mask;
+	uint8_t eph_count = 0;
+	for (uint8_t i = 0; i < 5; i++)
+	{
+		if (eph_state & 0x1)
+			eph_count++;
+		eph_state = eph_state >> 1;
+	}
+	return eph_count;
+}
+
 void SDR::fill_sat_info(int index, System::Object^ obj)
 {
 	if (index < 0)
@@ -45,8 +59,36 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 	if (!sdrch[index].flagacq)
 	{
 		//acq running
-
+		form->groupTracking->Enabled = false;
 	}
+	else
+	{
+		form->groupTracking->Enabled = true;
+	}
+
+	double err_hz = sat_info_p->trk.carrfreq - sat_info_p->f_if - sat_info_p->foffset;
+
+	form->lblAcqPeak->Text = gcnew String("Peak: ") + sat_info_p->acq.peakr_max_fin.ToString("F1");
+	form->lblAcqFreq->Text = gcnew String("Found freq.: ") + sat_info_p->acq.acqfreq.ToString("F0") + gcnew String(" Hz");
+
+	form->lblTrackFreq->Text = gcnew String("Frequency: ") + err_hz.ToString("F1") + gcnew String(" Hz");
+	form->lblTrackSNR->Text = gcnew String("SNR: ") + sdrch[index].trk.S[0].ToString("F1");
+	double summ_value = sdrch[index].trk.Isum_fin / 1000.0;
+	form->lblTrackISumm->Text = gcnew String("I-Summ: ") + summ_value.ToString("F1");
+
+	if (sdrch[index].nav.flagtow)
+		form->lblTrackWeek->Text = gcnew String("Week: ") + sdrch[index].nav.sdreph.week_gpst.ToString("F1");
+	else
+		form->lblTrackWeek->Text = gcnew String("Week: no TOW");
+
+	if (sdrch[index].nav.flagsyncf)
+		form->lblPreample->Text = gcnew String("Preamble: found");
+	else
+		form->lblPreample->Text = gcnew String("Preamble: not found");
+
+	uint8_t eph_count = count_eph_bits(index);
+	form->lblTrackEPH->Text = gcnew String("EPH count: ") + eph_count.ToString();
+
 }
 
 int SDR::get_sat_info(int index, char * info)
@@ -101,14 +143,7 @@ int SDR::get_sat_info(int index, char * info)
 			else
 			{
 				//Count bits
-				uint8_t eph_state = sdrch[index].nav.sdreph.received_mask;
-				uint8_t eph_count = 0;
-				for (uint8_t i = 0; i < 5; i++)
-				{
-					if (eph_state & 0x1)
-						eph_count++;
-					eph_state = eph_state >> 1;
-				}
+				uint8_t eph_count = count_eph_bits(index);
 				info += sprintf(info, "Eph. count=%i ", eph_count);
 			}
 
