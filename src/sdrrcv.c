@@ -300,8 +300,16 @@ extern int rcvquit(sdrini_t *ini)
         return -1;
     }
     /* free memory */
-    if (NULL!=sdrstat.buff)    free(sdrstat.buff);    sdrstat.buff=NULL;
-    if (NULL!=sdrstat.buff2)   free(sdrstat.buff2);   sdrstat.buff2=NULL;
+	if (sdrstat.buff != NULL)
+	{
+		free(sdrstat.buff);
+		sdrstat.buff = NULL;
+	}
+	if (sdrstat.buff2 != NULL)
+	{
+		free(sdrstat.buff2);
+		sdrstat.buff2 = NULL;
+	}
     return 0;
 }
 

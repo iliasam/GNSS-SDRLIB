@@ -380,11 +380,17 @@ extern void *sdrthread(void *arg)
 						setobsdata(sdr, buffloc, cnt, &sdr->trk, 1);
 						//Detect tracking loss
 						double summ_value = sdr->trk.Isum_fin / 1000.0;
-						if (summ_value < TRACK_LOST_SUMM)
+						if ((summ_value < TRACK_LOST_SUMM) || sdr->trk.forceReset)
 						{
 							sdr->trk.track_loss_cnt++;
 							if ((sdr->trk.track_loss_cnt > 
 								(TRACK_RESTORE_TIME_MS / SNSMOOTHMS)) && (sdrini.use_restore_acq != 0))
+							{
+								restart_acquisition(sdr);
+								cnt = 0;
+							}
+
+							if (sdr->trk.forceReset)
 							{
 								restart_acquisition(sdr);
 								cnt = 0;

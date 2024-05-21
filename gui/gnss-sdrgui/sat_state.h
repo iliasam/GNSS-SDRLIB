@@ -42,9 +42,7 @@ namespace gnsssdrgui
 	public: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
 	public:
 
-
-
-
+	public: bool NeedReset = false;
 
 	public:
 	protected:
@@ -212,6 +210,7 @@ namespace gnsssdrgui
 			this->btnReset->TabIndex = 3;
 			this->btnReset->Text = L"Reset channel";
 			this->btnReset->UseVisualStyleBackColor = true;
+			this->btnReset->Click += gcnew System::EventHandler(this, &sat_state_class::btnReset_Click);
 			// 
 			// sat_state_class
 			// 
@@ -241,5 +240,9 @@ namespace gnsssdrgui
 #pragma endregion
 
 
-	};//end of class
+	private: System::Void btnReset_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		NeedReset = true;
+	}
+};//end of class
 } //namespace gnsssdrgui 

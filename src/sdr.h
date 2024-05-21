@@ -475,6 +475,8 @@ typedef struct {
 	int debug_q[TRACK_DEBUG_POINTS]; //Used for displaying tracking
 	uint16_t debug_disp_cnt;
 	uint8_t debug_disp_lock;//Clead after data is displayed
+
+	bool forceReset; //Manual force reset
 } sdrtrk_t;
 
 /* sdr ephemeris struct */

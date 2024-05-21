@@ -87,7 +87,15 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 	uint8_t eph_count = count_eph_bits(index);
 	form->lblTrackEPH->Text = gcnew String("EPH count: ") + eph_count.ToString();
 
-	//Updating Chart
+	//Force reset to aqusition, see "sdrmain.c" - sdrthread
+	if (form->NeedReset)
+	{
+		sat_info_p->trk.forceReset = true;
+		form->NeedReset = false;
+	}
+	
+
+	//Updating Chart ****************8
 	if (sat_info_p->trk.debug_disp_lock == 0)
 	{
 		return;
