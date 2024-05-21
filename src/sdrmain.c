@@ -32,6 +32,9 @@ sdrch_t sdrch[MAXSAT]={{0}};
 sdrspec_t sdrspec={0};
 sdrout_t sdrout={0};
 
+
+debug_print_callback_t debug_print_func = NULL;
+
 /* initsdrgui ------------------------------------------------------------------
 * initialize sdr gui application  
 * args   : maindlg^ form       I   main dialog class
@@ -96,6 +99,13 @@ int main(int argc, char **argv)
     return 0;
 }
 #endif
+
+extern void print_debug_text(char* text)
+{
+	if (debug_print_func != NULL)
+		debug_print_func(text);
+}
+
 /* sdr start -------------------------------------------------------------------
 * start sdr function  
 * args   : void   *arg      I   not used

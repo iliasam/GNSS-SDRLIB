@@ -67,6 +67,12 @@
 using namespace gnsssdrgui;
 #endif
 
+//do { \
+//	char str[1024]; \
+//	sprintf(str,__VA_ARGS__);  \
+//	print_debug_text(str);  \
+//} while (0)
+
 /* printf function */
 #if defined(GUI)
 #define SDRPRINTF(...) \
@@ -637,6 +643,8 @@ typedef struct {
     sdrplt_t pspec;      /* plot struct for spectrum analysis */
 } sdrspec_t;
 
+typedef void(*debug_print_callback_t)(char* text);
+
 /* global variables ----------------------------------------------------------*/
 extern thread_t hmainthread;  /* main thread handle */
 extern thread_t hsyncthread;  /* synchronization thread handle */
@@ -677,6 +685,9 @@ extern void syncthread(void * arg);
 #else
 extern void *syncthread(void * arg);
 #endif
+
+
+extern void print_debug_text(char* text);
 
 /* sdracq.c ------------------------------------------------------------------*/
 extern uint64_t sdraccuisition(sdrch_t *sdr, double *power, float threshold);

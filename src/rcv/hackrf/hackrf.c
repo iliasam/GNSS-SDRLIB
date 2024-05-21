@@ -228,7 +228,7 @@ static int cancel_transfers(hackrf_device* device)
 	// If we're cancelling transfers for any reason, we're shutting down.
 	device->streaming = false;
 
-	if (transfers_check_setup(device) == true) {
+	if (transfers_check_setup(device) == 1) {
 		// Take lock while cancelling transfers. This blocks the
 		// transfer completion callback from restarting a transfer
 		// while we're in the middle of trying to cancel them all.

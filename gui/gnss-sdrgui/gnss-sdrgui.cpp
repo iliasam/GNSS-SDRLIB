@@ -7,7 +7,12 @@ using namespace System::Globalization;
 void setsdrini(bool bsat, int sat, int sys, int ftype, bool L1, bool sbas, bool lex, sdrini_t *ini);
 double str2double(String^value, char split);
 
+
+
 int satCount = 0;
+
+//maindlg^ form_internal = nullptr;
+
 
 [STAThreadAttribute]
 int main(array<System::String ^> ^args)
@@ -23,6 +28,27 @@ int SDR::get_sat_count(System::Void)
 {
 	return satCount;
 }
+
+void SDR::fill_sat_info(int index, System::Object^ obj)
+{
+	if (index < 0)
+		return;
+	if (index >= satCount)
+		return;
+
+	sat_state_class^form = (sat_state_class^)obj;
+
+	sdrch_t *sat_info_p = &sdrch[index];
+
+	form->lbl_Sat->Text = gcnew String("Sat: ") + gcnew String(sat_info_p->satstr);
+
+	if (!sdrch[index].flagacq)
+	{
+		//acq running
+
+	}
+}
+
 int SDR::get_sat_info(int index, char * info)
 {
 	if (sdrch[index].no == 0)
@@ -94,6 +120,11 @@ int SDR::get_sat_info(int index, char * info)
 	
 	info += sprintf(info, "\n");
 	return 1;
+}
+
+void gui_debug_print(char* text)
+{
+	//form->mprintf(strstr);
 }
 
 /* sdr start function */
@@ -295,6 +326,9 @@ System::Void SDR::start(System::Object^ obj)
     /* create sdr thread*/
     hmainthread=(HANDLE)_beginthread(startsdr,0,NULL);
 }
+
+
+
 /* set sdr initialize struct function */
 void setsdrini(bool bsat, int prn, int sys, int ftype, bool L1, bool sbas, bool lex, sdrini_t *ini)
 {

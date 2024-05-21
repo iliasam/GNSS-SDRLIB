@@ -203,6 +203,9 @@
     <ClInclude Include="..\..\src\rcv\hackrf\hackrf.h">
       <Filter>sdr\rcv\hackrf</Filter>
     </ClInclude>
+    <ClInclude Include="sat_state.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="maindlg.resX">
@@ -216,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="trkprmdlg.resx">
       <Filter>resource</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sat_state.resx">
+      <Filter>header</Filter>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

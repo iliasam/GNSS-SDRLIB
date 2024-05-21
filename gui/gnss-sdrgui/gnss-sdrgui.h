@@ -1,13 +1,22 @@
 using namespace System;
+
+extern "C" {
+#include "sdr.h"
+}
+
+
+
 public ref class SDR
 {
-public: int get_sat_count(System::Void);
-public: int get_sat_info(int index, char *info);
-public: void start(Object^ obj);
-public: void stop(Object^ obj);
-public: void startspectrum(Object^ obj);
-public: void stopspectrum(Object^ obj);
-public: void settrkprm(Object^ obj1,Object^ obj2);
+	public: int get_sat_info(int index, char *info);
+	public: void fill_sat_info(int index, System::Object^ obj);
+	public: void start(Object^ obj);
+	public: void stop(Object^ obj);
+	public: void startspectrum(Object^ obj);
+	public: void stopspectrum(Object^ obj);
+	public: void settrkprm(Object^ obj1, Object^ obj2);
+	public: int get_sat_count(System::Void);
+
 };
 
 public ref class CONFIG

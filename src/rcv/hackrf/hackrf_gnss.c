@@ -152,14 +152,14 @@ extern int hackrf_sdr_initconf(void)
 	res = hackrf_set_sample_rate(dev, samp_rate_hz);
 	if (res != HACKRF_SUCCESS)
 	{
-		SDRPRINTF("ERROR: Failed to set sample rate: %ul\n", samp_rate_hz);
+		SDRPRINTF("ERROR: Failed to set sample rate: %lu\n", samp_rate_hz);
 		return res;
 	}
 
 	res = hackrf_set_freq(dev, (uint64_t)center_freq_hz);
 	if (res != HACKRF_SUCCESS)
 	{
-		SDRPRINTF("ERROR: Failed to set center frequency: %ul\n", (uint64_t)center_freq_hz);
+		SDRPRINTF("ERROR: Failed to set center frequency: %llu\n", (uint64_t)center_freq_hz);
 		return res;
 	}
 
