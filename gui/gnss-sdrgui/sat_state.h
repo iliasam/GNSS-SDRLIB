@@ -39,6 +39,7 @@ namespace gnsssdrgui
 	public: System::Windows::Forms::Label^  lblPreample;
 	public: System::Windows::Forms::Label^  lblTrackEPH;
 	private: System::Windows::Forms::Button^  btnReset;
+	public: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
 	public:
 
 
@@ -58,20 +59,24 @@ namespace gnsssdrgui
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->lbl_Sat = (gcnew System::Windows::Forms::Label());
 			this->groupAcq = (gcnew System::Windows::Forms::GroupBox());
+			this->lblAcqFreq = (gcnew System::Windows::Forms::Label());
 			this->lblAcqPeak = (gcnew System::Windows::Forms::Label());
 			this->groupTracking = (gcnew System::Windows::Forms::GroupBox());
-			this->lblAcqFreq = (gcnew System::Windows::Forms::Label());
-			this->lblTrackFreq = (gcnew System::Windows::Forms::Label());
-			this->lblTrackSNR = (gcnew System::Windows::Forms::Label());
-			this->lblTrackISumm = (gcnew System::Windows::Forms::Label());
-			this->lblTrackWeek = (gcnew System::Windows::Forms::Label());
-			this->lblPreample = (gcnew System::Windows::Forms::Label());
-			this->btnReset = (gcnew System::Windows::Forms::Button());
+			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->lblTrackEPH = (gcnew System::Windows::Forms::Label());
+			this->lblPreample = (gcnew System::Windows::Forms::Label());
+			this->lblTrackWeek = (gcnew System::Windows::Forms::Label());
+			this->lblTrackISumm = (gcnew System::Windows::Forms::Label());
+			this->lblTrackSNR = (gcnew System::Windows::Forms::Label());
+			this->lblTrackFreq = (gcnew System::Windows::Forms::Label());
+			this->btnReset = (gcnew System::Windows::Forms::Button());
 			this->groupAcq->SuspendLayout();
 			this->groupTracking->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// lbl_Sat
@@ -96,6 +101,15 @@ namespace gnsssdrgui
 			this->groupAcq->TabStop = false;
 			this->groupAcq->Text = L"Acquisition";
 			// 
+			// lblAcqFreq
+			// 
+			this->lblAcqFreq->AutoSize = true;
+			this->lblAcqFreq->Location = System::Drawing::Point(9, 40);
+			this->lblAcqFreq->Name = L"lblAcqFreq";
+			this->lblAcqFreq->Size = System::Drawing::Size(84, 13);
+			this->lblAcqFreq->TabIndex = 1;
+			this->lblAcqFreq->Text = L"Found freq.: n/a";
+			// 
 			// lblAcqPeak
 			// 
 			this->lblAcqPeak->AutoSize = true;
@@ -107,6 +121,7 @@ namespace gnsssdrgui
 			// 
 			// groupTracking
 			// 
+			this->groupTracking->Controls->Add(this->chart1);
 			this->groupTracking->Controls->Add(this->lblTrackEPH);
 			this->groupTracking->Controls->Add(this->lblPreample);
 			this->groupTracking->Controls->Add(this->lblTrackWeek);
@@ -116,88 +131,93 @@ namespace gnsssdrgui
 			this->groupTracking->Enabled = false;
 			this->groupTracking->Location = System::Drawing::Point(9, 102);
 			this->groupTracking->Name = L"groupTracking";
-			this->groupTracking->Size = System::Drawing::Size(272, 322);
+			this->groupTracking->Size = System::Drawing::Size(272, 371);
 			this->groupTracking->TabIndex = 2;
 			this->groupTracking->TabStop = false;
 			this->groupTracking->Text = L"Tracking";
 			// 
-			// lblAcqFreq
+			// chart1
 			// 
-			this->lblAcqFreq->AutoSize = true;
-			this->lblAcqFreq->Location = System::Drawing::Point(9, 40);
-			this->lblAcqFreq->Name = L"lblAcqFreq";
-			this->lblAcqFreq->Size = System::Drawing::Size(84, 13);
-			this->lblAcqFreq->TabIndex = 1;
-			this->lblAcqFreq->Text = L"Found freq.: n/a";
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			this->chart1->Location = System::Drawing::Point(6, 16);
+			this->chart1->Name = L"chart1";
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
+			series1->Name = L"Series1";
+			this->chart1->Series->Add(series1);
+			this->chart1->Size = System::Drawing::Size(260, 209);
+			this->chart1->TabIndex = 8;
+			this->chart1->Text = L"chart1";
 			// 
-			// lblTrackFreq
+			// lblTrackEPH
 			// 
-			this->lblTrackFreq->AutoSize = true;
-			this->lblTrackFreq->Location = System::Drawing::Point(13, 196);
-			this->lblTrackFreq->Name = L"lblTrackFreq";
-			this->lblTrackFreq->Size = System::Drawing::Size(80, 13);
-			this->lblTrackFreq->TabIndex = 2;
-			this->lblTrackFreq->Text = L"Frequency: n/a";
-			// 
-			// lblTrackSNR
-			// 
-			this->lblTrackSNR->AutoSize = true;
-			this->lblTrackSNR->Location = System::Drawing::Point(13, 216);
-			this->lblTrackSNR->Name = L"lblTrackSNR";
-			this->lblTrackSNR->Size = System::Drawing::Size(53, 13);
-			this->lblTrackSNR->TabIndex = 3;
-			this->lblTrackSNR->Text = L"SNR: n/a";
-			// 
-			// lblTrackISumm
-			// 
-			this->lblTrackISumm->AutoSize = true;
-			this->lblTrackISumm->Location = System::Drawing::Point(13, 235);
-			this->lblTrackISumm->Name = L"lblTrackISumm";
-			this->lblTrackISumm->Size = System::Drawing::Size(63, 13);
-			this->lblTrackISumm->TabIndex = 4;
-			this->lblTrackISumm->Text = L"I-summ: n/a";
-			// 
-			// lblTrackWeek
-			// 
-			this->lblTrackWeek->AutoSize = true;
-			this->lblTrackWeek->Location = System::Drawing::Point(13, 257);
-			this->lblTrackWeek->Name = L"lblTrackWeek";
-			this->lblTrackWeek->Size = System::Drawing::Size(59, 13);
-			this->lblTrackWeek->TabIndex = 5;
-			this->lblTrackWeek->Text = L"Week: n/a";
+			this->lblTrackEPH->AutoSize = true;
+			this->lblTrackEPH->Location = System::Drawing::Point(10, 347);
+			this->lblTrackEPH->Name = L"lblTrackEPH";
+			this->lblTrackEPH->Size = System::Drawing::Size(70, 13);
+			this->lblTrackEPH->TabIndex = 7;
+			this->lblTrackEPH->Text = L"EPH cnt: n/a";
 			// 
 			// lblPreample
 			// 
 			this->lblPreample->AutoSize = true;
-			this->lblPreample->Location = System::Drawing::Point(13, 277);
+			this->lblPreample->Location = System::Drawing::Point(10, 326);
 			this->lblPreample->Name = L"lblPreample";
 			this->lblPreample->Size = System::Drawing::Size(74, 13);
 			this->lblPreample->TabIndex = 6;
 			this->lblPreample->Text = L"Preamble: n/a";
 			// 
+			// lblTrackWeek
+			// 
+			this->lblTrackWeek->AutoSize = true;
+			this->lblTrackWeek->Location = System::Drawing::Point(10, 306);
+			this->lblTrackWeek->Name = L"lblTrackWeek";
+			this->lblTrackWeek->Size = System::Drawing::Size(59, 13);
+			this->lblTrackWeek->TabIndex = 5;
+			this->lblTrackWeek->Text = L"Week: n/a";
+			// 
+			// lblTrackISumm
+			// 
+			this->lblTrackISumm->AutoSize = true;
+			this->lblTrackISumm->Location = System::Drawing::Point(10, 284);
+			this->lblTrackISumm->Name = L"lblTrackISumm";
+			this->lblTrackISumm->Size = System::Drawing::Size(63, 13);
+			this->lblTrackISumm->TabIndex = 4;
+			this->lblTrackISumm->Text = L"I-summ: n/a";
+			// 
+			// lblTrackSNR
+			// 
+			this->lblTrackSNR->AutoSize = true;
+			this->lblTrackSNR->Location = System::Drawing::Point(10, 265);
+			this->lblTrackSNR->Name = L"lblTrackSNR";
+			this->lblTrackSNR->Size = System::Drawing::Size(53, 13);
+			this->lblTrackSNR->TabIndex = 3;
+			this->lblTrackSNR->Text = L"SNR: n/a";
+			// 
+			// lblTrackFreq
+			// 
+			this->lblTrackFreq->AutoSize = true;
+			this->lblTrackFreq->Location = System::Drawing::Point(10, 245);
+			this->lblTrackFreq->Name = L"lblTrackFreq";
+			this->lblTrackFreq->Size = System::Drawing::Size(80, 13);
+			this->lblTrackFreq->TabIndex = 2;
+			this->lblTrackFreq->Text = L"Frequency: n/a";
+			// 
 			// btnReset
 			// 
-			this->btnReset->Location = System::Drawing::Point(12, 430);
+			this->btnReset->Location = System::Drawing::Point(13, 479);
 			this->btnReset->Name = L"btnReset";
 			this->btnReset->Size = System::Drawing::Size(99, 23);
 			this->btnReset->TabIndex = 3;
 			this->btnReset->Text = L"Reset channel";
 			this->btnReset->UseVisualStyleBackColor = true;
 			// 
-			// lblTrackEPH
-			// 
-			this->lblTrackEPH->AutoSize = true;
-			this->lblTrackEPH->Location = System::Drawing::Point(13, 298);
-			this->lblTrackEPH->Name = L"lblTrackEPH";
-			this->lblTrackEPH->Size = System::Drawing::Size(70, 13);
-			this->lblTrackEPH->TabIndex = 7;
-			this->lblTrackEPH->Text = L"EPH cnt: n/a";
-			// 
 			// sat_state_class
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(293, 461);
+			this->ClientSize = System::Drawing::Size(293, 511);
 			this->Controls->Add(this->btnReset);
 			this->Controls->Add(this->groupTracking);
 			this->Controls->Add(this->groupAcq);
@@ -212,6 +232,7 @@ namespace gnsssdrgui
 			this->groupAcq->PerformLayout();
 			this->groupTracking->ResumeLayout(false);
 			this->groupTracking->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

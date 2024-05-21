@@ -11,8 +11,6 @@ double str2double(String^value, char split);
 
 int satCount = 0;
 
-//maindlg^ form_internal = nullptr;
-
 
 [STAThreadAttribute]
 int main(array<System::String ^> ^args)
@@ -56,7 +54,7 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 
 	form->lbl_Sat->Text = gcnew String("Sat: ") + gcnew String(sat_info_p->satstr);
 
-	if (!sdrch[index].flagacq)
+	if (!sat_info_p->flagacq)
 	{
 		//acq running
 		form->groupTracking->Enabled = false;
@@ -72,16 +70,16 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 	form->lblAcqFreq->Text = gcnew String("Found freq.: ") + sat_info_p->acq.acqfreq.ToString("F0") + gcnew String(" Hz");
 
 	form->lblTrackFreq->Text = gcnew String("Frequency: ") + err_hz.ToString("F1") + gcnew String(" Hz");
-	form->lblTrackSNR->Text = gcnew String("SNR: ") + sdrch[index].trk.S[0].ToString("F1");
-	double summ_value = sdrch[index].trk.Isum_fin / 1000.0;
-	form->lblTrackISumm->Text = gcnew String("I-Summ: ") + summ_value.ToString("F1");
+	form->lblTrackSNR->Text = gcnew String("SNR: ") + sat_info_p->trk.S[0].ToString("F1");
+	double summ_value = sat_info_p->trk.Isum_fin / 1000.0;
+	form->lblTrackISumm->Text = gcnew String("I-Summ: ") + summ_value.ToString("F1") + gcnew String(" K");
 
-	if (sdrch[index].nav.flagtow)
-		form->lblTrackWeek->Text = gcnew String("Week: ") + sdrch[index].nav.sdreph.week_gpst.ToString("F1");
+	if (sat_info_p->nav.flagtow)
+		form->lblTrackWeek->Text = gcnew String("Week: ") + sat_info_p->nav.sdreph.week_gpst.ToString("F1");
 	else
 		form->lblTrackWeek->Text = gcnew String("Week: no TOW");
 
-	if (sdrch[index].nav.flagsyncf)
+	if (sat_info_p->nav.flagsyncf)
 		form->lblPreample->Text = gcnew String("Preamble: found");
 	else
 		form->lblPreample->Text = gcnew String("Preamble: not found");
@@ -89,6 +87,54 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 	uint8_t eph_count = count_eph_bits(index);
 	form->lblTrackEPH->Text = gcnew String("EPH count: ") + eph_count.ToString();
 
+	//Updating Chart
+	if (sat_info_p->trk.debug_disp_lock == 0)
+	{
+		return;
+	}
+
+	int max_val = 0;
+	for (uint16_t i = 0; i < TRACK_DEBUG_POINTS; i++)
+	{
+		if (abs(sat_info_p->trk.debug_i[i]) > max_val)
+			max_val = abs(sat_info_p->trk.debug_i[i]);
+
+		if (abs(sat_info_p->trk.debug_q[i]) > max_val)
+			max_val = abs(sat_info_p->trk.debug_q[i]);
+	}
+
+	if (max_val < 1000)
+		max_val = 1000;
+	else if (max_val < 3000)
+		max_val = 3000;
+	else if (max_val < 10000)
+		max_val = 10000;
+	else
+	{
+		//>10K
+		max_val = (int)((max_val - 1 + 10e3) / 10e3 ) * 10e3;
+	}
+
+	if (max_val == 10000)
+	{
+		max_val = 9999;
+	}
+
+
+	form->chart1->ChartAreas[0]->AxisX->Minimum = -max_val;
+	form->chart1->ChartAreas[0]->AxisX->Maximum = max_val;
+	form->chart1->ChartAreas[0]->AxisY->Minimum = -max_val;
+	form->chart1->ChartAreas[0]->AxisY->Maximum = max_val;
+
+	form->chart1->Series[0]->Points->Clear();
+	for (uint16_t i = 0; i < TRACK_DEBUG_POINTS; i++)
+	{
+		form->chart1->Series[0]->Points->AddXY(
+			(double)sat_info_p->trk.debug_i[i],
+			(double)sat_info_p->trk.debug_q[i]);
+	}
+
+	sat_info_p->trk.debug_disp_lock = 0;
 }
 
 int SDR::get_sat_info(int index, char * info)

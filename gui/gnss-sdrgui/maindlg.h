@@ -4132,6 +4132,7 @@ private:
 		sdr->start(this); //<<<<<<<<<<<<<<<
 
 		int sat_count = sdr->get_sat_count();
+		this->TextBoxMonitor->Items->Clear();
 		for (uint8_t i = 0; i < sat_count; i++)
 			this->TextBoxMonitor->Items->Add(gcnew String(""));
 

@@ -290,6 +290,8 @@ extern "C" {
 //ephemeris sens deriod in s
 #define EPH_SEND_PERIOD_S	40
 
+#define TRACK_DEBUG_POINTS	150
+
 /* thread functions */
 #ifdef WIN32
 #define mlock_t       HANDLE
@@ -468,6 +470,11 @@ typedef struct {
     sdrtrkprm_t prm2;    /* tracking parameter struct */
 	int track_loss_cnt;  
 	uint64_t track_cnt;  /* Counter of tracked GNSS codes*/
+
+	int debug_i[TRACK_DEBUG_POINTS]; //Used for displaying tracking
+	int debug_q[TRACK_DEBUG_POINTS]; //Used for displaying tracking
+	uint16_t debug_disp_cnt;
+	uint8_t debug_disp_lock;//Clead after data is displayed
 } sdrtrk_t;
 
 /* sdr ephemeris struct */

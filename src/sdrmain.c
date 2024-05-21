@@ -340,6 +340,19 @@ extern void *sdrthread(void *arg)
                 /* correlation output accumulation */
                 cumsumcorr(&sdr->trk,sdr->nav.ocode[sdr->nav.ocodei]);
 
+				
+				if (sdr->trk.debug_disp_lock == 0)
+				{
+					sdr->trk.debug_i[sdr->trk.debug_disp_cnt] = (int)sdr->trk.II[0];
+					sdr->trk.debug_q[sdr->trk.debug_disp_cnt] = (int)sdr->trk.QQ[0];
+					sdr->trk.debug_disp_cnt++;
+					if (sdr->trk.debug_disp_cnt >= TRACK_DEBUG_POINTS)
+					{
+						sdr->trk.debug_disp_cnt = 0;
+						sdr->trk.debug_disp_lock = 1;
+					}
+				}
+
                 sdr->trk.flagloopfilter=0;
                 if (!sdr->nav.flagsync)
 				{
