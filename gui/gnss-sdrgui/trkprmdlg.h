@@ -30,7 +30,7 @@ namespace gnsssdrgui {
     protected: 
 
     public: SDR^ sdr;
-    public: System::Windows::Forms::Label^  label5;
+
     public: System::Windows::Forms::Label^  label3;
     public: System::Windows::Forms::TextBox^  tb_corrp;
 
@@ -62,6 +62,7 @@ namespace gnsssdrgui {
     public: System::Windows::Forms::Label^  label8;
     public: System::Windows::Forms::Label^  label9;
     public: System::Windows::Forms::TextBox^  tb_dll1;
+	public: System::Windows::Forms::Label^  label5;
 
     private:
         System::ComponentModel::Container ^components;
@@ -70,7 +71,6 @@ namespace gnsssdrgui {
         void InitializeComponent(void)
         {
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->tb_corrp = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
@@ -94,12 +94,14 @@ namespace gnsssdrgui {
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->tb_dll1 = (gcnew System::Windows::Forms::TextBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->label4);
 			this->groupBox1->Controls->Add(this->label5);
 			this->groupBox1->Controls->Add(this->label3);
 			this->groupBox1->Controls->Add(this->tb_corrp);
@@ -115,17 +117,6 @@ namespace gnsssdrgui {
 			this->groupBox1->TabIndex = 2;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Correlation";
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(128)));
-			this->label5->Location = System::Drawing::Point(216, 65);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(62, 15);
-			this->label5->TabIndex = 9;
-			this->label5->Text = L"(samples)";
 			// 
 			// label3
 			// 
@@ -193,7 +184,9 @@ namespace gnsssdrgui {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(225, 52);
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label4->Location = System::Drawing::Point(221, 42);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(51, 13);
 			this->label4->TabIndex = 8;
@@ -384,12 +377,22 @@ namespace gnsssdrgui {
 			this->tb_dll1->TabIndex = 2;
 			this->tb_dll1->Text = L"5.0";
 			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label5->Location = System::Drawing::Point(221, 62);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(51, 13);
+			this->label5->TabIndex = 11;
+			this->label5->Text = L"(samples)";
+			// 
 			// trkprmdlg
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(293, 248);
-			this->Controls->Add(this->label4);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
@@ -405,7 +408,6 @@ namespace gnsssdrgui {
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion

@@ -345,9 +345,11 @@ extern int initpltstruct(sdrplt_t *acq, sdrplt_t *trk, sdrch_t *sdr)
     }
     /* tracking */
     if (sdrini.plttrk) {
-        setsdrplotprm(trk,PLT_XY,1+2*sdr->trk.corrn,0,0,ON,0.001,
+		int abs = 0;
+        setsdrplotprm(trk, PLT_XY, 1+2*sdr->trk.corrn, 0, 0, abs, 0.001,
             PLT_H,PLT_W,PLT_MH,PLT_MW,sdr->no);
-        if(initsdrplot(trk)<0) return -1;
+        if(initsdrplot(trk)<0)
+			return -1;
         settitle(trk,sdr->satstr);
         setlabel(trk,"Code Offset (sample)","Correlation Output");
         
@@ -667,9 +669,6 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     int i;
     short *rcode;
 
-	//f_if = f_cf - (sampling_rate_hz * 41.0);
-	//SDRPRINTF("IF: %f\n", f_if);
-
     sdr->no=chno;
     sdr->sys=sys;
     sdr->prn=prn;
@@ -695,7 +694,7 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     if (ctype==CTYPE_G1) 
 	{
         sprintf(sdr->satstr,"R%d",prn); /* frequency number instead of PRN */
-        sdr->f_cf=FREQ1_GLO+DFRQ1_GLO*prn; /* FDMA */
+        sdr->f_cf=FREQ1_GLO + DFRQ1_GLO * prn; /* FDMA */
         sdr->foffset=DFRQ1_GLO*prn; /* FDMA */
     } 
 	else if (sdrini.fend==FEND_FRTLSDR) 

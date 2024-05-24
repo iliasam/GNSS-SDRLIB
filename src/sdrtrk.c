@@ -148,8 +148,11 @@ extern void pll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
 extern void dll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
 {
     double codeErr;
-    double IE=sdr->trk.sumI[sdr->trk.ne],IL=sdr->trk.sumI[sdr->trk.nl];
-    double QE=sdr->trk.sumQ[sdr->trk.ne],QL=sdr->trk.sumQ[sdr->trk.nl];
+	double IE = sdr->trk.sumI[sdr->trk.ne]; //early
+	double IL = sdr->trk.sumI[sdr->trk.nl];
+
+	double QE = sdr->trk.sumQ[sdr->trk.ne];//late
+	double QL = sdr->trk.sumQ[sdr->trk.nl];
 
     codeErr=(sqrt(IE*IE+QE*QE)-
         sqrt(IL*IL+QL*QL))/(sqrt(IE*IE+QE*QE)+sqrt(IL*IL+QL*QL));

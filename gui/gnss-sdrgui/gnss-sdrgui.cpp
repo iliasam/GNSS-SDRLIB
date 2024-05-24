@@ -2,11 +2,13 @@
 using namespace gnsssdrgui;
 using namespace System::Globalization;
 
+#define QUAL_HIST_STEP	(500)
+
 
 /* set sdr initialize struct function */
 void setsdrini(bool bsat, int sat, int sys, int ftype, bool L1, bool sbas, bool lex, sdrini_t *ini);
 double str2double(String^value, char split);
-
+float calculate_signal_quality(int *i_data, float *width);
 
 
 int satCount = 0;
@@ -39,6 +41,11 @@ uint8_t count_eph_bits(int index)
 		eph_state = eph_state >> 1;
 	}
 	return eph_count;
+}
+
+int compare_function1(const void * a, const void * b)
+{
+	return (*(uint32_t*)a - *(uint32_t*)b);
 }
 
 void SDR::fill_sat_info(int index, System::Object^ obj)
@@ -75,7 +82,7 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 	form->lblTrackISumm->Text = gcnew String("I-Summ: ") + summ_value.ToString("F1") + gcnew String(" K");
 
 	if (sat_info_p->nav.flagtow)
-		form->lblTrackWeek->Text = gcnew String("Week: ") + sat_info_p->nav.sdreph.week_gpst.ToString("F1");
+		form->lblTrackWeek->Text = gcnew String("Week: ") + sat_info_p->nav.sdreph.week_gpst.ToString();
 	else
 		form->lblTrackWeek->Text = gcnew String("Week: no TOW");
 
@@ -93,7 +100,9 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 		sat_info_p->trk.forceReset = true;
 		form->NeedReset = false;
 	}
-	
+
+	form->lblLastSubFrameID->Text = gcnew String("Last SF ID: ") + sat_info_p->nav.subframe_last_id.ToString();
+	form->lblSubframeCnt->Text = gcnew String("Subframe cnt: ") + sat_info_p->nav.subframe_count.ToString();
 
 	//Updating Chart ****************8
 	if (sat_info_p->trk.debug_disp_lock == 0)
@@ -123,12 +132,6 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 		max_val = (int)((max_val - 1 + 10e3) / 10e3 ) * 10e3;
 	}
 
-	if (max_val == 10000)
-	{
-		max_val = 9999;
-	}
-
-
 	form->chart1->ChartAreas[0]->AxisX->Minimum = -max_val;
 	form->chart1->ChartAreas[0]->AxisX->Maximum = max_val;
 	form->chart1->ChartAreas[0]->AxisY->Minimum = -max_val;
@@ -142,8 +145,130 @@ void SDR::fill_sat_info(int index, System::Object^ obj)
 			(double)sat_info_p->trk.debug_q[i]);
 	}
 
+	float width = 0.0f;
+	float quality = calculate_signal_quality(sat_info_p->trk.debug_i, &width);
+	width = width / 1000.0f;
+
+	form->lblSigQuality->Text = gcnew String("Quality: ") + quality.ToString("F1");
+	form->lblWidth->Text = gcnew String("Width: ") + width.ToString("F1") + gcnew String(" K");
+	
+
 	sat_info_p->trk.debug_disp_lock = 0;
 }
+
+//width - is set in this function, this is distance between tho points of "constellation"
+float calculate_signal_quality(int *i_data, float *width)
+{
+	//Positive
+	uint32_t tmp_i_data[TRACK_DEBUG_POINTS];
+	memset(tmp_i_data, 0, sizeof(tmp_i_data));
+
+	//Negative (inverted)
+	uint32_t tmp_i_data_n[TRACK_DEBUG_POINTS];
+	memset(tmp_i_data_n, 0, sizeof(tmp_i_data_n));
+
+	//Pointer to used array
+	uint32_t *tmp_i_data_p;
+
+	//Positive count
+	uint16_t pos_cnt = 0;
+	for (uint16_t i = 0; i < TRACK_DEBUG_POINTS; i++)
+	{
+		if (i_data[i] > 0)
+		{
+			tmp_i_data[i] = i_data[i];
+			pos_cnt++;
+		}
+		else
+		{
+			tmp_i_data_n[i] = abs(i_data[i]);
+		}
+	}
+
+	uint32_t start = 0;
+	
+	float result = 0.0f;
+
+	//Sort to calculate median value
+	if (pos_cnt < (TRACK_DEBUG_POINTS / 2))
+	{
+		//use negative
+		qsort(tmp_i_data_n, TRACK_DEBUG_POINTS, sizeof(uint32_t), compare_function1);
+		tmp_i_data_p = tmp_i_data_n;
+		start = pos_cnt;
+	}
+	else
+	{
+		qsort(tmp_i_data, TRACK_DEBUG_POINTS, sizeof(uint32_t), compare_function1);
+		tmp_i_data_p = tmp_i_data;
+		start = TRACK_DEBUG_POINTS - pos_cnt;
+		
+	}
+	uint32_t center_pos = (start + TRACK_DEBUG_POINTS) / 2;
+	float median_value = (float)tmp_i_data_p[center_pos];
+
+	//Fill histogram - to find FWHM
+	uint32_t start_val = tmp_i_data_p[start];
+	uint32_t stop_val = tmp_i_data_p[TRACK_DEBUG_POINTS - 1];
+	uint32_t diff = stop_val - start_val;
+	uint16_t steps = diff / QUAL_HIST_STEP;//Number of steps is histogram
+	if (steps < 1)
+		steps = 1;
+
+	uint16_t *histogram_p = (uint16_t *)malloc(sizeof(uint16_t)*steps);
+	memset(histogram_p, 0, sizeof(uint16_t)*steps);
+
+	//Fill histogram
+	for (uint16_t i = start; i < TRACK_DEBUG_POINTS; i++)
+	{
+		uint16_t pos = (tmp_i_data_p[i] - start_val) / QUAL_HIST_STEP;
+		if (pos < steps)
+			histogram_p[pos]++;
+	}
+
+	//Detect max cell of histogram
+	uint16_t max_val = 0;
+	for (uint16_t i = 0; i < steps; i++)
+	{
+		if (histogram_p[i] > max_val)
+			max_val = histogram_p[i];
+	}
+
+	uint16_t half_maximum = max_val / 2;//elements of histogram
+	uint16_t fwhm_start = 0;
+	uint16_t fwhm_stop = 0;
+	for (uint16_t i = 0; i < steps; i++)
+	{
+		if (histogram_p[i] >= half_maximum)
+		{
+			fwhm_start = i;
+			break;
+		}
+	}
+
+	for (uint16_t i = steps - 1; i > 0; i--)
+	{
+		if (histogram_p[i] >= half_maximum)
+		{
+			fwhm_stop = i;
+			break;
+		}
+	}
+
+	//One "point" scattering
+	uint32_t fwhm = (fwhm_stop - fwhm_start + 1) * QUAL_HIST_STEP;
+
+	result = median_value / (float)fwhm;
+	//result = median_value / (float)diff;
+
+	*width = median_value * 2;
+
+	free(histogram_p);
+
+	return result;
+}
+
+
 
 int SDR::get_sat_info(int index, char * info)
 {
@@ -340,21 +465,23 @@ System::Void SDR::start(System::Object^ obj)
 		}
 	}
 
-    /* channel setting */ /* BeiDou */
-    setsdrini(form->chk_C01->Checked, 1,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C02->Checked, 2,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C03->Checked, 3,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C04->Checked, 4,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C05->Checked, 5,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C06->Checked, 6,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C07->Checked, 7,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C08->Checked, 8,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C09->Checked, 9,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C10->Checked,10,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C11->Checked,11,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C12->Checked,12,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C13->Checked,13,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
-    setsdrini(form->chk_C14->Checked,14,SYS_CMP,form->rb_C_FE2->Checked,form->chk_TYPE_B1I->Checked,false,false,&sdrini);
+	/* channel setting */ /* BeiDou */
+	for each (Object^ var_obj in form->gb_bds->Controls)
+	{
+		if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+		{
+			System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+			if (chkObj->Name->Contains("chk_C") && !chkObj->Name->Contains("chk_CALL"))
+			{
+				String^ chk_name = chkObj->Name;
+				chk_name = chk_name->Remove(0, 5);
+				int prn_num = Convert::ToInt16(chk_name);
+				setsdrini(chkObj->Checked, prn_num, SYS_CMP,
+					form->rb_C_FE2->Checked, form->chk_TYPE_B1I->Checked, false, false, &sdrini);
+			}
+		}
+	}
+
 
     /* channel setting */ /* QZS */
     setsdrini(form->chk_Q01->Checked,193,SYS_QZS,form->rb_Q_FE2->Checked,form->chk_TYPE_L1CAQZS->Checked,false,false,&sdrini);

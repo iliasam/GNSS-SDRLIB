@@ -138,7 +138,8 @@ extern void startsdr(void) /* call as function */
         return;
     }
     /* initialize sdr channel struct */
-    for (i=0;i<sdrini.nch;i++) {
+    for (i=0;i<sdrini.nch;i++) 
+	{
         if (initsdrch(i+1,sdrini.sys[i],sdrini.prn[i],sdrini.ctype[i],
             sdrini.dtype[sdrini.ftype[i]-1],sdrini.ftype[i],
             sdrini.f_cf[sdrini.ftype[i]-1],sdrini.f_sf[sdrini.ftype[i]-1],
@@ -394,6 +395,7 @@ extern void *sdrthread(void *arg)
 							{
 								restart_acquisition(sdr);
 								cnt = 0;
+								sdr->trk.forceReset = false;
 							}
 						}
 						else
@@ -410,8 +412,17 @@ extern void *sdrthread(void *arg)
                     if (loopcnt%((int)(plttrk.pltms/sdr->trk.loopms))==0&&
                         sdrini.plttrk&&loopcnt>0) 
 					{
-                        plttrk.x=sdr->trk.corrx;
-                        memcpy(plttrk.y,sdr->trk.sumI, sizeof(double)*(sdr->trk.corrn*2+1));
+                        plttrk.x = sdr->trk.corrx;
+						memcpy(plttrk.y, sdr->trk.sumI, sizeof(double)*(sdr->trk.corrn * 2 + 1));//plot
+
+						double center_val = sdr->trk.sumI[0];//this must be a peak
+						if (center_val < 0)
+						{
+							//Invert all
+							for (uint8_t i = 0; i < sdr->trk.corrn * 2 + 1; i++)
+								plttrk.y[i] = -plttrk.y[i];
+						}
+
 						//draw ABS values with a scale!
                         plotthread(&plttrk); //plot tracking
                     }

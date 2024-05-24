@@ -252,6 +252,8 @@ extern "C" {
 #define PLT_SURFZ     3                /* plotting type: 3D surface data */
 #define PLT_BOX       4                /* plotting type: BOX */
 #define PLT_XY_LINES  5                /* plotting type: 2D data lines */
+#define PLT_XY_2	  6                /* plotting type: 2D data */
+
 #define PLT_WN        5                /* number of figure window column */
 #define PLT_HN        4                /* number of figure window row */
 #define PLT_W         200              /* window width (pixel) */
@@ -363,7 +365,7 @@ typedef struct {
     int sbasport;        /* SBAS/L1-SAIF TCP/IP port */
     int trkcorrn;        /* number of correlation points */
     int trkcorrd;        /* interval of correlation points (sample) */
-    int trkcorrp;        /* half of correlation points - used for real tracking*/
+    int trkcorrp;        /* half of correlation points - used for real tracking, taken from "tb_corrp", used to set trk->ne/ nl*/
     double trkdllb[2];   /* dll noise bandwidth (Hz) */
     double trkpllb[2];   /* pll noise bandwidth (Hz) */
     double trkfllb[2];   /* fll noise bandwidth (Hz) */
@@ -463,7 +465,7 @@ typedef struct {
     int flagremcarradd;  /* remained carrier phase add flag */
     int flagloopfilter;  /* loop filter update flag */
     int corrn;           /* number of correlation points. Set in GUI */
-    int *corrp;          /* correlation points (sample). Length this array is "corrn". Contains positive numbers. Static.*/
+    int *corrp;          /* correlation points (sample). Length of this array is "corrn". Contains positive numbers. Static.*/
     double *corrx;       /* correlation points (for plotting) - array. Static */
     int ne,nl;           /* early/late correlation point. Static */
     sdrtrkprm_t prm1;    /* tracking parameter struct */
@@ -557,6 +559,9 @@ typedef struct {
     sdreph_t sdreph;     /* sdr ephemeris struct */
     sdrlex_t lex;        /* QZSS LEX message struct */
     sdrsbas_t sbas;      /* SBAS message struct */
+
+	int subframe_last_id; //debug
+	int subframe_count; //debug
 } sdrnav_t;
 
 /* sdr channel struct */

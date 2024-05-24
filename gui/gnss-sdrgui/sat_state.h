@@ -43,6 +43,10 @@ namespace gnsssdrgui
 	public:
 
 	public: bool NeedReset = false;
+	public: System::Windows::Forms::Label^  lblLastSubFrameID;
+	public: System::Windows::Forms::Label^  lblSubframeCnt;
+	public: System::Windows::Forms::Label^  lblSigQuality;
+	public: System::Windows::Forms::Label^  lblWidth;
 
 	public:
 	protected:
@@ -64,6 +68,8 @@ namespace gnsssdrgui
 			this->lblAcqFreq = (gcnew System::Windows::Forms::Label());
 			this->lblAcqPeak = (gcnew System::Windows::Forms::Label());
 			this->groupTracking = (gcnew System::Windows::Forms::GroupBox());
+			this->lblSubframeCnt = (gcnew System::Windows::Forms::Label());
+			this->lblLastSubFrameID = (gcnew System::Windows::Forms::Label());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->lblTrackEPH = (gcnew System::Windows::Forms::Label());
 			this->lblPreample = (gcnew System::Windows::Forms::Label());
@@ -72,6 +78,8 @@ namespace gnsssdrgui
 			this->lblTrackSNR = (gcnew System::Windows::Forms::Label());
 			this->lblTrackFreq = (gcnew System::Windows::Forms::Label());
 			this->btnReset = (gcnew System::Windows::Forms::Button());
+			this->lblSigQuality = (gcnew System::Windows::Forms::Label());
+			this->lblWidth = (gcnew System::Windows::Forms::Label());
 			this->groupAcq->SuspendLayout();
 			this->groupTracking->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
@@ -119,6 +127,10 @@ namespace gnsssdrgui
 			// 
 			// groupTracking
 			// 
+			this->groupTracking->Controls->Add(this->lblWidth);
+			this->groupTracking->Controls->Add(this->lblSigQuality);
+			this->groupTracking->Controls->Add(this->lblSubframeCnt);
+			this->groupTracking->Controls->Add(this->lblLastSubFrameID);
 			this->groupTracking->Controls->Add(this->chart1);
 			this->groupTracking->Controls->Add(this->lblTrackEPH);
 			this->groupTracking->Controls->Add(this->lblPreample);
@@ -133,6 +145,24 @@ namespace gnsssdrgui
 			this->groupTracking->TabIndex = 2;
 			this->groupTracking->TabStop = false;
 			this->groupTracking->Text = L"Tracking";
+			// 
+			// lblSubframeCnt
+			// 
+			this->lblSubframeCnt->AutoSize = true;
+			this->lblSubframeCnt->Location = System::Drawing::Point(151, 265);
+			this->lblSubframeCnt->Name = L"lblSubframeCnt";
+			this->lblSubframeCnt->Size = System::Drawing::Size(93, 13);
+			this->lblSubframeCnt->TabIndex = 10;
+			this->lblSubframeCnt->Text = L"Subframe cnt: n/a";
+			// 
+			// lblLastSubFrameID
+			// 
+			this->lblLastSubFrameID->AutoSize = true;
+			this->lblLastSubFrameID->Location = System::Drawing::Point(151, 245);
+			this->lblLastSubFrameID->Name = L"lblLastSubFrameID";
+			this->lblLastSubFrameID->Size = System::Drawing::Size(80, 13);
+			this->lblLastSubFrameID->TabIndex = 9;
+			this->lblLastSubFrameID->Text = L"Last SF ID: n/a";
 			// 
 			// chart1
 			// 
@@ -151,7 +181,7 @@ namespace gnsssdrgui
 			// lblTrackEPH
 			// 
 			this->lblTrackEPH->AutoSize = true;
-			this->lblTrackEPH->Location = System::Drawing::Point(10, 347);
+			this->lblTrackEPH->Location = System::Drawing::Point(10, 345);
 			this->lblTrackEPH->Name = L"lblTrackEPH";
 			this->lblTrackEPH->Size = System::Drawing::Size(70, 13);
 			this->lblTrackEPH->TabIndex = 7;
@@ -160,7 +190,7 @@ namespace gnsssdrgui
 			// lblPreample
 			// 
 			this->lblPreample->AutoSize = true;
-			this->lblPreample->Location = System::Drawing::Point(10, 326);
+			this->lblPreample->Location = System::Drawing::Point(10, 325);
 			this->lblPreample->Name = L"lblPreample";
 			this->lblPreample->Size = System::Drawing::Size(74, 13);
 			this->lblPreample->TabIndex = 6;
@@ -169,7 +199,7 @@ namespace gnsssdrgui
 			// lblTrackWeek
 			// 
 			this->lblTrackWeek->AutoSize = true;
-			this->lblTrackWeek->Location = System::Drawing::Point(10, 306);
+			this->lblTrackWeek->Location = System::Drawing::Point(10, 305);
 			this->lblTrackWeek->Name = L"lblTrackWeek";
 			this->lblTrackWeek->Size = System::Drawing::Size(59, 13);
 			this->lblTrackWeek->TabIndex = 5;
@@ -178,7 +208,7 @@ namespace gnsssdrgui
 			// lblTrackISumm
 			// 
 			this->lblTrackISumm->AutoSize = true;
-			this->lblTrackISumm->Location = System::Drawing::Point(10, 284);
+			this->lblTrackISumm->Location = System::Drawing::Point(10, 285);
 			this->lblTrackISumm->Name = L"lblTrackISumm";
 			this->lblTrackISumm->Size = System::Drawing::Size(63, 13);
 			this->lblTrackISumm->TabIndex = 4;
@@ -211,6 +241,24 @@ namespace gnsssdrgui
 			this->btnReset->Text = L"Reset channel";
 			this->btnReset->UseVisualStyleBackColor = true;
 			this->btnReset->Click += gcnew System::EventHandler(this, &sat_state_class::btnReset_Click);
+			// 
+			// lblSigQuality
+			// 
+			this->lblSigQuality->AutoSize = true;
+			this->lblSigQuality->Location = System::Drawing::Point(151, 285);
+			this->lblSigQuality->Name = L"lblSigQuality";
+			this->lblSigQuality->Size = System::Drawing::Size(62, 13);
+			this->lblSigQuality->TabIndex = 11;
+			this->lblSigQuality->Text = L"Quality: n/a";
+			// 
+			// lblWidth
+			// 
+			this->lblWidth->AutoSize = true;
+			this->lblWidth->Location = System::Drawing::Point(151, 305);
+			this->lblWidth->Name = L"lblWidth";
+			this->lblWidth->Size = System::Drawing::Size(58, 13);
+			this->lblWidth->TabIndex = 12;
+			this->lblWidth->Text = L"Width: n/a";
 			// 
 			// sat_state_class
 			// 
