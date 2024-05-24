@@ -14,12 +14,16 @@ HP: <http://www.taroz.net>
 
 This fork has such changes:  
  * Ported to VS 2017
+ * Added HackRF support
  * Removed STEREO receiver support
  * Added "Simple 8B" receiver support (FX2LP based)
- * Added satellites state page (with acquisition, tracking and nav information). Freq. error is displayed for SBAS satellites.
- * Improved Galileo support (added some new check boxes, changed nav data extraction)
+ * Added satellites state page (with acquisition, tracking and nav information)
+ * Added single satellite state window with IQ-constellation plot. Double click at the needed sat. in list to open this window
+ * Improved Galileo support (added more satellites, changed nav data extraction)
+ * Added more Beidou satellites
  * Improved displaying spectrum (now it is drawn with lines, not circles)
- * Acquisition threshold is set to 1.8 (comparing to 3.0 in original)
+ * Improved displaying tracking information (not simple ABS value is draw)
+ * Acquisition threshold can be set by user
  * Acquisition process is started if tracking is lost
  * Added displaying number of tracking processing cycles in one second.
 
