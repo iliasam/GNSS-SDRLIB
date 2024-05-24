@@ -14,7 +14,7 @@ HP: <http://www.taroz.net>
 
 This fork has such changes:  
  * Ported to VS 2017
- * Added HackRF support
+ * **Added HackRF support**
  * Removed STEREO receiver support
  * Added "Simple 8B" receiver support (FX2LP based)
  * Added satellites state page (with acquisition, tracking and nav information)
@@ -35,4 +35,7 @@ GUI interface after start:
   
 Spectrum:  
 <img src="https://github.com/iliasam/GNSS-SDRLIB/blob/master/Images/p2.png">  
+  
+GUI interface befor start:  
+<img src="https://github.com/iliasam/GNSS-SDRLIB/blob/master/Images/p3.png">  
 
