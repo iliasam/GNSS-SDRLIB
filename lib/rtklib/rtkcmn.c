@@ -1508,7 +1508,7 @@ extern double time2doy(gtime_t t)
 *-----------------------------------------------------------------------------*/
 extern int adjgpsweek(int week)
 {
-    int w;
+    int w;//put current (PC) week here
     (void)time2gpst(utc2gpst(timeget()),&w);
     if (w<1560) w=1560; /* use 2009/12/1 if time is earlier than 2009/12/1 */
     return week+(w-week+512)/1024*1024;

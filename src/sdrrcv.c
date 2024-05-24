@@ -161,6 +161,33 @@ extern int rcvinit(sdrini_t *ini)
         break;
 #endif
 
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		if (hackrf_sdr_init() < 0)
+			return -1; /* hackrf initialization */
+
+		/* frontend buffer size */
+		sdrstat.fendbuffsize = HACKRF_DATABUFF_SIZE / IQ_COEF; /* frontend buff size */
+		hackrf_sdr_set_rx_buf(HACKRF_DATABUFF_SIZE);
+		sdrstat.buffsize = HACKRF_DATABUFF_SIZE * MEMBUFFLEN; /* total */
+
+		/* memory allocation */
+		sdrstat.buff = (uint8_t*)malloc(sdrstat.buffsize);
+		if (NULL == sdrstat.buff) 
+		{
+			SDRPRINTF("error: failed to allocate memory for the buffer\n");
+			return -1;
+		}
+
+		if (hackrf_sdr_start() < 0)
+		{
+			SDRPRINTF("error: Can't start hackrf RX\n");
+			return -1;
+		}
+		break;
+#endif
+
 	case FEND_SIMPLE8B:
 		if (simple_rf_init() < 0) 
 			return -1;
@@ -247,6 +274,13 @@ extern int rcvquit(sdrini_t *ini)
         rtlsdr_quit();
         break;
 #endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		hackrf_sdr_quit();
+		break;
+#endif
 	case FEND_SIMPLE8B:
 		simple_rf_quit();
 		break;
@@ -266,8 +300,16 @@ extern int rcvquit(sdrini_t *ini)
         return -1;
     }
     /* free memory */
-    if (NULL!=sdrstat.buff)    free(sdrstat.buff);    sdrstat.buff=NULL;
-    if (NULL!=sdrstat.buff2)   free(sdrstat.buff2);   sdrstat.buff2=NULL;
+	if (sdrstat.buff != NULL)
+	{
+		free(sdrstat.buff);
+		sdrstat.buff = NULL;
+	}
+	if (sdrstat.buff2 != NULL)
+	{
+		free(sdrstat.buff2);
+		sdrstat.buff2 = NULL;
+	}
     return 0;
 }
 
@@ -332,6 +374,18 @@ extern int rcvgrabdata(sdrini_t *ini)
         sleepms(5);
         break;/* File */
 #endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		/*
+		if (hackrf_sdr_start() < 0) {
+			SDRPRINTF("error: hackrf...\n");
+			return -1;
+		}
+		*/
+		break;
+#endif
     case FEND_FILE:
         file_pushtomembuf(); /* copy to membuffer */
         sleepms(5);
@@ -344,17 +398,17 @@ extern int rcvgrabdata(sdrini_t *ini)
 /* grab current buffer ---------------------------------------------------------
 * get current data buffer from memory buffer
 * args   : sdrini_t *ini    I   sdr initialization struct
-*          uint64_t buffloc I   buffer location
-*          int    n         I   number of samples of data data to get
+*          uint64_t buffloc I   buffer location, samples
+*          int    n         I   number of SAMPLES of data data to get
 *          int    ftype     I   front end type (FTYPE1 or FTYPE2)
 *          int    dtype     I   data type (DTYPEI or DTYPEIQ)
 *          char   *expbuff  O   extracted data buffer
 * return : int                  status 0:okay -1:failure
 *-----------------------------------------------------------------------------*/
-extern int rcvgetbuff(sdrini_t *ini, uint64_t buffloc, int n, int ftype,
+extern int rcvgetbuff(sdrini_t *ini, uint64_t buffloc, int n_samples, int ftype,
                       int dtype, char *expbuf)
 {
-	if (n < 0)
+	if (n_samples < 0)
 		return -1;
 
     switch (ini->fend) 
@@ -362,44 +416,51 @@ extern int rcvgetbuff(sdrini_t *ini, uint64_t buffloc, int n, int ftype,
 #ifdef GN3S
     /* SiGe GN3S v2 */
     case FEND_GN3SV2:
-        gn3s_getbuff_v2(buffloc,n,dtype,expbuf);
+        gn3s_getbuff_v2(buffloc, n_samples,dtype,expbuf);
         break;
     /* SiGe GN3S v3 */
     case FEND_GN3SV3:
-        gn3s_getbuff_v3(buffloc,n,dtype,expbuf);
+        gn3s_getbuff_v3(buffloc, n_samples,dtype,expbuf);
         break;
     /* GN3Sv2/v3 Binary File */
     case FEND_FGN3SV2: 
     case FEND_FGN3SV3: 
-        fgn3s_getbuff(buffloc,n,dtype,expbuf);
+        fgn3s_getbuff(buffloc, n_samples,dtype,expbuf);
         break;
 #endif
 	case FEND_SIMPLE8B:
-		simple_rf_getbuf(buffloc, n, dtype, expbuf);
+		simple_rf_getbuf(buffloc, n_samples, dtype, expbuf);
 		break;
 #ifdef BLADERF
     /* Nuand BladeRF */
     case FEND_BLADERF:
-        bladerf_getbuff(buffloc,n,expbuf);
+        bladerf_getbuff(buffloc, n_samples,expbuf);
         break;    
     /* BladeRF Binary File */
     case FEND_FBLADERF: 
-        bladerf_getbuff(buffloc,n,expbuf);
+        bladerf_getbuff(buffloc, n_samples,expbuf);
         break;
 #endif
 #ifdef RTLSDR
     /* RTL-SDR */
     case FEND_RTLSDR:
-        rtlsdr_getbuff(buffloc,n,expbuf);
+        rtlsdr_getbuff(buffloc, n_samples,expbuf);
         break;    
     /* RTL-SDR Binary File */
     case FEND_FRTLSDR: 
-        rtlsdr_getbuff(buffloc,n,expbuf);
+        rtlsdr_getbuff(buffloc, n_samples,expbuf);
         break;
+#endif
+
+#ifdef HACKRF
+		/* HACKRF */
+	case FEND_HACKRF:
+		hackrf_sdr_getbuff(buffloc, n_samples, expbuf);
+		break;
 #endif
     /* File */
     case FEND_FILE:
-        file_getbuff(buffloc,n,ftype,dtype,expbuf);
+        file_getbuff(buffloc, n_samples, ftype, dtype, expbuf);
         break;
     default:
         return -1;

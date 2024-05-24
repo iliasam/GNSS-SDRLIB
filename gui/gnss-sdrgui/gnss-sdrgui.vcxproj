@@ -109,7 +109,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GUI;GN3S;BLADERF;RTLSDR;SSE2_ENABLE;FFTMTX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GUI;GN3S;BLADERF;RTLSDR;HACKRF;SSE2_ENABLE;FFTMTX;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsManaged>true</CompileAsManaged>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -189,6 +189,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +204,8 @@
     <ClCompile Include="..\..\src\rcv\GN3S\fx2.cpp" />
     <ClCompile Include="..\..\src\rcv\gn3s\gn3s.cpp" />
     <ClCompile Include="..\..\src\rcv\gn3s\simple_rf.cpp" />
+    <ClCompile Include="..\..\src\rcv\hackrf\hackrf.c" />
+    <ClCompile Include="..\..\src\rcv\hackrf\hackrf_gnss.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\convenience.c" />
     <ClCompile Include="..\..\src\rcv\rtlsdr\rtlsdr.c" />
     <ClCompile Include="..\..\src\sdracq.c" />
@@ -234,6 +237,8 @@
     <ClInclude Include="..\..\src\rcv\GN3S\fx2.h" />
     <ClInclude Include="..\..\src\rcv\gn3s\gn3s.h" />
     <ClInclude Include="..\..\src\rcv\gn3s\simple_rf.h" />
+    <ClInclude Include="..\..\src\rcv\hackrf\hackrf.h" />
+    <ClInclude Include="..\..\src\rcv\hackrf\hackrf_gnss.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr.h" />
     <ClInclude Include="..\..\src\rcv\rtlsdr\rtl-sdr_export.h" />
     <ClInclude Include="..\..\src\sdr.h" />
@@ -247,6 +252,9 @@
     <ClInclude Include="radardlg.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="sat_state.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="trkprmdlg.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -258,12 +266,19 @@
     </EmbeddedResource>
     <EmbeddedResource Include="monitordlg.resx">
       <DependentUpon>monitordlg.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="radardlg.resx">
       <DependentUpon>radardlg.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sat_state.resx">
+      <DependentUpon>sat_state.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="trkprmdlg.resx">
       <DependentUpon>trkprmdlg.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

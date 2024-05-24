@@ -1,13 +1,22 @@
 using namespace System;
+
+extern "C" {
+#include "sdr.h"
+}
+
+
+
 public ref class SDR
 {
-public: int get_sat_count(System::Void);
-public: int get_sat_info(int index, char *info);
-public: void start(Object^ obj);
-public: void stop(Object^ obj);
-public: void startspectrum(Object^ obj);
-public: void stopspectrum(Object^ obj);
-public: void settrkprm(Object^ obj1,Object^ obj2);
+	public: int get_sat_info(int index, char *info);
+	public: void fill_sat_info(int index, System::Object^ obj);
+	public: void start(Object^ obj);
+	public: void stop(Object^ obj);
+	public: void startspectrum(Object^ obj);
+	public: void stopspectrum(Object^ obj);
+	public: void settrkprm(Object^ obj1, Object^ obj2);
+	public: int get_sat_count(System::Void);
+
 };
 
 public ref class CONFIG
@@ -25,6 +34,7 @@ public:
     int cb_cf1;
     int cb_cf2;
     String^ tb_clk;
+	float acq_threshold;
 
     String^ tb_corrn;
     String^ tb_corrd;
@@ -96,29 +106,78 @@ public:
     bool rb_E_FE1;
     bool rb_E_FE2;
     bool chk_TYPE_E1B;
-    bool chk_E11;
-    bool chk_E12;
-    bool chk_E19;
-    bool chk_E20;
+	bool chk_save_E01;
+	bool chk_save_E02;
+	bool chk_save_E03;
+	bool chk_save_E04;
+	bool chk_save_E05;
+	bool chk_save_E06;
+	bool chk_save_E07;
+	bool chk_save_E08;
+	bool chk_save_E09;
+	bool chk_save_E10;
+	bool chk_save_E11;
+	bool chk_save_E12;
+	bool chk_save_E13;
+	bool chk_save_E14;
+	bool chk_save_E15;
+	bool chk_save_E16;
+	bool chk_save_E17;
+	bool chk_save_E18;
+	bool chk_save_E19;
+	bool chk_save_E20;
+	bool chk_save_E21;
+	bool chk_save_E22;
+	bool chk_save_E23;
+	bool chk_save_E24;
+	bool chk_save_E25;
+	bool chk_save_E26;
+	bool chk_save_E27;
+	bool chk_save_E28;
+	bool chk_save_E29;
+	bool chk_save_E30;
+	bool chk_save_E31;
+	bool chk_save_E32;
+	bool chk_save_E33;
+	bool chk_save_E34;
+	bool chk_save_E35;
+	bool chk_save_E36;
+
 
     /* BeiDou */
     bool rb_C_FE1;
     bool rb_C_FE2;
     bool chk_TYPE_B1I;
-    bool chk_C01;
-    bool chk_C02;
-    bool chk_C03;
-    bool chk_C04;
-    bool chk_C05;
-    bool chk_C06;
-    bool chk_C07;
-    bool chk_C08;
-    bool chk_C09;
-    bool chk_C10;
-    bool chk_C11;
-    bool chk_C12;
-    bool chk_C13;
-    bool chk_C14;
+	bool chk_save_C01;
+	bool chk_save_C02;
+	bool chk_save_C03;
+	bool chk_save_C04;
+	bool chk_save_C05;
+	bool chk_save_C06;
+	bool chk_save_C07;
+	bool chk_save_C08;
+	bool chk_save_C09;
+	bool chk_save_C10;
+	bool chk_save_C11;
+	bool chk_save_C12;
+	bool chk_save_C13;
+	bool chk_save_C14;
+	bool chk_save_C15;
+	bool chk_save_C16;
+	bool chk_save_C17;
+	bool chk_save_C18;
+	bool chk_save_C19;
+	bool chk_save_C20;
+	bool chk_save_C21;
+	bool chk_save_C22;
+	bool chk_save_C23;
+	bool chk_save_C24;
+	bool chk_save_C25;
+	bool chk_save_C26;
+	bool chk_save_C27;
+	bool chk_save_C28;
+	bool chk_save_C29;
+	bool chk_save_C30;
 
     /* QZSS */
     bool rb_Q_FE1;

@@ -1107,11 +1107,12 @@ extern void correlator(const char *data, int dtype, double ti, int n,
     /* resampling original PRN code */
     *remc = rescode(codein, coden, coff, smax, ti*crate, n, code_e);
 
+
     /* multiply code and integrate */
 	//code_ptr = code_e + sample[ns-1];
 	//we send -- code_e + sample[ns-1] - sample[0];
 	//Calculate I[0], I[1], I[2] and Q[0], Q[1], Q[2] - zero (at code_ptr) and left/right
-    dot_23(dataI, dataQ, code_ptr, code_ptr - sample[0], code_ptr + sample[0], n, II, QQ);
+    dot_23(dataI, dataQ, code_ptr, code_ptr - sample[0], code_ptr + sample[0], n, II, QQ); //Prompt
 
     for (i=1; i < ns; i++) 
 	{

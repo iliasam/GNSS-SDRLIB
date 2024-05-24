@@ -32,6 +32,9 @@ sdrch_t sdrch[MAXSAT]={{0}};
 sdrspec_t sdrspec={0};
 sdrout_t sdrout={0};
 
+
+debug_print_callback_t debug_print_func = NULL;
+
 /* initsdrgui ------------------------------------------------------------------
 * initialize sdr gui application  
 * args   : maindlg^ form       I   main dialog class
@@ -96,6 +99,13 @@ int main(int argc, char **argv)
     return 0;
 }
 #endif
+
+extern void print_debug_text(char* text)
+{
+	if (debug_print_func != NULL)
+		debug_print_func(text);
+}
+
 /* sdr start -------------------------------------------------------------------
 * start sdr function  
 * args   : void   *arg      I   not used
@@ -128,7 +138,8 @@ extern void startsdr(void) /* call as function */
         return;
     }
     /* initialize sdr channel struct */
-    for (i=0;i<sdrini.nch;i++) {
+    for (i=0;i<sdrini.nch;i++) 
+	{
         if (initsdrch(i+1,sdrini.sys[i],sdrini.prn[i],sdrini.ctype[i],
             sdrini.dtype[sdrini.ftype[i]-1],sdrini.ftype[i],
             sdrini.f_cf[sdrini.ftype[i]-1],sdrini.f_sf[sdrini.ftype[i]-1],
@@ -275,7 +286,10 @@ extern void *sdrthread(void *arg)
     sdrplt_t pltacq={0},plttrk={0};
 	/* Time is ms? */ 
 	uint64_t cnt = 0;
-    uint64_t buffloc=0,bufflocnow=0,loopcnt=0;
+
+	// Value in samples
+	uint64_t buffloc = 0;
+	uint64_t bufflocnow = 0, loopcnt = 0;
     double *acqpower=NULL;
     FILE* fp=NULL;
     char fname[100];
@@ -309,7 +323,7 @@ extern void *sdrthread(void *arg)
             acqpower=(double*)calloc(sizeof(double),sdr->nsamp*sdr->acq.nfreq);
 
             /* fft correlation. One of results is moving buffer position (buffloc)*/
-            buffloc=sdraccuisition(sdr,acqpower);
+            buffloc=sdraccuisition(sdr,acqpower, sdrini.acq_threshold);
 
             /* plot aquisition result */
             if (sdr->flagacq&&sdrini.pltacq) 
@@ -327,11 +341,28 @@ extern void *sdrthread(void *arg)
                 /* correlation output accumulation */
                 cumsumcorr(&sdr->trk,sdr->nav.ocode[sdr->nav.ocodei]);
 
+				
+				if (sdr->trk.debug_disp_lock == 0)
+				{
+					sdr->trk.debug_i[sdr->trk.debug_disp_cnt] = (int)sdr->trk.II[0];
+					sdr->trk.debug_q[sdr->trk.debug_disp_cnt] = (int)sdr->trk.QQ[0];
+					sdr->trk.debug_disp_cnt++;
+					if (sdr->trk.debug_disp_cnt >= TRACK_DEBUG_POINTS)
+					{
+						sdr->trk.debug_disp_cnt = 0;
+						sdr->trk.debug_disp_lock = 1;
+					}
+				}
+
                 sdr->trk.flagloopfilter=0;
                 if (!sdr->nav.flagsync)
 				{
 					//Using Parameters1
                     pll(sdr,&sdr->trk.prm1,sdr->ctime); /* PLL */
+
+					//sdr->trk.carrfreq = 4093236;
+					//sdr->trk.carrfreq = 4092000 + 1230;
+
                     dll(sdr,&sdr->trk.prm1,sdr->ctime); /* DLL */
                     sdr->trk.flagloopfilter=1;
                 }
@@ -350,7 +381,7 @@ extern void *sdrthread(void *arg)
 						setobsdata(sdr, buffloc, cnt, &sdr->trk, 1);
 						//Detect tracking loss
 						double summ_value = sdr->trk.Isum_fin / 1000.0;
-						if (summ_value < TRACK_LOST_SUMM)
+						if ((summ_value < TRACK_LOST_SUMM) || sdr->trk.forceReset)
 						{
 							sdr->trk.track_loss_cnt++;
 							if ((sdr->trk.track_loss_cnt > 
@@ -358,6 +389,13 @@ extern void *sdrthread(void *arg)
 							{
 								restart_acquisition(sdr);
 								cnt = 0;
+							}
+
+							if (sdr->trk.forceReset)
+							{
+								restart_acquisition(sdr);
+								cnt = 0;
+								sdr->trk.forceReset = false;
 							}
 						}
 						else
@@ -374,8 +412,17 @@ extern void *sdrthread(void *arg)
                     if (loopcnt%((int)(plttrk.pltms/sdr->trk.loopms))==0&&
                         sdrini.plttrk&&loopcnt>0) 
 					{
-                        plttrk.x=sdr->trk.corrx;
-                        memcpy(plttrk.y,sdr->trk.sumI, sizeof(double)*(sdr->trk.corrn*2+1));
+                        plttrk.x = sdr->trk.corrx;
+						memcpy(plttrk.y, sdr->trk.sumI, sizeof(double)*(sdr->trk.corrn * 2 + 1));//plot
+
+						double center_val = sdr->trk.sumI[0];//this must be a peak
+						if (center_val < 0)
+						{
+							//Invert all
+							for (uint8_t i = 0; i < sdr->trk.corrn * 2 + 1; i++)
+								plttrk.y[i] = -plttrk.y[i];
+						}
+
 						//draw ABS values with a scale!
                         plotthread(&plttrk); //plot tracking
                     }

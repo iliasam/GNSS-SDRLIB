@@ -45,8 +45,10 @@
 #pragma comment(lib,"fec/libfec.a")
 #pragma comment(lib,"fft/libfftw3f-3.lib")
 #pragma comment(lib,"usb/libusb.lib")
+#pragma comment(lib,"usb/libusb-1.0.lib")
 #pragma comment(lib,"bladerf/bladeRF.lib")
 #pragma comment(lib,"rtlsdr/rtlsdr.lib")
+#pragma comment(lib,"pthread/pthreadVC2.lib")
 
 #include "fec/fec.h"
 #include "fft/fftw3.h"
@@ -56,11 +58,20 @@
 #include "gn3s/simple_rf.h"
 #include "bladerf/libbladeRF.h"
 #include "rtlsdr/rtl-sdr.h"
+#ifdef HACKRF
+	#include "hackrf/hackrf_gnss.h"
+#endif
 
 #if defined(GUI)
 #include "../gui/gnss-sdrgui/maindlg.h"
 using namespace gnsssdrgui;
 #endif
+
+//do { \
+//	char str[1024]; \
+//	sprintf(str,__VA_ARGS__);  \
+//	print_debug_text(str);  \
+//} while (0)
 
 /* printf function */
 #if defined(GUI)
@@ -153,7 +164,7 @@ extern "C" {
 #define LOOP_SBAS     2                /* loop interval */
 #define LOOP_LEX      4                /* loop interval */
 		
-#define TRACK_LOST_SUMM	25.0			/* Threshold of I-summ, whele treking loss is detected*/
+#define TRACK_LOST_SUMM	25.0			/* Threshold of I-summ, where traking loss is detected*/
 #define TRACK_RESTORE_TIME_MS	(10000)
 
 /* navigation parameter */
@@ -241,6 +252,8 @@ extern "C" {
 #define PLT_SURFZ     3                /* plotting type: 3D surface data */
 #define PLT_BOX       4                /* plotting type: BOX */
 #define PLT_XY_LINES  5                /* plotting type: 2D data lines */
+#define PLT_XY_2	  6                /* plotting type: 2D data */
+
 #define PLT_WN        5                /* number of figure window column */
 #define PLT_HN        4                /* number of figure window row */
 #define PLT_W         200              /* window width (pixel) */
@@ -278,6 +291,8 @@ extern "C" {
 
 //ephemeris sens deriod in s
 #define EPH_SEND_PERIOD_S	40
+
+#define TRACK_DEBUG_POINTS	150
 
 /* thread functions */
 #ifdef WIN32
@@ -350,13 +365,14 @@ typedef struct {
     int sbasport;        /* SBAS/L1-SAIF TCP/IP port */
     int trkcorrn;        /* number of correlation points */
     int trkcorrd;        /* interval of correlation points (sample) */
-    int trkcorrp;        /* half of correlation points - used for real tracking*/
+    int trkcorrp;        /* half of correlation points - used for real tracking, taken from "tb_corrp", used to set trk->ne/ nl*/
     double trkdllb[2];   /* dll noise bandwidth (Hz) */
     double trkpllb[2];   /* pll noise bandwidth (Hz) */
     double trkfllb[2];   /* fll noise bandwidth (Hz) */
     int rtlsdrppmerr;    /* clock collection for RTL-SDR */
 	int use_restore_acq; /* Restore acqusition */
 	int dispay_track_cycles; /* Display tracking cycles at Monitor page */
+	double acq_threshold; //Acquisition threshold
 } sdrini_t;
 
 /* sdr current state struct */
@@ -364,7 +380,7 @@ typedef struct {
     int stopflag;        /* stop flag */
     int specflag;        /* spectrum flag */
     int buffsize;        /* data buffer size */
-    int fendbuffsize;    /* front end data buffer size */
+    int fendbuffsize;    /* front end data buffer size, in samples */
     unsigned char *buff; /* IF data buffer, raw data from the frontend get here */
     unsigned char *buff2;/* IF data buffer (for file input) */
     uint64_t buffcnt;    /* current buffer location, incremented when one "packet" is received from radio or read from file */
@@ -449,13 +465,20 @@ typedef struct {
     int flagremcarradd;  /* remained carrier phase add flag */
     int flagloopfilter;  /* loop filter update flag */
     int corrn;           /* number of correlation points. Set in GUI */
-    int *corrp;          /* correlation points (sample). Length this array is "corrn". Contains positive numbers. Static.*/
+    int *corrp;          /* correlation points (sample). Length of this array is "corrn". Contains positive numbers. Static.*/
     double *corrx;       /* correlation points (for plotting) - array. Static */
     int ne,nl;           /* early/late correlation point. Static */
     sdrtrkprm_t prm1;    /* tracking parameter struct */
     sdrtrkprm_t prm2;    /* tracking parameter struct */
 	int track_loss_cnt;  
 	uint64_t track_cnt;  /* Counter of tracked GNSS codes*/
+
+	int debug_i[TRACK_DEBUG_POINTS]; //Used for displaying tracking
+	int debug_q[TRACK_DEBUG_POINTS]; //Used for displaying tracking
+	uint16_t debug_disp_cnt;
+	uint8_t debug_disp_lock;//Clead after data is displayed
+
+	bool forceReset; //Manual force reset
 } sdrtrk_t;
 
 /* sdr ephemeris struct */
@@ -518,9 +541,9 @@ typedef struct {
     int update;          /* decode interval (ms) */
     int *bitsync;        /* frame bits synchronization count */
     int synci;           /* frame bits synchronization index */
-    uint64_t firstsf;    /* first subframe location (sample) */
-    uint64_t firstsfcnt; /* first subframe count */
-    double firstsftow;   /* tow of first subframe */
+    uint64_t firstsf;    /* first subframe location (sample). This value set once only! */
+    uint64_t firstsfcnt; /* first subframe count. This value set once only! */
+    double firstsftow;   /* tow of first subframe. This value set once only!*/
     int polarity;        /* bit polarity */
     int flagpol;         /* bit polarity flag (only used in L1-SAIF) */
     void *fec;           /* FEC (fec.h)  */
@@ -536,6 +559,9 @@ typedef struct {
     sdreph_t sdreph;     /* sdr ephemeris struct */
     sdrlex_t lex;        /* QZSS LEX message struct */
     sdrsbas_t sbas;      /* SBAS message struct */
+
+	int subframe_last_id; //debug
+	int subframe_count; //debug
 } sdrnav_t;
 
 /* sdr channel struct */
@@ -568,6 +594,9 @@ typedef struct {
     sdrnav_t nav;        /* navigation struct */
     int flagacq;         /* acquisition flag */
     int flagtrk;         /* tracking flag */
+
+	double debugP;		/* Calculated pseudorange, (m) debug only */
+	double debugT;		/* debug only */
 } sdrch_t;
 
 /* sdr plotting struct */
@@ -628,6 +657,8 @@ typedef struct {
     sdrplt_t pspec;      /* plot struct for spectrum analysis */
 } sdrspec_t;
 
+typedef void(*debug_print_callback_t)(char* text);
+
 /* global variables ----------------------------------------------------------*/
 extern thread_t hmainthread;  /* main thread handle */
 extern thread_t hsyncthread;  /* synchronization thread handle */
@@ -669,9 +700,12 @@ extern void syncthread(void * arg);
 extern void *syncthread(void * arg);
 #endif
 
+
+extern void print_debug_text(char* text);
+
 /* sdracq.c ------------------------------------------------------------------*/
-extern uint64_t sdraccuisition(sdrch_t *sdr, double *power);
-extern int checkacquisition(double *P, sdrch_t *sdr);
+extern uint64_t sdraccuisition(sdrch_t *sdr, double *power, float threshold);
+extern int checkacquisition(double *P, sdrch_t *sdr, float threshold);
 
 
 /* sdrtrk.c ------------------------------------------------------------------*/

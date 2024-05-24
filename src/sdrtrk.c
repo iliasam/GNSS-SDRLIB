@@ -8,7 +8,7 @@
 /* sdr tracking function -------------------------------------------------------
 * sdr tracking function called from sdr channel thread
 * args   : sdrch_t *sdr      I/O sdr channel struct
-*          uint64_t buffloc  I   buffer location
+*          uint64_t buffloc  I   buffer location, samples
 *          uint64_t cnt      I   counter of sdr channel thread
 * return : uint64_t              current buffer location
 *-----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ extern uint64_t sdrtracking(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
 			SDRPRINTF("Tracking: Currsample < 0\n");
 		}
 		//Copy sdr->currnsamp samples of data to the "data" buffer
-        rcvgetbuff(&sdrini, buffloc,sdr->currnsamp,sdr->ftype,sdr->dtype,data);
+        rcvgetbuff(&sdrini, buffloc,sdr->currnsamp, sdr->ftype, sdr->dtype, data);
 
 		//Copy II/QQ to oldI/oldQ before calculating new  II/QQ
         memcpy(sdr->trk.oldI,sdr->trk.II,1+2*sdr->trk.corrn*sizeof(double));
@@ -148,8 +148,11 @@ extern void pll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
 extern void dll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
 {
     double codeErr;
-    double IE=sdr->trk.sumI[sdr->trk.ne],IL=sdr->trk.sumI[sdr->trk.nl];
-    double QE=sdr->trk.sumQ[sdr->trk.ne],QL=sdr->trk.sumQ[sdr->trk.nl];
+	double IE = sdr->trk.sumI[sdr->trk.ne]; //early
+	double IL = sdr->trk.sumI[sdr->trk.nl];
+
+	double QE = sdr->trk.sumQ[sdr->trk.ne];//late
+	double QL = sdr->trk.sumQ[sdr->trk.nl];
 
     codeErr=(sqrt(IE*IE+QE*QE)-
         sqrt(IL*IL+QL*QL))/(sqrt(IE*IE+QE*QE)+sqrt(IL*IL+QL*QL));
@@ -158,7 +161,7 @@ extern void dll(sdrch_t *sdr, sdrtrkprm_t *prm, double dt)
     sdr->trk.codeNco+=prm->dllaw*(codeErr-sdr->trk.codeErr)+
         prm->dllw2*dt*codeErr;
 
-    /* carrier aiding */
+    /* carrier aiding? Looks like code aiding */
     sdr->trk.codefreq = sdr->crate - sdr->trk.codeNco +
         (sdr->trk.carrfreq-sdr->f_if-sdr->foffset) / (sdr->f_cf/sdr->crate);
     sdr->trk.codeErr=codeErr;
@@ -182,14 +185,14 @@ extern void setobsdata(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt,
     shiftdata(&trk->cntout[1],&trk->cntout[0],sizeof(uint64_t),OBSINTERPN-1);
     shiftdata(&trk->remcout[1],&trk->remcout[0],sizeof(double),OBSINTERPN-1);
 
-    trk->tow[0]=sdr->nav.firstsftow+
-        (double)(cnt-sdr->nav.firstsfcnt)*sdr->ctime;
+    trk->tow[0]=sdr->nav.firstsftow +
+        (double)(cnt-sdr->nav.firstsfcnt) * sdr->ctime;
     trk->codei[0]=buffloc;
     trk->cntout[0]=cnt;
     trk->remcout[0]=trk->oldremcode*sdr->f_sf/trk->codefreq;
 
     /* doppler */
-    trk->D[0]=-(trk->carrfreq-sdr->f_if-sdr->foffset);
+    trk->D[0]=-(trk->carrfreq - sdr->f_if - sdr->foffset);
 
     /* carrier phase */
     if (!trk->flagremcarradd) {

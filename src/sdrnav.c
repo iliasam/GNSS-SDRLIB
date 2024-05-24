@@ -72,6 +72,9 @@ extern void sdrnavigation(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
 			{
                 predecodefec(&sdr->nav); /* FEC decoding */
                 sfn=decodenav(&sdr->nav); /* navigation message decoding */
+
+				sdr->nav.subframe_count++;
+				sdr->nav.subframe_last_id = sfn;
                 
                 SDRPRINTF("%s ID=%d tow:%.1f week=%d int_loop_cnt=%d\n",
                     sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,

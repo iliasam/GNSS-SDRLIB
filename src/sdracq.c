@@ -11,7 +11,7 @@
 *          double *power    O   normalized correlation power vector (2D array)
 * return : uint64_t             current buffer location
 *-----------------------------------------------------------------------------*/
-extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
+extern uint64_t sdraccuisition(sdrch_t *sdr, double *power, float threshold)
 {
     int i;
     char *data;
@@ -39,7 +39,7 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
             sdr->acq.nfreq,sdr->crate,sdr->acq.nfft,sdr->xcode,power);
 
         /* check acquisition result */
-        if (checkacquisition(power,sdr))
+        if (checkacquisition(power,sdr, threshold))
 		{
             sdr->flagacq=ON;
             break;
@@ -48,6 +48,8 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 
 	sdr->acq.peakr_max_fin = sdr->acq.peakr_max;
 
+	//SDRPRINTF("%lu Mb\n", (buffloc / 1000000));
+
     /* display acquisition results */
     SDRPRINTF("%s, C/N0=%4.1f, peak=%3.1f, codei=%5d, freq=%8.1f\n",
         sdr->satstr,sdr->acq.cn0,sdr->acq.peakr,sdr->acq.acqcodei,
@@ -55,6 +57,7 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 
     /* set acquisition result */
     if (sdr->flagacq) {
+		SDRPRINTF("ACQ FOUND for %s", sdr->satstr);
         /* set buffer location at top of code */
         buffloc+=-(i+1) * sdr->nsamp + sdr->acq.acqcodei;
         sdr->trk.carrfreq=sdr->acq.acqfreq;
@@ -74,13 +77,13 @@ extern uint64_t sdraccuisition(sdrch_t *sdr, double *power)
 * return : int                  acquisition flag (0: not acquired, 1: acquired) 
 * note : first/second peak ratio and c/n0 computation
 *-----------------------------------------------------------------------------*/
-extern int checkacquisition(double *P, sdrch_t *sdr)
+extern int checkacquisition(double *P, sdrch_t *sdr, float threshold)
 {
     int maxi,codei,freqi,exinds,exinde;
     double maxP,maxP2,meanP;
 
-    maxP=maxvd(P,sdr->nsamp*sdr->acq.nfreq,-1,-1,&maxi);
-    ind2sub(maxi,sdr->nsamp,sdr->acq.nfreq,&codei,&freqi);
+    maxP=maxvd(P,sdr->nsamp*sdr->acq.nfreq,-1,-1,&maxi);//max value and maxi<=index
+    ind2sub(maxi,sdr->nsamp,sdr->acq.nfreq,&codei,&freqi);//index to subscribe, find codei and freqi
 
     /* C/N0 calculation */
     /* excluded index */
@@ -104,5 +107,5 @@ extern int checkacquisition(double *P, sdrch_t *sdr)
 	if (sdr->acq.peakr > sdr->acq.peakr_max)
 		sdr->acq.peakr_max = sdr->acq.peakr;
 
-    return (sdr->acq.peakr > ACQTH);
+    return (sdr->acq.peakr > threshold);
 }

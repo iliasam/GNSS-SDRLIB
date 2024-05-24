@@ -18,9 +18,14 @@ extern void syncthread(void * arg)
 extern void *syncthread(void * arg)
 #endif
 {
-    int i,j,nsat,isat[MAXOBS],ind[MAXSAT]={0},refi;
+    int i,j,nsat,isat[MAXOBS],ind[MAXSAT]={0};
+
+	//Ref satellite index
+	int refi;
     uint64_t sampref,sampbase,codei[MAXSAT],diffcnt,mincodei;
-    double codeid[OBSINTERPN],remcode[MAXSAT],samprefd,reftow=0,oldreftow;
+	double codeid[OBSINTERPN], remcode[MAXSAT], samprefd;
+	// TOW in s, double
+	double reftow = 0, oldreftow;
     sdrobs_t obs[MAXSAT];
     sdrtrk_t trk[MAXSAT]={{0}};
 
@@ -54,8 +59,10 @@ extern void *syncthread(void * arg)
         mlock(hobsmtx);
 
         /* copy all tracking data */
-        for (i=nsat=0;i<sdrini.nch;i++) {
-            if (sdrch[i].nav.flagdec&&sdrch[i].nav.sdreph.eph.week!=0) {
+        for (i=nsat=0;i<sdrini.nch;i++) 
+		{
+            if (sdrch[i].nav.flagdec&&sdrch[i].nav.sdreph.eph.week != 0) 
+			{
                 memcpy(&trk[nsat],&sdrch[i].trk,sizeof(sdrch[i].trk));
                 isat[nsat]=i;
                 nsat++;
@@ -67,19 +74,25 @@ extern void *syncthread(void * arg)
         /* find minimum tow channel (most distant satellite) */
         oldreftow=reftow;
         reftow=3600*24*7;
-        for (i=0;i<nsat;i++) {
-            if (trk[i].tow[0]<reftow)
+        for (i=0;i<nsat;i++) 
+		{
+            if (trk[i].tow[0] < reftow)
                 reftow=trk[i].tow[0];
         }
+
         /* output timing check */
         if (nsat==0 || oldreftow==reftow || ((int)(reftow*1000) % sdrini.outms)!=0) 
 		{
             continue;
         }
+
         /* select same timing index */
-        for (i=0;i<nsat;i++) {
-            for (j=0;j<OBSINTERPN;j++) {
-                if (fabs(trk[i].tow[j]-reftow)<1E-4) {
+        for (i=0;i<nsat;i++) 
+		{
+            for (j=0;j<OBSINTERPN;j++) 
+			{
+                if (fabs(trk[i].tow[j]-reftow)<1E-4) 
+				{
                     ind[i]=j;
                     break;
                 }
@@ -89,24 +102,28 @@ extern void *syncthread(void * arg)
                     sdrch[isat[i]].satstr,trk[i].tow[OBSINTERPN-1],reftow);
         }
 
-        /* decide reference satellite (nearest satellite) */
+        /* decide reference satellite (nearest satellite) - refi*/
+		//This value is not used directly below
         mincodei=UINT64_MAX;
         refi=0;
-        for (i=0;i<nsat;i++) {
+        for (i=0;i<nsat;i++) 
+		{
             codei[i]=trk[i].codei[ind[i]];
             remcode[i]=trk[i].remcout[ind[i]];
-            if (trk[i].codei[ind[i]]<mincodei) {
+            if (trk[i].codei[ind[i]]<mincodei) 
+			{
                 refi=i;
                 mincodei=trk[i].codei[ind[i]];
             }
         }
+
         /* reference satellite */
-        diffcnt=trk[refi].cntout[ind[refi]]-sdrch[isat[refi]].nav.firstsfcnt;
-        sampref=sdrch[isat[refi]].nav.firstsf+
-            (uint64_t)(sdrch[isat[refi]].nsamp*
-            (-PTIMING/(1000*sdrch[isat[refi]].ctime)+diffcnt));
-        sampbase=trk[refi].codei[OBSINTERPN-1]-10*sdrch[isat[refi]].nsamp;
-        samprefd=(double)(sampref-sampbase);
+        diffcnt = trk[refi].cntout[ind[refi]] - sdrch[isat[refi]].nav.firstsfcnt;
+        sampref = sdrch[isat[refi]].nav.firstsf +
+            (uint64_t)(sdrch[isat[refi]].nsamp *
+            (-PTIMING/(1000 * sdrch[isat[refi]].ctime) + diffcnt));
+        sampbase = trk[refi].codei[OBSINTERPN-1] - 10 * sdrch[isat[refi]].nsamp;
+        samprefd = (double)(sampref - sampbase);
 
         /* computation observation data */
         for (i=0;i<nsat;i++) {
@@ -114,7 +131,7 @@ extern void *syncthread(void * arg)
             obs[i].prn=sdrch[isat[i]].prn;
             obs[i].week=sdrch[isat[i]].nav.sdreph.week_gpst;
             obs[i].tow=reftow+(double)(PTIMING)/1000; 
-            obs[i].P=CLIGHT*sdrch[isat[i]].ti*
+            obs[i].P=CLIGHT*sdrch[isat[i]].ti *
                 ((double)(codei[i]-sampref)-remcode[i]); /* pseudo range */
             
             /* uint64 to double for interp1 */
@@ -125,6 +142,18 @@ extern void *syncthread(void * arg)
         }
         sdrout.nsat=nsat;
         sdrobs2obsd(obs,nsat,sdrout.obsd);
+
+		for (i = 0; i < nsat; i++)
+		{
+			for (int i1 = 0; i1 < 5; i1++)
+			{
+				if (sdrch[i1].prn == obs[i].prn)
+				{
+					sdrch[i1].debugP = obs[i].P;
+					sdrch[i1].debugT = obs[i].tow;
+				}
+			}
+		}
 
 		// SEND!
 

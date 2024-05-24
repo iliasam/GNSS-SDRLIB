@@ -154,6 +154,8 @@ int decode_frame_l1ca(const uint8_t *buff, sdreph_t *eph)
 {
     int id=getbitu(buff,49,3); /* subframe ID */
 
+	//SDRPRINTF("SUBFRAME %d\n", id);
+
     switch (id) {
     case 1: decode_subfrm1(buff,eph); break;
     case 2: decode_subfrm2(buff,eph); break;

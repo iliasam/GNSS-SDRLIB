@@ -398,7 +398,7 @@ static void *plotgnuplot(void *arg)
 extern void plotthread(sdrplt_t *plt)
 {
     mlock(hpltmtx);
-    cratethread(hpltthread,plotgnuplot,plt);
+    cratethread(hpltthread, plotgnuplot, plt);
     unmlock(hpltmtx);
 }
 /* plot (function version) -----------------------------------------------------

@@ -345,9 +345,11 @@ extern int initpltstruct(sdrplt_t *acq, sdrplt_t *trk, sdrch_t *sdr)
     }
     /* tracking */
     if (sdrini.plttrk) {
-        setsdrplotprm(trk,PLT_XY,1+2*sdr->trk.corrn,0,0,ON,0.001,
+		int abs = 0;
+        setsdrplotprm(trk, PLT_XY, 1+2*sdr->trk.corrn, 0, 0, abs, 0.001,
             PLT_H,PLT_W,PLT_MH,PLT_MW,sdr->no);
-        if(initsdrplot(trk)<0) return -1;
+        if(initsdrplot(trk)<0)
+			return -1;
         settitle(trk,sdr->satstr);
         setlabel(trk,"Code Offset (sample)","Correlation Output");
         
@@ -362,6 +364,7 @@ extern int initpltstruct(sdrplt_t *acq, sdrplt_t *trk, sdrch_t *sdr)
                 scale=5.0; break;
             case FEND_RTLSDR:
             case FEND_FRTLSDR:
+			case FEND_HACKRF:
                 scale=3.5; break;
         }
         setyrange(trk,0,sdr->trk.loop*sdr->nsamp/4000*scale);
@@ -666,9 +669,6 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     int i;
     short *rcode;
 
-	//f_if = f_cf - (sampling_rate_hz * 41.0);
-	//SDRPRINTF("IF: %f\n", f_if);
-
     sdr->no=chno;
     sdr->sys=sys;
     sdr->prn=prn;
@@ -688,13 +688,13 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     sdr->ctime=sdr->clen/sdr->crate;
     sdr->nsamp=(int)(sampling_rate_hz * sdr->ctime);
     sdr->nsampchip=(int)(sdr->nsamp/sdr->clen);
-    satno2id(sdr->sat,sdr->satstr);
+    satno2id(sdr->sat, sdr->satstr);
 
     /* set carrier frequency */
     if (ctype==CTYPE_G1) 
 	{
         sprintf(sdr->satstr,"R%d",prn); /* frequency number instead of PRN */
-        sdr->f_cf=FREQ1_GLO+DFRQ1_GLO*prn; /* FDMA */
+        sdr->f_cf=FREQ1_GLO + DFRQ1_GLO * prn; /* FDMA */
         sdr->foffset=DFRQ1_GLO*prn; /* FDMA */
     } 
 	else if (sdrini.fend==FEND_FRTLSDR) 
@@ -702,6 +702,11 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
         sdr->foffset=f_cf*sdrini.rtlsdrppmerr*1e-6;
 		sdr->f_cf = f_cf; /* carrier frequency */
     } 
+	else if (sdrini.fend == FEND_HACKRF)
+	{
+		sdr->foffset = f_cf * sdrini.rtlsdrppmerr*1e-6;
+		sdr->f_cf = f_cf; /* carrier frequency */
+	}
 	else 
 	{
         sdr->f_cf=f_cf; /* carrier frequency */

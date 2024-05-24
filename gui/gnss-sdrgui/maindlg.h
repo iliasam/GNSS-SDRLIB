@@ -4,6 +4,8 @@
 #include "trkprmdlg.h"
 #include "radardlg.h"
 #include "frontends.h"
+#include "sat_state.h"
+#include "sdr.h"
 
 namespace gnsssdrgui {
 
@@ -36,7 +38,7 @@ namespace gnsssdrgui {
     public: System::Windows::Forms::GroupBox^  gb_input;
     protected: 
 
-	public: System::Windows::Forms::RichTextBox^  TextBoxMonitor;
+	public: System::Windows::Forms::ListBox^  TextBoxMonitor;
 	public: gnsssdrgui::monitordlg^ monitor;
 
 
@@ -112,6 +114,9 @@ namespace gnsssdrgui {
     public: radardlg^ radar;
     
     public: trkprmdlg^ trkprm;
+	public: sat_state_class^ sat_state_obj = nullptr;
+	private: int sat_state_index = -1;
+
     public: SDR^ sdr;
     public: System::Windows::Forms::Button^  b_input2;
     public: System::Windows::Forms::TextBox^  tb_input2;
@@ -181,14 +186,7 @@ namespace gnsssdrgui {
 
     public: System::Windows::Forms::RadioButton^  rb_E_FE1;
 
-    public: System::Windows::Forms::CheckBox^  chk_E20;
-    public: System::Windows::Forms::CheckBox^  chk_E19;
 
-
-
-    public: System::Windows::Forms::CheckBox^  chk_E12;
-
-    public: System::Windows::Forms::CheckBox^  chk_E11;
 
     public: System::Windows::Forms::CheckBox^  chk_TYPE_E1B;
 
@@ -343,20 +341,74 @@ namespace gnsssdrgui {
     public: System::Windows::Forms::TextBox^  tb_lat;
     public: System::Windows::Forms::Label^  label6;
     private: System::Windows::Forms::Button^  b_radar;
-public: System::Windows::Forms::CheckBox^  chk_E22;
-public: System::Windows::Forms::CheckBox^  chk_E25;
-private: System::Windows::Forms::Panel^  panelSysStrl;
+
+private: System::Windows::Forms::Panel^  panelSysCtrl;
 private: System::Windows::Forms::Timer^  timerUpdateGUI;
-public: System::Windows::Forms::CheckBox^  chk_E27;
-public: System::Windows::Forms::CheckBox^  chk_E14;
-public: System::Windows::Forms::CheckBox^  chk_E30;
-public: System::Windows::Forms::CheckBox^  chk_E2;
-public: System::Windows::Forms::CheckBox^  chk_E4;
-public: System::Windows::Forms::CheckBox^  chk_E21;
-public: System::Windows::Forms::CheckBox^  chk_E9;
+
 public: System::Windows::Forms::CheckBox^  chk_RestoreAcq;
-public: System::Windows::Forms::CheckBox^  chk_E7;
 public: System::Windows::Forms::CheckBox^  chk_DispTrackCycles;
+
+public: System::Windows::Forms::CheckBox^  chk_E1;
+public: System::Windows::Forms::CheckBox^  chk_E2;
+public: System::Windows::Forms::CheckBox^  chk_E3;
+public: System::Windows::Forms::CheckBox^  chk_E4;
+public: System::Windows::Forms::CheckBox^  chk_E5;
+public: System::Windows::Forms::CheckBox^  chk_E6;
+public: System::Windows::Forms::CheckBox^  chk_E7;
+public: System::Windows::Forms::CheckBox^  chk_E8;
+public: System::Windows::Forms::CheckBox^  chk_E9;
+public: System::Windows::Forms::CheckBox^  chk_E10;
+public: System::Windows::Forms::CheckBox^  chk_E11;
+public: System::Windows::Forms::CheckBox^  chk_E12;
+public: System::Windows::Forms::CheckBox^  chk_E13;
+public: System::Windows::Forms::CheckBox^  chk_E14;
+public: System::Windows::Forms::CheckBox^  chk_E15;
+public: System::Windows::Forms::CheckBox^  chk_E16;
+public: System::Windows::Forms::CheckBox^  chk_E17;
+public: System::Windows::Forms::CheckBox^  chk_E18;
+public: System::Windows::Forms::CheckBox^  chk_E19;
+public: System::Windows::Forms::CheckBox^  chk_E20;
+public: System::Windows::Forms::CheckBox^  chk_E21;
+public: System::Windows::Forms::CheckBox^  chk_E22;
+public: System::Windows::Forms::CheckBox^  chk_E23;
+public: System::Windows::Forms::CheckBox^  chk_E24;
+public: System::Windows::Forms::CheckBox^  chk_E25;
+public: System::Windows::Forms::CheckBox^  chk_E26;
+public: System::Windows::Forms::CheckBox^  chk_E27;
+public: System::Windows::Forms::CheckBox^  chk_E28;
+public: System::Windows::Forms::CheckBox^  chk_E29;
+public: System::Windows::Forms::CheckBox^  chk_E30;
+public: System::Windows::Forms::CheckBox^  chk_E31;
+public: System::Windows::Forms::CheckBox^  chk_E32;
+public: System::Windows::Forms::CheckBox^  chk_E33;
+public: System::Windows::Forms::CheckBox^  chk_E34;
+public: System::Windows::Forms::CheckBox^  chk_E35;
+public: System::Windows::Forms::CheckBox^  chk_E36;
+
+public: System::Windows::Forms::Label^  label8;
+public: System::Windows::Forms::NumericUpDown^  nud_acq_threshold;
+public: System::Windows::Forms::CheckBox^  chk_C15;
+public: System::Windows::Forms::CheckBox^  chk_C30;
+public: System::Windows::Forms::CheckBox^  chk_C29;
+public: System::Windows::Forms::CheckBox^  chk_C28;
+public: System::Windows::Forms::CheckBox^  chk_C27;
+public: System::Windows::Forms::CheckBox^  chk_C26;
+public: System::Windows::Forms::CheckBox^  chk_C25;
+public: System::Windows::Forms::CheckBox^  chk_C24;
+public: System::Windows::Forms::CheckBox^  chk_C23;
+public: System::Windows::Forms::CheckBox^  chk_C22;
+public: System::Windows::Forms::CheckBox^  chk_C21;
+public: System::Windows::Forms::CheckBox^  chk_C20;
+public: System::Windows::Forms::CheckBox^  chk_C19;
+public: System::Windows::Forms::CheckBox^  chk_C18;
+public: System::Windows::Forms::CheckBox^  chk_C17;
+public: System::Windows::Forms::CheckBox^  chk_C16;
+private: System::Windows::Forms::LinkLabel^  linkLabel1;
+public:
+
+
+public:
+public:
 
 
 
@@ -416,6 +468,8 @@ private:
 			this->chk_rtcm = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_rinex = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_setting = (gcnew System::Windows::Forms::GroupBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->nud_acq_threshold = (gcnew System::Windows::Forms::NumericUpDown());
 			this->chk_RestoreAcq = (gcnew System::Windows::Forms::CheckBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->b_trkprm = (gcnew System::Windows::Forms::Button());
@@ -523,41 +577,79 @@ private:
 			this->chk_TYPE_G1 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_RALL = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_gal = (gcnew System::Windows::Forms::GroupBox());
-			this->chk_E7 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E9 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E21 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E4 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E1 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_E2 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E30 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E3 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E4 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E5 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E6 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E7 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E8 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E9 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E10 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E11 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E12 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E13 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_E14 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E27 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E25 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E15 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E16 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E17 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E18 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E19 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E20 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E21 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_E22 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E23 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E24 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E25 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E26 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E27 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E28 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E29 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E30 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E31 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E32 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E33 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E34 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E35 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_E36 = (gcnew System::Windows::Forms::CheckBox());
 			this->rb_E_FE2 = (gcnew System::Windows::Forms::RadioButton());
 			this->rb_E_FE1 = (gcnew System::Windows::Forms::RadioButton());
-			this->chk_E20 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E19 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E12 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_E11 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_TYPE_E1B = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_EALL = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_bds = (gcnew System::Windows::Forms::GroupBox());
 			this->rb_C_FE2 = (gcnew System::Windows::Forms::RadioButton());
 			this->rb_C_FE1 = (gcnew System::Windows::Forms::RadioButton());
-			this->chk_C14 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C13 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C12 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C11 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C10 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C09 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C08 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C07 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C06 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C05 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C04 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C03 = (gcnew System::Windows::Forms::CheckBox());
-			this->chk_C02 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_C01 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C02 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C03 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C04 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C05 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C06 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C07 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C08 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C09 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C10 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C11 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C12 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C13 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C14 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C15 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C16 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C17 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C18 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C19 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C20 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C21 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C22 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C23 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C24 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C25 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C26 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C27 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C28 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C29 = (gcnew System::Windows::Forms::CheckBox());
+			this->chk_C30 = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_TYPE_B1I = (gcnew System::Windows::Forms::CheckBox());
 			this->chk_CALL = (gcnew System::Windows::Forms::CheckBox());
 			this->gb_sbs = (gcnew System::Windows::Forms::GroupBox());
@@ -591,12 +683,14 @@ private:
 			this->tb_lat = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->b_radar = (gcnew System::Windows::Forms::Button());
-			this->panelSysStrl = (gcnew System::Windows::Forms::Panel());
+			this->panelSysCtrl = (gcnew System::Windows::Forms::Panel());
 			this->timerUpdateGUI = (gcnew System::Windows::Forms::Timer(this->components));
 			this->chk_DispTrackCycles = (gcnew System::Windows::Forms::CheckBox());
+			this->linkLabel1 = (gcnew System::Windows::Forms::LinkLabel());
 			this->gb_input->SuspendLayout();
 			this->gb_output->SuspendLayout();
 			this->gb_setting->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_acq_threshold))->BeginInit();
 			this->gp_FE2->SuspendLayout();
 			this->groupBox9->SuspendLayout();
 			this->gp_FE1->SuspendLayout();
@@ -608,7 +702,7 @@ private:
 			this->gb_bds->SuspendLayout();
 			this->gb_sbs->SuspendLayout();
 			this->gb_misc->SuspendLayout();
-			this->panelSysStrl->SuspendLayout();
+			this->panelSysCtrl->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gb_input
@@ -726,13 +820,13 @@ private:
 			this->cmb_input->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->cmb_input->FormattingEnabled = true;
-			this->cmb_input->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
+			this->cmb_input->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
 				L"GN3Sv2", L"GN3Sv3", L"RTL-SDR", L"BladeRF", L"Simple 8B",
-					L"File (STEREO)", L"File (GN3Sv2)", L"File (GN3Sv3)", L"File (RTL-SDR)", L"File (BladeRF)", L"File"
+					L"HackRF One", L"File (STEREO)", L"File (GN3Sv2)", L"File (GN3Sv3)", L"File (RTL-SDR)", L"File (BladeRF)", L"File"
 			});
 			this->cmb_input->Location = System::Drawing::Point(69, 16);
 			this->cmb_input->Name = L"cmb_input";
-			this->cmb_input->Size = System::Drawing::Size(100, 23);
+			this->cmb_input->Size = System::Drawing::Size(136, 23);
 			this->cmb_input->TabIndex = 0;
 			this->cmb_input->SelectedIndexChanged += gcnew System::EventHandler(this, &maindlg::comb_input_SelectedIndexChanged);
 			// 
@@ -959,6 +1053,8 @@ private:
 			// 
 			// gb_setting
 			// 
+			this->gb_setting->Controls->Add(this->label8);
+			this->gb_setting->Controls->Add(this->nud_acq_threshold);
 			this->gb_setting->Controls->Add(this->chk_RestoreAcq);
 			this->gb_setting->Controls->Add(this->label3);
 			this->gb_setting->Controls->Add(this->b_trkprm);
@@ -972,10 +1068,33 @@ private:
 			this->gb_setting->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
 			this->gb_setting->Location = System::Drawing::Point(7, 206);
 			this->gb_setting->Name = L"gb_setting";
-			this->gb_setting->Size = System::Drawing::Size(414, 203);
+			this->gb_setting->Size = System::Drawing::Size(414, 237);
 			this->gb_setting->TabIndex = 4;
 			this->gb_setting->TabStop = false;
 			this->gb_setting->Text = L"Setting";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label8->Location = System::Drawing::Point(13, 206);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(67, 13);
+			this->label8->TabIndex = 37;
+			this->label8->Text = L"Acq. thresh.:";
+			// 
+			// nud_acq_threshold
+			// 
+			this->nud_acq_threshold->DecimalPlaces = 1;
+			this->nud_acq_threshold->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 65536 });
+			this->nud_acq_threshold->Location = System::Drawing::Point(83, 202);
+			this->nud_acq_threshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->nud_acq_threshold->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->nud_acq_threshold->Name = L"nud_acq_threshold";
+			this->nud_acq_threshold->Size = System::Drawing::Size(52, 21);
+			this->nud_acq_threshold->TabIndex = 36;
+			this->nud_acq_threshold->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 65536 });
 			// 
 			// chk_RestoreAcq
 			// 
@@ -1884,7 +2003,7 @@ private:
 			this->gb_qzs->Controls->Add(this->chk_Q01);
 			this->gb_qzs->Controls->Add(this->chk_TYPE_L1CAQZS);
 			this->gb_qzs->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_qzs->Location = System::Drawing::Point(7, 377);
+			this->gb_qzs->Location = System::Drawing::Point(7, 448);
 			this->gb_qzs->Name = L"gb_qzs";
 			this->gb_qzs->Size = System::Drawing::Size(432, 42);
 			this->gb_qzs->TabIndex = 26;
@@ -1970,7 +2089,7 @@ private:
 			// b_start
 			// 
 			this->b_start->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9));
-			this->b_start->Location = System::Drawing::Point(244, 465);
+			this->b_start->Location = System::Drawing::Point(243, 450);
 			this->b_start->Name = L"b_start";
 			this->b_start->Size = System::Drawing::Size(56, 26);
 			this->b_start->TabIndex = 27;
@@ -1982,7 +2101,7 @@ private:
 			// 
 			this->b_stop->Enabled = false;
 			this->b_stop->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9));
-			this->b_stop->Location = System::Drawing::Point(305, 465);
+			this->b_stop->Location = System::Drawing::Point(304, 450);
 			this->b_stop->Name = L"b_stop";
 			this->b_stop->Size = System::Drawing::Size(56, 26);
 			this->b_stop->TabIndex = 28;
@@ -1993,7 +2112,7 @@ private:
 			// b_exit
 			// 
 			this->b_exit->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9));
-			this->b_exit->Location = System::Drawing::Point(366, 465);
+			this->b_exit->Location = System::Drawing::Point(365, 450);
 			this->b_exit->Name = L"b_exit";
 			this->b_exit->Size = System::Drawing::Size(56, 26);
 			this->b_exit->TabIndex = 29;
@@ -2004,12 +2123,11 @@ private:
 			// chk_spec
 			// 
 			this->chk_spec->Appearance = System::Windows::Forms::Appearance::Button;
-			this->chk_spec->AutoSize = true;
 			this->chk_spec->Enabled = false;
 			this->chk_spec->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10));
-			this->chk_spec->Location = System::Drawing::Point(155, 465);
+			this->chk_spec->Location = System::Drawing::Point(162, 448);
 			this->chk_spec->Name = L"chk_spec";
-			this->chk_spec->Size = System::Drawing::Size(54, 27);
+			this->chk_spec->Size = System::Drawing::Size(64, 27);
 			this->chk_spec->TabIndex = 32;
 			this->chk_spec->Text = L"Spect";
 			this->chk_spec->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -2023,7 +2141,7 @@ private:
 			this->rb_spec1->Checked = true;
 			this->rb_spec1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->rb_spec1->Location = System::Drawing::Point(7, 470);
+			this->rb_spec1->Location = System::Drawing::Point(7, 449);
 			this->rb_spec1->Name = L"rb_spec1";
 			this->rb_spec1->Size = System::Drawing::Size(74, 17);
 			this->rb_spec1->TabIndex = 34;
@@ -2036,7 +2154,7 @@ private:
 			this->rb_spec2->AutoSize = true;
 			this->rb_spec2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->rb_spec2->Location = System::Drawing::Point(80, 470);
+			this->rb_spec2->Location = System::Drawing::Point(80, 449);
 			this->rb_spec2->Name = L"rb_spec2";
 			this->rb_spec2->Size = System::Drawing::Size(74, 17);
 			this->rb_spec2->TabIndex = 35;
@@ -2046,19 +2164,19 @@ private:
 			// chk_monitor
 			// 
 			this->chk_monitor->Appearance = System::Windows::Forms::Appearance::Button;
-			this->chk_monitor->AutoSize = true;
 			this->chk_monitor->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10));
-			this->chk_monitor->Location = System::Drawing::Point(211, 465);
+			this->chk_monitor->Location = System::Drawing::Point(162, 480);
 			this->chk_monitor->Name = L"chk_monitor";
-			this->chk_monitor->Size = System::Drawing::Size(29, 27);
+			this->chk_monitor->Size = System::Drawing::Size(64, 27);
 			this->chk_monitor->TabIndex = 30;
-			this->chk_monitor->Text = L"M";
+			this->chk_monitor->Text = L"Monitor";
 			this->chk_monitor->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->chk_monitor->UseVisualStyleBackColor = true;
 			this->chk_monitor->CheckedChanged += gcnew System::EventHandler(this, &maindlg::chk_monitor_CheckedChanged);
 			// 
 			// gb_glo
 			// 
+			this->gb_glo->Controls->Add(this->linkLabel1);
 			this->gb_glo->Controls->Add(this->chk_R3);
 			this->gb_glo->Controls->Add(this->rb_R_FE2);
 			this->gb_glo->Controls->Add(this->rb_R_FE1);
@@ -2309,151 +2427,485 @@ private:
 			// 
 			// gb_gal
 			// 
-			this->gb_gal->Controls->Add(this->chk_E7);
-			this->gb_gal->Controls->Add(this->chk_E9);
-			this->gb_gal->Controls->Add(this->chk_E21);
-			this->gb_gal->Controls->Add(this->chk_E4);
+			this->gb_gal->Controls->Add(this->chk_E1);
 			this->gb_gal->Controls->Add(this->chk_E2);
-			this->gb_gal->Controls->Add(this->chk_E30);
+			this->gb_gal->Controls->Add(this->chk_E3);
+			this->gb_gal->Controls->Add(this->chk_E4);
+			this->gb_gal->Controls->Add(this->chk_E5);
+			this->gb_gal->Controls->Add(this->chk_E6);
+			this->gb_gal->Controls->Add(this->chk_E7);
+			this->gb_gal->Controls->Add(this->chk_E8);
+			this->gb_gal->Controls->Add(this->chk_E9);
+			this->gb_gal->Controls->Add(this->chk_E10);
+			this->gb_gal->Controls->Add(this->chk_E11);
+			this->gb_gal->Controls->Add(this->chk_E12);
+			this->gb_gal->Controls->Add(this->chk_E13);
 			this->gb_gal->Controls->Add(this->chk_E14);
-			this->gb_gal->Controls->Add(this->chk_E27);
-			this->gb_gal->Controls->Add(this->chk_E25);
+			this->gb_gal->Controls->Add(this->chk_E15);
+			this->gb_gal->Controls->Add(this->chk_E16);
+			this->gb_gal->Controls->Add(this->chk_E17);
+			this->gb_gal->Controls->Add(this->chk_E18);
+			this->gb_gal->Controls->Add(this->chk_E19);
+			this->gb_gal->Controls->Add(this->chk_E20);
+			this->gb_gal->Controls->Add(this->chk_E21);
 			this->gb_gal->Controls->Add(this->chk_E22);
+			this->gb_gal->Controls->Add(this->chk_E23);
+			this->gb_gal->Controls->Add(this->chk_E24);
+			this->gb_gal->Controls->Add(this->chk_E25);
+			this->gb_gal->Controls->Add(this->chk_E26);
+			this->gb_gal->Controls->Add(this->chk_E27);
+			this->gb_gal->Controls->Add(this->chk_E28);
+			this->gb_gal->Controls->Add(this->chk_E29);
+			this->gb_gal->Controls->Add(this->chk_E30);
+			this->gb_gal->Controls->Add(this->chk_E31);
+			this->gb_gal->Controls->Add(this->chk_E32);
+			this->gb_gal->Controls->Add(this->chk_E33);
+			this->gb_gal->Controls->Add(this->chk_E34);
+			this->gb_gal->Controls->Add(this->chk_E35);
+			this->gb_gal->Controls->Add(this->chk_E36);
 			this->gb_gal->Controls->Add(this->rb_E_FE2);
 			this->gb_gal->Controls->Add(this->rb_E_FE1);
-			this->gb_gal->Controls->Add(this->chk_E20);
-			this->gb_gal->Controls->Add(this->chk_E19);
-			this->gb_gal->Controls->Add(this->chk_E12);
-			this->gb_gal->Controls->Add(this->chk_E11);
 			this->gb_gal->Controls->Add(this->chk_TYPE_E1B);
 			this->gb_gal->Controls->Add(this->chk_EALL);
 			this->gb_gal->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
 			this->gb_gal->Location = System::Drawing::Point(7, 210);
 			this->gb_gal->Name = L"gb_gal";
-			this->gb_gal->Size = System::Drawing::Size(432, 80);
+			this->gb_gal->Size = System::Drawing::Size(432, 118);
 			this->gb_gal->TabIndex = 59;
 			this->gb_gal->TabStop = false;
 			this->gb_gal->Text = L"Galileo";
 			// 
-			// chk_E7
+			// chk_E1
 			// 
-			this->chk_E7->AutoSize = true;
-			this->chk_E7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_E1->AutoSize = true;
+			this->chk_E1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E7->Location = System::Drawing::Point(91, 57);
-			this->chk_E7->Name = L"chk_E7";
-			this->chk_E7->Size = System::Drawing::Size(39, 17);
-			this->chk_E7->TabIndex = 67;
-			this->chk_E7->Text = L"E7";
-			this->chk_E7->UseVisualStyleBackColor = true;
-			// 
-			// chk_E9
-			// 
-			this->chk_E9->AutoSize = true;
-			this->chk_E9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E9->Location = System::Drawing::Point(131, 57);
-			this->chk_E9->Name = L"chk_E9";
-			this->chk_E9->Size = System::Drawing::Size(39, 17);
-			this->chk_E9->TabIndex = 66;
-			this->chk_E9->Text = L"E9";
-			this->chk_E9->UseVisualStyleBackColor = true;
-			// 
-			// chk_E21
-			// 
-			this->chk_E21->AutoSize = true;
-			this->chk_E21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E21->Location = System::Drawing::Point(219, 37);
-			this->chk_E21->Name = L"chk_E21";
-			this->chk_E21->Size = System::Drawing::Size(45, 17);
-			this->chk_E21->TabIndex = 65;
-			this->chk_E21->Text = L"E21";
-			this->chk_E21->UseVisualStyleBackColor = true;
-			// 
-			// chk_E4
-			// 
-			this->chk_E4->AutoSize = true;
-			this->chk_E4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E4->Location = System::Drawing::Point(50, 57);
-			this->chk_E4->Name = L"chk_E4";
-			this->chk_E4->Size = System::Drawing::Size(39, 17);
-			this->chk_E4->TabIndex = 64;
-			this->chk_E4->Text = L"E4";
-			this->chk_E4->UseVisualStyleBackColor = true;
+			this->chk_E1->Location = System::Drawing::Point(10, 38);
+			this->chk_E1->Name = L"chk_E1";
+			this->chk_E1->Size = System::Drawing::Size(39, 17);
+			this->chk_E1->TabIndex = 68;
+			this->chk_E1->Text = L"E1";
+			this->chk_E1->UseVisualStyleBackColor = true;
 			// 
 			// chk_E2
 			// 
 			this->chk_E2->AutoSize = true;
 			this->chk_E2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E2->Location = System::Drawing::Point(10, 57);
+			this->chk_E2->Location = System::Drawing::Point(52, 38);
 			this->chk_E2->Name = L"chk_E2";
 			this->chk_E2->Size = System::Drawing::Size(39, 17);
 			this->chk_E2->TabIndex = 63;
 			this->chk_E2->Text = L"E2";
 			this->chk_E2->UseVisualStyleBackColor = true;
 			// 
-			// chk_E30
+			// chk_E3
 			// 
-			this->chk_E30->AutoSize = true;
-			this->chk_E30->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_E3->AutoSize = true;
+			this->chk_E3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E30->Location = System::Drawing::Point(391, 37);
-			this->chk_E30->Name = L"chk_E30";
-			this->chk_E30->Size = System::Drawing::Size(45, 17);
-			this->chk_E30->TabIndex = 62;
-			this->chk_E30->Text = L"E30";
-			this->chk_E30->UseVisualStyleBackColor = true;
+			this->chk_E3->Location = System::Drawing::Point(94, 38);
+			this->chk_E3->Name = L"chk_E3";
+			this->chk_E3->Size = System::Drawing::Size(39, 17);
+			this->chk_E3->TabIndex = 69;
+			this->chk_E3->Text = L"E3";
+			this->chk_E3->UseVisualStyleBackColor = true;
+			// 
+			// chk_E4
+			// 
+			this->chk_E4->AutoSize = true;
+			this->chk_E4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E4->Location = System::Drawing::Point(136, 38);
+			this->chk_E4->Name = L"chk_E4";
+			this->chk_E4->Size = System::Drawing::Size(39, 17);
+			this->chk_E4->TabIndex = 64;
+			this->chk_E4->Text = L"E4";
+			this->chk_E4->UseVisualStyleBackColor = true;
+			// 
+			// chk_E5
+			// 
+			this->chk_E5->AutoSize = true;
+			this->chk_E5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E5->Location = System::Drawing::Point(178, 38);
+			this->chk_E5->Name = L"chk_E5";
+			this->chk_E5->Size = System::Drawing::Size(39, 17);
+			this->chk_E5->TabIndex = 70;
+			this->chk_E5->Text = L"E5";
+			this->chk_E5->UseVisualStyleBackColor = true;
+			// 
+			// chk_E6
+			// 
+			this->chk_E6->AutoSize = true;
+			this->chk_E6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E6->Location = System::Drawing::Point(220, 38);
+			this->chk_E6->Name = L"chk_E6";
+			this->chk_E6->Size = System::Drawing::Size(39, 17);
+			this->chk_E6->TabIndex = 71;
+			this->chk_E6->Text = L"E6";
+			this->chk_E6->UseVisualStyleBackColor = true;
+			// 
+			// chk_E7
+			// 
+			this->chk_E7->AutoSize = true;
+			this->chk_E7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E7->Location = System::Drawing::Point(262, 38);
+			this->chk_E7->Name = L"chk_E7";
+			this->chk_E7->Size = System::Drawing::Size(39, 17);
+			this->chk_E7->TabIndex = 67;
+			this->chk_E7->Text = L"E7";
+			this->chk_E7->UseVisualStyleBackColor = true;
+			// 
+			// chk_E8
+			// 
+			this->chk_E8->AutoSize = true;
+			this->chk_E8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E8->Location = System::Drawing::Point(303, 38);
+			this->chk_E8->Name = L"chk_E8";
+			this->chk_E8->Size = System::Drawing::Size(39, 17);
+			this->chk_E8->TabIndex = 72;
+			this->chk_E8->Text = L"E8";
+			this->chk_E8->UseVisualStyleBackColor = true;
+			// 
+			// chk_E9
+			// 
+			this->chk_E9->AutoSize = true;
+			this->chk_E9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E9->Location = System::Drawing::Point(345, 38);
+			this->chk_E9->Name = L"chk_E9";
+			this->chk_E9->Size = System::Drawing::Size(39, 17);
+			this->chk_E9->TabIndex = 66;
+			this->chk_E9->Text = L"E9";
+			this->chk_E9->UseVisualStyleBackColor = true;
+			// 
+			// chk_E10
+			// 
+			this->chk_E10->AutoSize = true;
+			this->chk_E10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E10->Location = System::Drawing::Point(388, 38);
+			this->chk_E10->Name = L"chk_E10";
+			this->chk_E10->Size = System::Drawing::Size(45, 17);
+			this->chk_E10->TabIndex = 73;
+			this->chk_E10->Text = L"E10";
+			this->chk_E10->UseVisualStyleBackColor = true;
+			// 
+			// chk_E11
+			// 
+			this->chk_E11->AutoSize = true;
+			this->chk_E11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E11->Location = System::Drawing::Point(10, 57);
+			this->chk_E11->Name = L"chk_E11";
+			this->chk_E11->Size = System::Drawing::Size(45, 17);
+			this->chk_E11->TabIndex = 24;
+			this->chk_E11->Text = L"E11";
+			this->chk_E11->UseVisualStyleBackColor = true;
+			// 
+			// chk_E12
+			// 
+			this->chk_E12->AutoSize = true;
+			this->chk_E12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E12->Location = System::Drawing::Point(52, 57);
+			this->chk_E12->Name = L"chk_E12";
+			this->chk_E12->Size = System::Drawing::Size(45, 17);
+			this->chk_E12->TabIndex = 25;
+			this->chk_E12->Text = L"E12";
+			this->chk_E12->UseVisualStyleBackColor = true;
+			// 
+			// chk_E13
+			// 
+			this->chk_E13->AutoSize = true;
+			this->chk_E13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E13->Location = System::Drawing::Point(94, 57);
+			this->chk_E13->Name = L"chk_E13";
+			this->chk_E13->Size = System::Drawing::Size(45, 17);
+			this->chk_E13->TabIndex = 74;
+			this->chk_E13->Text = L"E13";
+			this->chk_E13->UseVisualStyleBackColor = true;
 			// 
 			// chk_E14
 			// 
 			this->chk_E14->AutoSize = true;
 			this->chk_E14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E14->Location = System::Drawing::Point(91, 37);
+			this->chk_E14->Location = System::Drawing::Point(136, 57);
 			this->chk_E14->Name = L"chk_E14";
 			this->chk_E14->Size = System::Drawing::Size(45, 17);
 			this->chk_E14->TabIndex = 61;
 			this->chk_E14->Text = L"E14";
 			this->chk_E14->UseVisualStyleBackColor = true;
 			// 
-			// chk_E27
+			// chk_E15
 			// 
-			this->chk_E27->AutoSize = true;
-			this->chk_E27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_E15->AutoSize = true;
+			this->chk_E15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E27->Location = System::Drawing::Point(306, 37);
-			this->chk_E27->Name = L"chk_E27";
-			this->chk_E27->Size = System::Drawing::Size(45, 17);
-			this->chk_E27->TabIndex = 60;
-			this->chk_E27->Text = L"E27";
-			this->chk_E27->UseVisualStyleBackColor = true;
+			this->chk_E15->Location = System::Drawing::Point(178, 57);
+			this->chk_E15->Name = L"chk_E15";
+			this->chk_E15->Size = System::Drawing::Size(45, 17);
+			this->chk_E15->TabIndex = 75;
+			this->chk_E15->Text = L"E15";
+			this->chk_E15->UseVisualStyleBackColor = true;
 			// 
-			// chk_E25
+			// chk_E16
 			// 
-			this->chk_E25->AutoSize = true;
-			this->chk_E25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_E16->AutoSize = true;
+			this->chk_E16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E25->Location = System::Drawing::Point(264, 37);
-			this->chk_E25->Name = L"chk_E25";
-			this->chk_E25->Size = System::Drawing::Size(45, 17);
-			this->chk_E25->TabIndex = 59;
-			this->chk_E25->Text = L"E25";
-			this->chk_E25->UseVisualStyleBackColor = true;
+			this->chk_E16->Location = System::Drawing::Point(220, 57);
+			this->chk_E16->Name = L"chk_E16";
+			this->chk_E16->Size = System::Drawing::Size(45, 17);
+			this->chk_E16->TabIndex = 76;
+			this->chk_E16->Text = L"E16";
+			this->chk_E16->UseVisualStyleBackColor = true;
+			// 
+			// chk_E17
+			// 
+			this->chk_E17->AutoSize = true;
+			this->chk_E17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E17->Location = System::Drawing::Point(262, 57);
+			this->chk_E17->Name = L"chk_E17";
+			this->chk_E17->Size = System::Drawing::Size(45, 17);
+			this->chk_E17->TabIndex = 77;
+			this->chk_E17->Text = L"E17";
+			this->chk_E17->UseVisualStyleBackColor = true;
+			// 
+			// chk_E18
+			// 
+			this->chk_E18->AutoSize = true;
+			this->chk_E18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E18->Location = System::Drawing::Point(303, 57);
+			this->chk_E18->Name = L"chk_E18";
+			this->chk_E18->Size = System::Drawing::Size(45, 17);
+			this->chk_E18->TabIndex = 78;
+			this->chk_E18->Text = L"E18";
+			this->chk_E18->UseVisualStyleBackColor = true;
+			// 
+			// chk_E19
+			// 
+			this->chk_E19->AutoSize = true;
+			this->chk_E19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E19->Location = System::Drawing::Point(346, 57);
+			this->chk_E19->Name = L"chk_E19";
+			this->chk_E19->Size = System::Drawing::Size(45, 17);
+			this->chk_E19->TabIndex = 26;
+			this->chk_E19->Text = L"E19";
+			this->chk_E19->UseVisualStyleBackColor = true;
+			// 
+			// chk_E20
+			// 
+			this->chk_E20->AutoSize = true;
+			this->chk_E20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E20->Location = System::Drawing::Point(388, 57);
+			this->chk_E20->Name = L"chk_E20";
+			this->chk_E20->Size = System::Drawing::Size(45, 17);
+			this->chk_E20->TabIndex = 27;
+			this->chk_E20->Text = L"E20";
+			this->chk_E20->UseVisualStyleBackColor = true;
+			// 
+			// chk_E21
+			// 
+			this->chk_E21->AutoSize = true;
+			this->chk_E21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E21->Location = System::Drawing::Point(10, 77);
+			this->chk_E21->Name = L"chk_E21";
+			this->chk_E21->Size = System::Drawing::Size(45, 17);
+			this->chk_E21->TabIndex = 65;
+			this->chk_E21->Text = L"E21";
+			this->chk_E21->UseVisualStyleBackColor = true;
 			// 
 			// chk_E22
 			// 
 			this->chk_E22->AutoSize = true;
 			this->chk_E22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_E22->Location = System::Drawing::Point(179, 37);
+			this->chk_E22->Location = System::Drawing::Point(52, 77);
 			this->chk_E22->Name = L"chk_E22";
 			this->chk_E22->Size = System::Drawing::Size(45, 17);
 			this->chk_E22->TabIndex = 58;
 			this->chk_E22->Text = L"E22";
 			this->chk_E22->UseVisualStyleBackColor = true;
+			// 
+			// chk_E23
+			// 
+			this->chk_E23->AutoSize = true;
+			this->chk_E23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E23->Location = System::Drawing::Point(94, 77);
+			this->chk_E23->Name = L"chk_E23";
+			this->chk_E23->Size = System::Drawing::Size(45, 17);
+			this->chk_E23->TabIndex = 79;
+			this->chk_E23->Text = L"E23";
+			this->chk_E23->UseVisualStyleBackColor = true;
+			// 
+			// chk_E24
+			// 
+			this->chk_E24->AutoSize = true;
+			this->chk_E24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E24->Location = System::Drawing::Point(136, 77);
+			this->chk_E24->Name = L"chk_E24";
+			this->chk_E24->Size = System::Drawing::Size(45, 17);
+			this->chk_E24->TabIndex = 80;
+			this->chk_E24->Text = L"E24";
+			this->chk_E24->UseVisualStyleBackColor = true;
+			// 
+			// chk_E25
+			// 
+			this->chk_E25->AutoSize = true;
+			this->chk_E25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E25->Location = System::Drawing::Point(178, 77);
+			this->chk_E25->Name = L"chk_E25";
+			this->chk_E25->Size = System::Drawing::Size(45, 17);
+			this->chk_E25->TabIndex = 59;
+			this->chk_E25->Text = L"E25";
+			this->chk_E25->UseVisualStyleBackColor = true;
+			// 
+			// chk_E26
+			// 
+			this->chk_E26->AutoSize = true;
+			this->chk_E26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E26->Location = System::Drawing::Point(220, 77);
+			this->chk_E26->Name = L"chk_E26";
+			this->chk_E26->Size = System::Drawing::Size(45, 17);
+			this->chk_E26->TabIndex = 81;
+			this->chk_E26->Text = L"E26";
+			this->chk_E26->UseVisualStyleBackColor = true;
+			// 
+			// chk_E27
+			// 
+			this->chk_E27->AutoSize = true;
+			this->chk_E27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E27->Location = System::Drawing::Point(262, 77);
+			this->chk_E27->Name = L"chk_E27";
+			this->chk_E27->Size = System::Drawing::Size(45, 17);
+			this->chk_E27->TabIndex = 60;
+			this->chk_E27->Text = L"E27";
+			this->chk_E27->UseVisualStyleBackColor = true;
+			// 
+			// chk_E28
+			// 
+			this->chk_E28->AutoSize = true;
+			this->chk_E28->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E28->Location = System::Drawing::Point(303, 77);
+			this->chk_E28->Name = L"chk_E28";
+			this->chk_E28->Size = System::Drawing::Size(45, 17);
+			this->chk_E28->TabIndex = 82;
+			this->chk_E28->Text = L"E28";
+			this->chk_E28->UseVisualStyleBackColor = true;
+			// 
+			// chk_E29
+			// 
+			this->chk_E29->AutoSize = true;
+			this->chk_E29->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E29->Location = System::Drawing::Point(346, 77);
+			this->chk_E29->Name = L"chk_E29";
+			this->chk_E29->Size = System::Drawing::Size(45, 17);
+			this->chk_E29->TabIndex = 83;
+			this->chk_E29->Text = L"E29";
+			this->chk_E29->UseVisualStyleBackColor = true;
+			// 
+			// chk_E30
+			// 
+			this->chk_E30->AutoSize = true;
+			this->chk_E30->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E30->Location = System::Drawing::Point(388, 77);
+			this->chk_E30->Name = L"chk_E30";
+			this->chk_E30->Size = System::Drawing::Size(45, 17);
+			this->chk_E30->TabIndex = 62;
+			this->chk_E30->Text = L"E30";
+			this->chk_E30->UseVisualStyleBackColor = true;
+			// 
+			// chk_E31
+			// 
+			this->chk_E31->AutoSize = true;
+			this->chk_E31->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E31->Location = System::Drawing::Point(10, 97);
+			this->chk_E31->Name = L"chk_E31";
+			this->chk_E31->Size = System::Drawing::Size(45, 17);
+			this->chk_E31->TabIndex = 86;
+			this->chk_E31->Text = L"E31";
+			this->chk_E31->UseVisualStyleBackColor = true;
+			// 
+			// chk_E32
+			// 
+			this->chk_E32->AutoSize = true;
+			this->chk_E32->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E32->Location = System::Drawing::Point(52, 97);
+			this->chk_E32->Name = L"chk_E32";
+			this->chk_E32->Size = System::Drawing::Size(45, 17);
+			this->chk_E32->TabIndex = 84;
+			this->chk_E32->Text = L"E32";
+			this->chk_E32->UseVisualStyleBackColor = true;
+			// 
+			// chk_E33
+			// 
+			this->chk_E33->AutoSize = true;
+			this->chk_E33->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E33->Location = System::Drawing::Point(94, 97);
+			this->chk_E33->Name = L"chk_E33";
+			this->chk_E33->Size = System::Drawing::Size(45, 17);
+			this->chk_E33->TabIndex = 87;
+			this->chk_E33->Text = L"E33";
+			this->chk_E33->UseVisualStyleBackColor = true;
+			// 
+			// chk_E34
+			// 
+			this->chk_E34->AutoSize = true;
+			this->chk_E34->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E34->Location = System::Drawing::Point(136, 97);
+			this->chk_E34->Name = L"chk_E34";
+			this->chk_E34->Size = System::Drawing::Size(45, 17);
+			this->chk_E34->TabIndex = 88;
+			this->chk_E34->Text = L"E34";
+			this->chk_E34->UseVisualStyleBackColor = true;
+			// 
+			// chk_E35
+			// 
+			this->chk_E35->AutoSize = true;
+			this->chk_E35->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E35->Location = System::Drawing::Point(178, 97);
+			this->chk_E35->Name = L"chk_E35";
+			this->chk_E35->Size = System::Drawing::Size(45, 17);
+			this->chk_E35->TabIndex = 85;
+			this->chk_E35->Text = L"E35";
+			this->chk_E35->UseVisualStyleBackColor = true;
+			// 
+			// chk_E36
+			// 
+			this->chk_E36->AutoSize = true;
+			this->chk_E36->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_E36->Location = System::Drawing::Point(220, 97);
+			this->chk_E36->Name = L"chk_E36";
+			this->chk_E36->Size = System::Drawing::Size(45, 17);
+			this->chk_E36->TabIndex = 89;
+			this->chk_E36->Text = L"E36";
+			this->chk_E36->UseVisualStyleBackColor = true;
 			// 
 			// rb_E_FE2
 			// 
@@ -2480,54 +2932,6 @@ private:
 			this->rb_E_FE1->TabStop = true;
 			this->rb_E_FE1->Text = L"FrontEnd1";
 			this->rb_E_FE1->UseVisualStyleBackColor = true;
-			// 
-			// chk_E20
-			// 
-			this->chk_E20->AutoSize = true;
-			this->chk_E20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E20->Location = System::Drawing::Point(136, 37);
-			this->chk_E20->Name = L"chk_E20";
-			this->chk_E20->Size = System::Drawing::Size(45, 17);
-			this->chk_E20->TabIndex = 27;
-			this->chk_E20->Text = L"E20";
-			this->chk_E20->UseVisualStyleBackColor = true;
-			// 
-			// chk_E19
-			// 
-			this->chk_E19->AutoSize = true;
-			this->chk_E19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E19->Location = System::Drawing::Point(351, 37);
-			this->chk_E19->Name = L"chk_E19";
-			this->chk_E19->Size = System::Drawing::Size(45, 17);
-			this->chk_E19->TabIndex = 26;
-			this->chk_E19->Text = L"E19";
-			this->chk_E19->UseVisualStyleBackColor = true;
-			// 
-			// chk_E12
-			// 
-			this->chk_E12->AutoSize = true;
-			this->chk_E12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E12->Location = System::Drawing::Point(50, 37);
-			this->chk_E12->Name = L"chk_E12";
-			this->chk_E12->Size = System::Drawing::Size(45, 17);
-			this->chk_E12->TabIndex = 25;
-			this->chk_E12->Text = L"E12";
-			this->chk_E12->UseVisualStyleBackColor = true;
-			// 
-			// chk_E11
-			// 
-			this->chk_E11->AutoSize = true;
-			this->chk_E11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_E11->Location = System::Drawing::Point(10, 37);
-			this->chk_E11->Name = L"chk_E11";
-			this->chk_E11->Size = System::Drawing::Size(45, 17);
-			this->chk_E11->TabIndex = 24;
-			this->chk_E11->Text = L"E11";
-			this->chk_E11->UseVisualStyleBackColor = true;
 			// 
 			// chk_TYPE_E1B
 			// 
@@ -2561,26 +2965,42 @@ private:
 			// 
 			this->gb_bds->Controls->Add(this->rb_C_FE2);
 			this->gb_bds->Controls->Add(this->rb_C_FE1);
-			this->gb_bds->Controls->Add(this->chk_C14);
-			this->gb_bds->Controls->Add(this->chk_C13);
-			this->gb_bds->Controls->Add(this->chk_C12);
-			this->gb_bds->Controls->Add(this->chk_C11);
-			this->gb_bds->Controls->Add(this->chk_C10);
-			this->gb_bds->Controls->Add(this->chk_C09);
-			this->gb_bds->Controls->Add(this->chk_C08);
-			this->gb_bds->Controls->Add(this->chk_C07);
-			this->gb_bds->Controls->Add(this->chk_C06);
-			this->gb_bds->Controls->Add(this->chk_C05);
-			this->gb_bds->Controls->Add(this->chk_C04);
-			this->gb_bds->Controls->Add(this->chk_C03);
-			this->gb_bds->Controls->Add(this->chk_C02);
 			this->gb_bds->Controls->Add(this->chk_C01);
+			this->gb_bds->Controls->Add(this->chk_C02);
+			this->gb_bds->Controls->Add(this->chk_C03);
+			this->gb_bds->Controls->Add(this->chk_C04);
+			this->gb_bds->Controls->Add(this->chk_C05);
+			this->gb_bds->Controls->Add(this->chk_C06);
+			this->gb_bds->Controls->Add(this->chk_C07);
+			this->gb_bds->Controls->Add(this->chk_C08);
+			this->gb_bds->Controls->Add(this->chk_C09);
+			this->gb_bds->Controls->Add(this->chk_C10);
+			this->gb_bds->Controls->Add(this->chk_C11);
+			this->gb_bds->Controls->Add(this->chk_C12);
+			this->gb_bds->Controls->Add(this->chk_C13);
+			this->gb_bds->Controls->Add(this->chk_C14);
+			this->gb_bds->Controls->Add(this->chk_C15);
+			this->gb_bds->Controls->Add(this->chk_C16);
+			this->gb_bds->Controls->Add(this->chk_C17);
+			this->gb_bds->Controls->Add(this->chk_C18);
+			this->gb_bds->Controls->Add(this->chk_C19);
+			this->gb_bds->Controls->Add(this->chk_C20);
+			this->gb_bds->Controls->Add(this->chk_C21);
+			this->gb_bds->Controls->Add(this->chk_C22);
+			this->gb_bds->Controls->Add(this->chk_C23);
+			this->gb_bds->Controls->Add(this->chk_C24);
+			this->gb_bds->Controls->Add(this->chk_C25);
+			this->gb_bds->Controls->Add(this->chk_C26);
+			this->gb_bds->Controls->Add(this->chk_C27);
+			this->gb_bds->Controls->Add(this->chk_C28);
+			this->gb_bds->Controls->Add(this->chk_C29);
+			this->gb_bds->Controls->Add(this->chk_C30);
 			this->gb_bds->Controls->Add(this->chk_TYPE_B1I);
 			this->gb_bds->Controls->Add(this->chk_CALL);
 			this->gb_bds->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_bds->Location = System::Drawing::Point(7, 295);
+			this->gb_bds->Location = System::Drawing::Point(7, 334);
 			this->gb_bds->Name = L"gb_bds";
-			this->gb_bds->Size = System::Drawing::Size(432, 83);
+			this->gb_bds->Size = System::Drawing::Size(432, 108);
 			this->gb_bds->TabIndex = 60;
 			this->gb_bds->TabStop = false;
 			this->gb_bds->Text = L"BeiDou";
@@ -2611,149 +3031,17 @@ private:
 			this->rb_C_FE1->Text = L"FrontEnd1";
 			this->rb_C_FE1->UseVisualStyleBackColor = true;
 			// 
-			// chk_C14
+			// chk_C01
 			// 
-			this->chk_C14->AutoSize = true;
-			this->chk_C14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_C01->AutoSize = true;
+			this->chk_C01->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_C14->Location = System::Drawing::Point(136, 60);
-			this->chk_C14->Name = L"chk_C14";
-			this->chk_C14->Size = System::Drawing::Size(45, 17);
-			this->chk_C14->TabIndex = 37;
-			this->chk_C14->Text = L"C14";
-			this->chk_C14->UseVisualStyleBackColor = true;
-			// 
-			// chk_C13
-			// 
-			this->chk_C13->AutoSize = true;
-			this->chk_C13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C13->Location = System::Drawing::Point(94, 60);
-			this->chk_C13->Name = L"chk_C13";
-			this->chk_C13->Size = System::Drawing::Size(45, 17);
-			this->chk_C13->TabIndex = 36;
-			this->chk_C13->Text = L"C13";
-			this->chk_C13->UseVisualStyleBackColor = true;
-			// 
-			// chk_C12
-			// 
-			this->chk_C12->AutoSize = true;
-			this->chk_C12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C12->Location = System::Drawing::Point(52, 60);
-			this->chk_C12->Name = L"chk_C12";
-			this->chk_C12->Size = System::Drawing::Size(45, 17);
-			this->chk_C12->TabIndex = 35;
-			this->chk_C12->Text = L"C12";
-			this->chk_C12->UseVisualStyleBackColor = true;
-			// 
-			// chk_C11
-			// 
-			this->chk_C11->AutoSize = true;
-			this->chk_C11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C11->Location = System::Drawing::Point(10, 60);
-			this->chk_C11->Name = L"chk_C11";
-			this->chk_C11->Size = System::Drawing::Size(45, 17);
-			this->chk_C11->TabIndex = 34;
-			this->chk_C11->Text = L"C11";
-			this->chk_C11->UseVisualStyleBackColor = true;
-			// 
-			// chk_C10
-			// 
-			this->chk_C10->AutoSize = true;
-			this->chk_C10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C10->Location = System::Drawing::Point(388, 41);
-			this->chk_C10->Name = L"chk_C10";
-			this->chk_C10->Size = System::Drawing::Size(45, 17);
-			this->chk_C10->TabIndex = 33;
-			this->chk_C10->Text = L"C10";
-			this->chk_C10->UseVisualStyleBackColor = true;
-			// 
-			// chk_C09
-			// 
-			this->chk_C09->AutoSize = true;
-			this->chk_C09->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C09->Location = System::Drawing::Point(346, 41);
-			this->chk_C09->Name = L"chk_C09";
-			this->chk_C09->Size = System::Drawing::Size(45, 17);
-			this->chk_C09->TabIndex = 32;
-			this->chk_C09->Text = L"C09";
-			this->chk_C09->UseVisualStyleBackColor = true;
-			// 
-			// chk_C08
-			// 
-			this->chk_C08->AutoSize = true;
-			this->chk_C08->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C08->Location = System::Drawing::Point(304, 41);
-			this->chk_C08->Name = L"chk_C08";
-			this->chk_C08->Size = System::Drawing::Size(45, 17);
-			this->chk_C08->TabIndex = 31;
-			this->chk_C08->Text = L"C08";
-			this->chk_C08->UseVisualStyleBackColor = true;
-			// 
-			// chk_C07
-			// 
-			this->chk_C07->AutoSize = true;
-			this->chk_C07->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C07->Location = System::Drawing::Point(262, 41);
-			this->chk_C07->Name = L"chk_C07";
-			this->chk_C07->Size = System::Drawing::Size(45, 17);
-			this->chk_C07->TabIndex = 30;
-			this->chk_C07->Text = L"C07";
-			this->chk_C07->UseVisualStyleBackColor = true;
-			// 
-			// chk_C06
-			// 
-			this->chk_C06->AutoSize = true;
-			this->chk_C06->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C06->Location = System::Drawing::Point(220, 41);
-			this->chk_C06->Name = L"chk_C06";
-			this->chk_C06->Size = System::Drawing::Size(45, 17);
-			this->chk_C06->TabIndex = 29;
-			this->chk_C06->Text = L"C06";
-			this->chk_C06->UseVisualStyleBackColor = true;
-			// 
-			// chk_C05
-			// 
-			this->chk_C05->AutoSize = true;
-			this->chk_C05->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C05->Location = System::Drawing::Point(178, 41);
-			this->chk_C05->Name = L"chk_C05";
-			this->chk_C05->Size = System::Drawing::Size(45, 17);
-			this->chk_C05->TabIndex = 28;
-			this->chk_C05->Text = L"C05";
-			this->chk_C05->UseVisualStyleBackColor = true;
-			// 
-			// chk_C04
-			// 
-			this->chk_C04->AutoSize = true;
-			this->chk_C04->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C04->Location = System::Drawing::Point(136, 41);
-			this->chk_C04->Name = L"chk_C04";
-			this->chk_C04->Size = System::Drawing::Size(45, 17);
-			this->chk_C04->TabIndex = 27;
-			this->chk_C04->Text = L"C04";
-			this->chk_C04->UseVisualStyleBackColor = true;
-			// 
-			// chk_C03
-			// 
-			this->chk_C03->AutoSize = true;
-			this->chk_C03->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->chk_C03->Location = System::Drawing::Point(94, 41);
-			this->chk_C03->Name = L"chk_C03";
-			this->chk_C03->Size = System::Drawing::Size(45, 17);
-			this->chk_C03->TabIndex = 26;
-			this->chk_C03->Text = L"C03";
-			this->chk_C03->UseVisualStyleBackColor = true;
+			this->chk_C01->Location = System::Drawing::Point(10, 41);
+			this->chk_C01->Name = L"chk_C01";
+			this->chk_C01->Size = System::Drawing::Size(45, 17);
+			this->chk_C01->TabIndex = 24;
+			this->chk_C01->Text = L"C01";
+			this->chk_C01->UseVisualStyleBackColor = true;
 			// 
 			// chk_C02
 			// 
@@ -2767,17 +3055,341 @@ private:
 			this->chk_C02->Text = L"C02";
 			this->chk_C02->UseVisualStyleBackColor = true;
 			// 
-			// chk_C01
+			// chk_C03
 			// 
-			this->chk_C01->AutoSize = true;
-			this->chk_C01->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->chk_C03->AutoSize = true;
+			this->chk_C03->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->chk_C01->Location = System::Drawing::Point(10, 41);
-			this->chk_C01->Name = L"chk_C01";
-			this->chk_C01->Size = System::Drawing::Size(45, 17);
-			this->chk_C01->TabIndex = 24;
-			this->chk_C01->Text = L"C01";
-			this->chk_C01->UseVisualStyleBackColor = true;
+			this->chk_C03->Location = System::Drawing::Point(94, 41);
+			this->chk_C03->Name = L"chk_C03";
+			this->chk_C03->Size = System::Drawing::Size(45, 17);
+			this->chk_C03->TabIndex = 26;
+			this->chk_C03->Text = L"C03";
+			this->chk_C03->UseVisualStyleBackColor = true;
+			// 
+			// chk_C04
+			// 
+			this->chk_C04->AutoSize = true;
+			this->chk_C04->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C04->Location = System::Drawing::Point(136, 41);
+			this->chk_C04->Name = L"chk_C04";
+			this->chk_C04->Size = System::Drawing::Size(45, 17);
+			this->chk_C04->TabIndex = 27;
+			this->chk_C04->Text = L"C04";
+			this->chk_C04->UseVisualStyleBackColor = true;
+			// 
+			// chk_C05
+			// 
+			this->chk_C05->AutoSize = true;
+			this->chk_C05->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C05->Location = System::Drawing::Point(178, 41);
+			this->chk_C05->Name = L"chk_C05";
+			this->chk_C05->Size = System::Drawing::Size(45, 17);
+			this->chk_C05->TabIndex = 28;
+			this->chk_C05->Text = L"C05";
+			this->chk_C05->UseVisualStyleBackColor = true;
+			// 
+			// chk_C06
+			// 
+			this->chk_C06->AutoSize = true;
+			this->chk_C06->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C06->Location = System::Drawing::Point(220, 41);
+			this->chk_C06->Name = L"chk_C06";
+			this->chk_C06->Size = System::Drawing::Size(45, 17);
+			this->chk_C06->TabIndex = 29;
+			this->chk_C06->Text = L"C06";
+			this->chk_C06->UseVisualStyleBackColor = true;
+			// 
+			// chk_C07
+			// 
+			this->chk_C07->AutoSize = true;
+			this->chk_C07->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C07->Location = System::Drawing::Point(262, 41);
+			this->chk_C07->Name = L"chk_C07";
+			this->chk_C07->Size = System::Drawing::Size(45, 17);
+			this->chk_C07->TabIndex = 30;
+			this->chk_C07->Text = L"C07";
+			this->chk_C07->UseVisualStyleBackColor = true;
+			// 
+			// chk_C08
+			// 
+			this->chk_C08->AutoSize = true;
+			this->chk_C08->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C08->Location = System::Drawing::Point(304, 41);
+			this->chk_C08->Name = L"chk_C08";
+			this->chk_C08->Size = System::Drawing::Size(45, 17);
+			this->chk_C08->TabIndex = 31;
+			this->chk_C08->Text = L"C08";
+			this->chk_C08->UseVisualStyleBackColor = true;
+			// 
+			// chk_C09
+			// 
+			this->chk_C09->AutoSize = true;
+			this->chk_C09->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C09->Location = System::Drawing::Point(346, 41);
+			this->chk_C09->Name = L"chk_C09";
+			this->chk_C09->Size = System::Drawing::Size(45, 17);
+			this->chk_C09->TabIndex = 32;
+			this->chk_C09->Text = L"C09";
+			this->chk_C09->UseVisualStyleBackColor = true;
+			// 
+			// chk_C10
+			// 
+			this->chk_C10->AutoSize = true;
+			this->chk_C10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C10->Location = System::Drawing::Point(388, 41);
+			this->chk_C10->Name = L"chk_C10";
+			this->chk_C10->Size = System::Drawing::Size(45, 17);
+			this->chk_C10->TabIndex = 33;
+			this->chk_C10->Text = L"C10";
+			this->chk_C10->UseVisualStyleBackColor = true;
+			// 
+			// chk_C11
+			// 
+			this->chk_C11->AutoSize = true;
+			this->chk_C11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C11->Location = System::Drawing::Point(10, 60);
+			this->chk_C11->Name = L"chk_C11";
+			this->chk_C11->Size = System::Drawing::Size(45, 17);
+			this->chk_C11->TabIndex = 34;
+			this->chk_C11->Text = L"C11";
+			this->chk_C11->UseVisualStyleBackColor = true;
+			// 
+			// chk_C12
+			// 
+			this->chk_C12->AutoSize = true;
+			this->chk_C12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C12->Location = System::Drawing::Point(52, 60);
+			this->chk_C12->Name = L"chk_C12";
+			this->chk_C12->Size = System::Drawing::Size(45, 17);
+			this->chk_C12->TabIndex = 35;
+			this->chk_C12->Text = L"C12";
+			this->chk_C12->UseVisualStyleBackColor = true;
+			// 
+			// chk_C13
+			// 
+			this->chk_C13->AutoSize = true;
+			this->chk_C13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C13->Location = System::Drawing::Point(94, 60);
+			this->chk_C13->Name = L"chk_C13";
+			this->chk_C13->Size = System::Drawing::Size(45, 17);
+			this->chk_C13->TabIndex = 36;
+			this->chk_C13->Text = L"C13";
+			this->chk_C13->UseVisualStyleBackColor = true;
+			// 
+			// chk_C14
+			// 
+			this->chk_C14->AutoSize = true;
+			this->chk_C14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C14->Location = System::Drawing::Point(136, 60);
+			this->chk_C14->Name = L"chk_C14";
+			this->chk_C14->Size = System::Drawing::Size(45, 17);
+			this->chk_C14->TabIndex = 37;
+			this->chk_C14->Text = L"C14";
+			this->chk_C14->UseVisualStyleBackColor = true;
+			// 
+			// chk_C15
+			// 
+			this->chk_C15->AutoSize = true;
+			this->chk_C15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C15->Location = System::Drawing::Point(178, 60);
+			this->chk_C15->Name = L"chk_C15";
+			this->chk_C15->Size = System::Drawing::Size(45, 17);
+			this->chk_C15->TabIndex = 58;
+			this->chk_C15->Text = L"C15";
+			this->chk_C15->UseVisualStyleBackColor = true;
+			// 
+			// chk_C16
+			// 
+			this->chk_C16->AutoSize = true;
+			this->chk_C16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C16->Location = System::Drawing::Point(220, 60);
+			this->chk_C16->Name = L"chk_C16";
+			this->chk_C16->Size = System::Drawing::Size(45, 17);
+			this->chk_C16->TabIndex = 59;
+			this->chk_C16->Text = L"C16";
+			this->chk_C16->UseVisualStyleBackColor = true;
+			// 
+			// chk_C17
+			// 
+			this->chk_C17->AutoSize = true;
+			this->chk_C17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C17->Location = System::Drawing::Point(262, 60);
+			this->chk_C17->Name = L"chk_C17";
+			this->chk_C17->Size = System::Drawing::Size(45, 17);
+			this->chk_C17->TabIndex = 60;
+			this->chk_C17->Text = L"C17";
+			this->chk_C17->UseVisualStyleBackColor = true;
+			// 
+			// chk_C18
+			// 
+			this->chk_C18->AutoSize = true;
+			this->chk_C18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C18->Location = System::Drawing::Point(304, 60);
+			this->chk_C18->Name = L"chk_C18";
+			this->chk_C18->Size = System::Drawing::Size(45, 17);
+			this->chk_C18->TabIndex = 61;
+			this->chk_C18->Text = L"C18";
+			this->chk_C18->UseVisualStyleBackColor = true;
+			// 
+			// chk_C19
+			// 
+			this->chk_C19->AutoSize = true;
+			this->chk_C19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C19->Location = System::Drawing::Point(346, 60);
+			this->chk_C19->Name = L"chk_C19";
+			this->chk_C19->Size = System::Drawing::Size(45, 17);
+			this->chk_C19->TabIndex = 62;
+			this->chk_C19->Text = L"C19";
+			this->chk_C19->UseVisualStyleBackColor = true;
+			// 
+			// chk_C20
+			// 
+			this->chk_C20->AutoSize = true;
+			this->chk_C20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C20->Location = System::Drawing::Point(388, 60);
+			this->chk_C20->Name = L"chk_C20";
+			this->chk_C20->Size = System::Drawing::Size(45, 17);
+			this->chk_C20->TabIndex = 63;
+			this->chk_C20->Text = L"C20";
+			this->chk_C20->UseVisualStyleBackColor = true;
+			// 
+			// chk_C21
+			// 
+			this->chk_C21->AutoSize = true;
+			this->chk_C21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C21->Location = System::Drawing::Point(10, 80);
+			this->chk_C21->Name = L"chk_C21";
+			this->chk_C21->Size = System::Drawing::Size(45, 17);
+			this->chk_C21->TabIndex = 64;
+			this->chk_C21->Text = L"C21";
+			this->chk_C21->UseVisualStyleBackColor = true;
+			// 
+			// chk_C22
+			// 
+			this->chk_C22->AutoSize = true;
+			this->chk_C22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C22->Location = System::Drawing::Point(52, 80);
+			this->chk_C22->Name = L"chk_C22";
+			this->chk_C22->Size = System::Drawing::Size(45, 17);
+			this->chk_C22->TabIndex = 65;
+			this->chk_C22->Text = L"C22";
+			this->chk_C22->UseVisualStyleBackColor = true;
+			// 
+			// chk_C23
+			// 
+			this->chk_C23->AutoSize = true;
+			this->chk_C23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C23->Location = System::Drawing::Point(94, 80);
+			this->chk_C23->Name = L"chk_C23";
+			this->chk_C23->Size = System::Drawing::Size(45, 17);
+			this->chk_C23->TabIndex = 66;
+			this->chk_C23->Text = L"C23";
+			this->chk_C23->UseVisualStyleBackColor = true;
+			// 
+			// chk_C24
+			// 
+			this->chk_C24->AutoSize = true;
+			this->chk_C24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C24->Location = System::Drawing::Point(136, 80);
+			this->chk_C24->Name = L"chk_C24";
+			this->chk_C24->Size = System::Drawing::Size(45, 17);
+			this->chk_C24->TabIndex = 67;
+			this->chk_C24->Text = L"C24";
+			this->chk_C24->UseVisualStyleBackColor = true;
+			// 
+			// chk_C25
+			// 
+			this->chk_C25->AutoSize = true;
+			this->chk_C25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C25->Location = System::Drawing::Point(178, 80);
+			this->chk_C25->Name = L"chk_C25";
+			this->chk_C25->Size = System::Drawing::Size(45, 17);
+			this->chk_C25->TabIndex = 68;
+			this->chk_C25->Text = L"C25";
+			this->chk_C25->UseVisualStyleBackColor = true;
+			// 
+			// chk_C26
+			// 
+			this->chk_C26->AutoSize = true;
+			this->chk_C26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C26->Location = System::Drawing::Point(220, 80);
+			this->chk_C26->Name = L"chk_C26";
+			this->chk_C26->Size = System::Drawing::Size(45, 17);
+			this->chk_C26->TabIndex = 69;
+			this->chk_C26->Text = L"C26";
+			this->chk_C26->UseVisualStyleBackColor = true;
+			// 
+			// chk_C27
+			// 
+			this->chk_C27->AutoSize = true;
+			this->chk_C27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C27->Location = System::Drawing::Point(262, 80);
+			this->chk_C27->Name = L"chk_C27";
+			this->chk_C27->Size = System::Drawing::Size(45, 17);
+			this->chk_C27->TabIndex = 70;
+			this->chk_C27->Text = L"C27";
+			this->chk_C27->UseVisualStyleBackColor = true;
+			// 
+			// chk_C28
+			// 
+			this->chk_C28->AutoSize = true;
+			this->chk_C28->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C28->Location = System::Drawing::Point(304, 80);
+			this->chk_C28->Name = L"chk_C28";
+			this->chk_C28->Size = System::Drawing::Size(45, 17);
+			this->chk_C28->TabIndex = 71;
+			this->chk_C28->Text = L"C28";
+			this->chk_C28->UseVisualStyleBackColor = true;
+			// 
+			// chk_C29
+			// 
+			this->chk_C29->AutoSize = true;
+			this->chk_C29->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C29->Location = System::Drawing::Point(346, 80);
+			this->chk_C29->Name = L"chk_C29";
+			this->chk_C29->Size = System::Drawing::Size(45, 17);
+			this->chk_C29->TabIndex = 72;
+			this->chk_C29->Text = L"C29";
+			this->chk_C29->UseVisualStyleBackColor = true;
+			// 
+			// chk_C30
+			// 
+			this->chk_C30->AutoSize = true;
+			this->chk_C30->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chk_C30->Location = System::Drawing::Point(388, 80);
+			this->chk_C30->Name = L"chk_C30";
+			this->chk_C30->Size = System::Drawing::Size(45, 17);
+			this->chk_C30->TabIndex = 73;
+			this->chk_C30->Text = L"C30";
+			this->chk_C30->UseVisualStyleBackColor = true;
 			// 
 			// chk_TYPE_B1I
 			// 
@@ -2833,7 +3445,7 @@ private:
 			this->gb_sbs->Controls->Add(this->chk_TYPE_SBASL1);
 			this->gb_sbs->Controls->Add(this->chk_SALL);
 			this->gb_sbs->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold));
-			this->gb_sbs->Location = System::Drawing::Point(7, 418);
+			this->gb_sbs->Location = System::Drawing::Point(7, 490);
 			this->gb_sbs->Name = L"gb_sbs";
 			this->gb_sbs->Size = System::Drawing::Size(432, 83);
 			this->gb_sbs->TabIndex = 61;
@@ -3132,7 +3744,7 @@ private:
 			this->gb_misc->Controls->Add(this->b_radar);
 			this->gb_misc->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
-			this->gb_misc->Location = System::Drawing::Point(7, 412);
+			this->gb_misc->Location = System::Drawing::Point(4, 507);
 			this->gb_misc->Name = L"gb_misc";
 			this->gb_misc->Size = System::Drawing::Size(414, 41);
 			this->gb_misc->TabIndex = 62;
@@ -3206,18 +3818,21 @@ private:
 			this->b_radar->UseVisualStyleBackColor = true;
 			this->b_radar->Click += gcnew System::EventHandler(this, &maindlg::b_radar_Click);
 			// 
-			// panelSysStrl
+			// panelSysCtrl
 			// 
-			this->panelSysStrl->Controls->Add(this->gb_gps);
-			this->panelSysStrl->Controls->Add(this->gb_qzs);
-			this->panelSysStrl->Controls->Add(this->gb_sbs);
-			this->panelSysStrl->Controls->Add(this->gb_glo);
-			this->panelSysStrl->Controls->Add(this->gb_bds);
-			this->panelSysStrl->Controls->Add(this->gb_gal);
-			this->panelSysStrl->Location = System::Drawing::Point(428, 8);
-			this->panelSysStrl->Name = L"panelSysStrl";
-			this->panelSysStrl->Size = System::Drawing::Size(450, 505);
-			this->panelSysStrl->TabIndex = 63;
+			this->panelSysCtrl->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->panelSysCtrl->Controls->Add(this->gb_gps);
+			this->panelSysCtrl->Controls->Add(this->gb_qzs);
+			this->panelSysCtrl->Controls->Add(this->gb_sbs);
+			this->panelSysCtrl->Controls->Add(this->gb_glo);
+			this->panelSysCtrl->Controls->Add(this->gb_bds);
+			this->panelSysCtrl->Controls->Add(this->gb_gal);
+			this->panelSysCtrl->Location = System::Drawing::Point(428, 8);
+			this->panelSysCtrl->Name = L"panelSysCtrl";
+			this->panelSysCtrl->Size = System::Drawing::Size(450, 579);
+			this->panelSysCtrl->TabIndex = 63;
 			// 
 			// timerUpdateGUI
 			// 
@@ -3229,20 +3844,31 @@ private:
 			this->chk_DispTrackCycles->AutoSize = true;
 			this->chk_DispTrackCycles->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->chk_DispTrackCycles->Location = System::Drawing::Point(7, 492);
+			this->chk_DispTrackCycles->Location = System::Drawing::Point(11, 485);
 			this->chk_DispTrackCycles->Name = L"chk_DispTrackCycles";
 			this->chk_DispTrackCycles->Size = System::Drawing::Size(110, 17);
 			this->chk_DispTrackCycles->TabIndex = 36;
 			this->chk_DispTrackCycles->Text = L"Disp. track cycles";
 			this->chk_DispTrackCycles->UseVisualStyleBackColor = true;
 			// 
+			// linkLabel1
+			// 
+			this->linkLabel1->AutoSize = true;
+			this->linkLabel1->Location = System::Drawing::Point(364, 62);
+			this->linkLabel1->Name = L"linkLabel1";
+			this->linkLabel1->Size = System::Drawing::Size(56, 15);
+			this->linkLabel1->TabIndex = 59;
+			this->linkLabel1->TabStop = true;
+			this->linkLabel1->Text = L"Sat info";
+			this->linkLabel1->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &maindlg::linkLabel1_LinkClicked);
+			// 
 			// maindlg
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(883, 517);
+			this->ClientSize = System::Drawing::Size(883, 591);
 			this->Controls->Add(this->chk_DispTrackCycles);
-			this->Controls->Add(this->panelSysStrl);
+			this->Controls->Add(this->panelSysCtrl);
 			this->Controls->Add(this->gb_misc);
 			this->Controls->Add(this->chk_monitor);
 			this->Controls->Add(this->rb_spec2);
@@ -3254,7 +3880,6 @@ private:
 			this->Controls->Add(this->gb_setting);
 			this->Controls->Add(this->gb_output);
 			this->Controls->Add(this->gb_input);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"maindlg";
@@ -3267,6 +3892,7 @@ private:
 			this->gb_output->PerformLayout();
 			this->gb_setting->ResumeLayout(false);
 			this->gb_setting->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_acq_threshold))->EndInit();
 			this->gp_FE2->ResumeLayout(false);
 			this->gp_FE2->PerformLayout();
 			this->groupBox9->ResumeLayout(false);
@@ -3289,7 +3915,7 @@ private:
 			this->gb_sbs->PerformLayout();
 			this->gb_misc->ResumeLayout(false);
 			this->gb_misc->PerformLayout();
-			this->panelSysStrl->ResumeLayout(false);
+			this->panelSysCtrl->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -3345,197 +3971,76 @@ private:
                      tb_saif_port->Enabled=false;
                  }
              }
-    private: System::Void chk_GALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_GALL->Checked) {
-                     chk_G01->Checked=true;
-                     chk_G02->Checked=true;
-                     chk_G03->Checked=true;
-                     chk_G04->Checked=true;
-                     chk_G05->Checked=true;
-                     chk_G06->Checked=true;
-                     chk_G07->Checked=true;
-                     chk_G08->Checked=true;
-                     chk_G09->Checked=true;
-                     chk_G10->Checked=true;
-                     chk_G11->Checked=true;
-                     chk_G12->Checked=true;
-                     chk_G13->Checked=true;
-                     chk_G14->Checked=true;
-                     chk_G15->Checked=true;
-                     chk_G16->Checked=true;
-                     chk_G17->Checked=true;
-                     chk_G18->Checked=true;
-                     chk_G19->Checked=true;
-                     chk_G20->Checked=true;
-                     chk_G21->Checked=true;
-                     chk_G22->Checked=true;
-                     chk_G23->Checked=true;
-                     chk_G24->Checked=true;
-                     chk_G25->Checked=true;
-                     chk_G26->Checked=true;
-                     chk_G27->Checked=true;
-                     chk_G28->Checked=true;
-                     chk_G29->Checked=true;
-                     chk_G30->Checked=true;
-                     chk_G31->Checked=true;
-                     chk_G32->Checked=true;
-                 } else {
-                     chk_G01->Checked=false;
-                     chk_G02->Checked=false;
-                     chk_G03->Checked=false;
-                     chk_G04->Checked=false;
-                     chk_G05->Checked=false;
-                     chk_G06->Checked=false;
-                     chk_G07->Checked=false;
-                     chk_G08->Checked=false;
-                     chk_G09->Checked=false;
-                     chk_G10->Checked=false;
-                     chk_G11->Checked=false;
-                     chk_G12->Checked=false;
-                     chk_G13->Checked=false;
-                     chk_G14->Checked=false;
-                     chk_G15->Checked=false;
-                     chk_G16->Checked=false;
-                     chk_G17->Checked=false;
-                     chk_G18->Checked=false;
-                     chk_G19->Checked=false;
-                     chk_G20->Checked=false;
-                     chk_G21->Checked=false;
-                     chk_G22->Checked=false;
-                     chk_G23->Checked=false;
-                     chk_G24->Checked=false;
-                     chk_G25->Checked=false;
-                     chk_G26->Checked=false;
-                     chk_G27->Checked=false;
-                     chk_G28->Checked=false;
-                     chk_G29->Checked=false;
-                     chk_G30->Checked=false;
-                     chk_G31->Checked=false;
-                     chk_G32->Checked=false;
-                 }
-             }
-    private: System::Void chk_RALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_RALL->Checked) {
-                     chk_R_7->Checked=true;
-                     chk_R_6->Checked=true;
-                     chk_R_5->Checked=true;
-                     chk_R_4->Checked=true;
-                     chk_R_3->Checked=true;
-                     chk_R_2->Checked=true;
-                     chk_R_1->Checked=true;
-                     chk_R0->Checked=true;
-                     chk_R1->Checked=true;
-                     chk_R2->Checked=true;
-                     chk_R3->Checked=true;
-                     chk_R4->Checked=true;
-                     chk_R5->Checked=true;
-                     chk_R6->Checked=true;
-                 } else {
-                     chk_R_7->Checked=false;
-                     chk_R_6->Checked=false;
-                     chk_R_5->Checked=false;
-                     chk_R_4->Checked=false;
-                     chk_R_3->Checked=false;
-                     chk_R_2->Checked=false;
-                     chk_R_1->Checked=false;
-                     chk_R0->Checked=false;
-                     chk_R1->Checked=false;
-                     chk_R2->Checked=false;
-                     chk_R3->Checked=false;
-                     chk_R4->Checked=false;
-                     chk_R5->Checked=false;
-                     chk_R6->Checked=false;
-                 }
-             }
-    private: System::Void chk_EALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_EALL->Checked) {
-                     chk_E11->Checked=true;
-                     chk_E12->Checked=true;
-                     chk_E19->Checked=true;
-                     chk_E20->Checked=true;
-                 } else {
-                     chk_E11->Checked=false;
-                     chk_E12->Checked=false;
-                     chk_E19->Checked=false;
-                     chk_E20->Checked=false;
-                 }
-             }
-    private: System::Void chk_CALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_CALL->Checked) {
-                     chk_C01->Checked=true;
-                     chk_C02->Checked=true;
-                     chk_C03->Checked=true;
-                     chk_C04->Checked=true;
-                     chk_C05->Checked=true;
-                     chk_C06->Checked=true;
-                     chk_C07->Checked=true;
-                     chk_C08->Checked=true;
-                     chk_C09->Checked=true;
-                     chk_C10->Checked=true;
-                     chk_C11->Checked=true;
-                     chk_C12->Checked=true;
-                     chk_C13->Checked=true;
-                     chk_C14->Checked=true;
-                 } else {
-                     chk_C01->Checked=false;
-                     chk_C02->Checked=false;
-                     chk_C03->Checked=false;
-                     chk_C04->Checked=false;
-                     chk_C05->Checked=false;
-                     chk_C06->Checked=false;
-                     chk_C07->Checked=false;
-                     chk_C08->Checked=false;
-                     chk_C09->Checked=false;
-                     chk_C10->Checked=false;
-                     chk_C11->Checked=false;
-                     chk_C12->Checked=false;
-                     chk_C13->Checked=false;
-                     chk_C14->Checked=false;
-                 }
-             }
-    private: System::Void chk_SALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-                 if (chk_SALL->Checked) {
-                     chk_S120->Checked=true;
-                     chk_S121->Checked=true;
-                     chk_S122->Checked=true;
-                     chk_S123->Checked=true;
-                     chk_S124->Checked=true;
-                     chk_S125->Checked=true;
-                     chk_S126->Checked=true;
-                     chk_S127->Checked=true;
-                     chk_S128->Checked=true;
-                     chk_S129->Checked=true;
-                     chk_S130->Checked=true;
-                     chk_S131->Checked=true;
-                     chk_S132->Checked=true;
-                     chk_S133->Checked=true;
-                     chk_S134->Checked=true;
-                     chk_S135->Checked=true;
-                     chk_S136->Checked=true;
-                     chk_S137->Checked=true;
-                     chk_S138->Checked=true;
-                 } else {
-                     chk_S120->Checked=false;
-                     chk_S121->Checked=false;
-                     chk_S122->Checked=false;
-                     chk_S123->Checked=false;
-                     chk_S124->Checked=false;
-                     chk_S125->Checked=false;
-                     chk_S126->Checked=false;
-                     chk_S127->Checked=false;
-                     chk_S128->Checked=false;
-                     chk_S129->Checked=false;
-                     chk_S130->Checked=false;
-                     chk_S131->Checked=false;
-                     chk_S132->Checked=false;
-                     chk_S133->Checked=false;
-                     chk_S134->Checked=false;
-                     chk_S135->Checked=false;
-                     chk_S136->Checked=false;
-                     chk_S137->Checked=false;
-                     chk_S138->Checked=false;
-                 }
-             }
+    private: System::Void chk_GALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_gps->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_G"))
+				{
+					chkObj->Checked = chk_GALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_RALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		for each (Object^ var_obj in gb_glo->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_R"))
+				{
+					chkObj->Checked = chk_RALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_EALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_gal->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_E"))
+				{
+					chkObj->Checked = chk_EALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_CALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for each (Object^ var_obj in gb_bds->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_C"))
+				{
+					chkObj->Checked = chk_CALL->Checked;
+				}
+			}
+		}
+	}
+    private: System::Void chk_SALL_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		for each (Object^ var_obj in gb_sbs->Controls)
+		{
+			if (var_obj->GetType() == System::Windows::Forms::CheckBox::typeid)
+			{
+				System::Windows::Forms::CheckBox^ chkObj = (System::Windows::Forms::CheckBox^)var_obj;
+				if (chkObj->Name->Contains("chk_S"))
+				{
+					chkObj->Checked = chk_SALL->Checked;
+				}
+			}
+		}
+	}
     private: System::Void comb_input_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 
                  config->tb_corrn="5";
@@ -3620,8 +4125,8 @@ private:
 					 l_input2->Enabled = false;
 					 rb_f1I->Checked = true;
 					 rb_f2IQ->Checked = true;
-					 tb_f1sf->Text = "19.09715";
-					 tb_f1if->Text = "9.453700";
+					 tb_f1sf->Text = "16.368";
+					 tb_f1if->Text = "4.092";
 					 tb_f2sf->Text = "0.0";
 					 tb_f2if->Text = "0.0";
 
@@ -3669,6 +4174,40 @@ private:
                      config->tb_pll2="20.0";
                      config->tb_fll2="50.0";
                      break;
+
+
+				 case FEND_HACKRF: /* RTLSDR */
+					 cb_freq_some();
+
+					 tb_input1->Enabled = false;
+					 b_input1->Enabled = false;
+					 l_input1->Enabled = false;
+					 tb_input2->Enabled = false;
+					 b_input2->Enabled = false;
+					 chk_input2->Enabled = false;
+					 l_input2->Enabled = false;
+					 rb_f1IQ->Checked = true;
+					 rb_f2IQ->Checked = true;
+					 tb_f1sf->Text = "8.000";//MHz
+					 tb_f1if->Text = "0.0";
+					 tb_f2sf->Text = "0.0";
+					 tb_f2if->Text = "0.0";
+
+					 chk_input2->Checked = false;
+					 chk_input2->Enabled = false;
+
+					 ppm_enable();
+
+					 disable_FE2();
+
+					 config->tb_corrn = "4";//for 8mhz
+					 config->tb_corrd = "4";
+					 config->tb_corrp = "8";
+					 config->tb_dll2 = "2.0";
+					 config->tb_pll2 = "20.0";
+					 config->tb_fll2 = "50.0";
+					 break;
+
                  case FEND_BLADERF: /* BladeRF */
                      cb_freq_L1();
 
@@ -3840,27 +4379,34 @@ private:
                  monitor=gcnew monitordlg();
                  monitor->Show();
              }
-    public: System::Void b_start_Click(System::Object^  sender, System::EventArgs^  e) {
-                saveform();
-                WriteConfig();
-                b_start->Enabled=false;
-                b_stop->Enabled=true; 
-                sdr->start(this);
-                gb_input->Enabled=false;
-                gb_output->Enabled=false;
-                gb_setting->Enabled=false;
-                gb_gps->Enabled=false;
-                gb_glo->Enabled=false;
-                gb_gal->Enabled=false;
-                gb_bds->Enabled=false;
-                gb_qzs->Enabled=false;
-                gb_sbs->Enabled=false;
-                chk_spec->Enabled=true;
-				panelSysStrl->Visible = false;
-				this->TextBoxMonitor->Visible = true;
+	public: System::Void b_start_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		saveform();
+		WriteConfig();
+		b_start->Enabled = false;
+		b_stop->Enabled = true;
+		sdr->start(this); //<<<<<<<<<<<<<<<
 
-				timerUpdateGUI->Enabled = true;
-            }
+		int sat_count = sdr->get_sat_count();
+		this->TextBoxMonitor->Items->Clear();
+		for (uint8_t i = 0; i < sat_count; i++)
+			this->TextBoxMonitor->Items->Add(gcnew String(""));
+
+		gb_input->Enabled = false;
+		gb_output->Enabled = false;
+		gb_setting->Enabled = false;
+		gb_gps->Enabled = false;
+		gb_glo->Enabled = false;
+		gb_gal->Enabled = false;
+		gb_bds->Enabled = false;
+		gb_qzs->Enabled = false;
+		gb_sbs->Enabled = false;
+		chk_spec->Enabled = true;
+		panelSysCtrl->Visible = false;
+		this->TextBoxMonitor->Visible = true;
+
+		timerUpdateGUI->Enabled = true;
+	}
 
 	private: System::Void timerUpdateGUI_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -3874,23 +4420,36 @@ private:
 		for (int i = 0; i < sat_count; i++)
 		{
 			sdr->get_sat_info(i, tmp_string);
-			tmpStr += gcnew String(tmp_string);
+			this->TextBoxMonitor->Items[i] = gcnew String(tmp_string);
+			//tmpStr += gcnew String(tmp_string);
 		}
-		this->TextBoxMonitor->Text = tmpStr;
+		//this->TextBoxMonitor->Text = tmpStr;
 		this->TextBoxMonitor->Update();
 
-		
+		if (sat_state_obj != nullptr)
+		{
+			if (sat_state_obj->IsDisposed == true)
+				return;
+
+			sdr->fill_sat_info(this->sat_state_index, sat_state_obj);
+
+		}
 	}
 
 	private:  System::Void CreateControlMonitor(System::Void)
 	{
-		this->TextBoxMonitor = (gcnew System::Windows::Forms::RichTextBox());
+		this->TextBoxMonitor = (gcnew System::Windows::Forms::ListBox());
 		this->TextBoxMonitor->Location = System::Drawing::Point(428, 8);
 		this->TextBoxMonitor->Name = L"ControlMonitor";
-		this->TextBoxMonitor->Size = System::Drawing::Size(450, 505);
+		this->TextBoxMonitor->Size = System::Drawing::Size(450, 525);
+		this->TextBoxMonitor->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top
+			| System::Windows::Forms::AnchorStyles::Bottom)
+			| System::Windows::Forms::AnchorStyles::Left)
+			| System::Windows::Forms::AnchorStyles::Right));
 		this->Controls->Add(this->TextBoxMonitor);
 		this->TextBoxMonitor->Visible = false;
-		this->TextBoxMonitor->ReadOnly = true;
+
+		this->TextBoxMonitor->DoubleClick += gcnew System::EventHandler(this, &maindlg::TextBoxMonitor_DoubleClick);
 	}
 
     private: System::Void b_stop_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -3987,8 +4546,10 @@ private:
                  saveform();
                  WriteConfig();
              }
-             delegate void mprintfdelegate(String^str);
-    public: void mprintf(String^str) {
+
+	delegate void mprintfdelegate(String^str);
+    public: void mprintf(String^str) 
+	{
                 /* form has not been created */
                 if (monitor==nullptr) return;
                 else if (monitor->IsDisposed) return;
@@ -4001,8 +4562,9 @@ private:
                 monitor->ls_monitor->Items->Add(str);
                 monitor->ls_monitor->Update();
                 monitor->ls_monitor->TopIndex=monitor->ls_monitor->Items->Count-1; 
-            }
-            delegate void guistopdelegate();
+	}
+
+	delegate void guistopdelegate();
     public: void guistop() {
                 /* guistop is called from other thread */
                 if (this->InvokeRequired) {
@@ -4023,7 +4585,7 @@ private:
                 gb_sbs->Enabled=true;
                 chk_spec->Checked=false;
                 chk_spec->Enabled=false;
-				panelSysStrl->Visible = true;
+				panelSysCtrl->Visible = true;
 				timerUpdateGUI->Enabled = true;
 				this->TextBoxMonitor->Visible = false;
             }
@@ -4047,27 +4609,30 @@ private:
                      return this->GetUserAppDataPath() + "\\" + "gnsssdrlib_v2.0b.config";
                  }
              }
-    public: bool WriteConfig(void)
-            {
-                bool retVal = false;
-                XmlSerializer^ serializer = nullptr;
-                StreamWriter^ writer = nullptr;
+	public: bool WriteConfig(void)
+	{
+		bool retVal = false;
+		XmlSerializer^ serializer = nullptr;
+		StreamWriter^ writer = nullptr;
 
-                try {
-                    serializer = gcnew XmlSerializer(CONFIG::typeid);
-                    writer = gcnew StreamWriter(this->ConfigPath, false);
-                    serializer->Serialize(writer, config);
-                    retVal = true;
-                } catch (Exception^ ex) {
-                } finally {
-                    if (writer != nullptr)
-                    {
-                        writer->Close();
-                    }
-                }
+		try {
+			serializer = gcnew XmlSerializer(CONFIG::typeid);
+			writer = gcnew StreamWriter(this->ConfigPath, false);
+			serializer->Serialize(writer, config);
+			retVal = true;
+		}
+		catch (Exception^ ex) {
+		}
+		finally
+		{
+		 if (writer != nullptr)
+		 {
+			 writer->Close();
+		 }
+		}
 
-                return retVal;
-            }
+		return retVal;
+	}
     public: bool ReadConfig(void)
             {
                 bool retVal = false;
@@ -4097,305 +4662,420 @@ private:
 
                 return retVal;
             }
-    public: void loadform()
-            {
-                tb_input1->Text=config->tb_input1;
-                tb_input2->Text=config->tb_input2;
-                cmb_input->SelectedIndex=config->cmb_input;
-                tb_f1sf->Text=config->tb_f1sf;
-                tb_f2sf->Text=config->tb_f2sf;
-                tb_f1if->Text=config->tb_f1if;
-                tb_f2if->Text=config->tb_f2if;
-                rb_f1IQ->Checked=config->rb_f1IQ;
-                rb_f2IQ->Checked=config->rb_f2IQ;
-                cb_cf1->SelectedIndex=config->cb_cf1;
-                cb_cf2->SelectedIndex=config->cb_cf2;
-                tb_clk->Text=config->tb_clk;
+	public: void loadform()
+	{
+		tb_input1->Text = config->tb_input1;
+		tb_input2->Text = config->tb_input2;
+		cmb_input->SelectedIndex = config->cmb_input;
+		tb_f1sf->Text = config->tb_f1sf;
+		tb_f2sf->Text = config->tb_f2sf;
+		tb_f1if->Text = config->tb_f1if;
+		tb_f2if->Text = config->tb_f2if;
+		rb_f1IQ->Checked = config->rb_f1IQ;
+		rb_f2IQ->Checked = config->rb_f2IQ;
+		cb_cf1->SelectedIndex = config->cb_cf1;
+		cb_cf2->SelectedIndex = config->cb_cf2;
+		tb_clk->Text = config->tb_clk;
 
-                /* GPS */
-                rb_G_FE1->Checked=config->rb_G_FE1;
-                rb_G_FE2->Checked=config->rb_G_FE2;
-                chk_TYPE_L1CA->Checked=config->chk_TYPE_L1CA;
-                chk_G01->Checked=config->chk_G01;
-                chk_G02->Checked=config->chk_G02;
-                chk_G03->Checked=config->chk_G03;
-                chk_G04->Checked=config->chk_G04;
-                chk_G05->Checked=config->chk_G05;
-                chk_G06->Checked=config->chk_G06;
-                chk_G07->Checked=config->chk_G07;
-                chk_G08->Checked=config->chk_G08;
-                chk_G09->Checked=config->chk_G09;
-                chk_G10->Checked=config->chk_G10;
-                chk_G11->Checked=config->chk_G11;
-                chk_G12->Checked=config->chk_G12;
-                chk_G13->Checked=config->chk_G13;
-                chk_G14->Checked=config->chk_G14;
-                chk_G15->Checked=config->chk_G15;
-                chk_G16->Checked=config->chk_G16;
-                chk_G17->Checked=config->chk_G17;
-                chk_G18->Checked=config->chk_G18;
-                chk_G19->Checked=config->chk_G19;
-                chk_G20->Checked=config->chk_G20;
-                chk_G21->Checked=config->chk_G21;
-                chk_G22->Checked=config->chk_G22;
-                chk_G23->Checked=config->chk_G23;
-                chk_G24->Checked=config->chk_G24;
-                chk_G25->Checked=config->chk_G25;
-                chk_G26->Checked=config->chk_G26;
-                chk_G27->Checked=config->chk_G27;
-                chk_G28->Checked=config->chk_G28;
-                chk_G29->Checked=config->chk_G29;
-                chk_G30->Checked=config->chk_G30;
-                chk_G31->Checked=config->chk_G31;
-                chk_G32->Checked=config->chk_G32;
+		float tmp_val = config->acq_threshold;
+		if (tmp_val < 1.0f)
+			tmp_val = 1.6f;
+		if (tmp_val > 10.0f)
+			tmp_val = 19.0f;
 
-                /* GLONASS */
-                rb_R_FE1->Checked=config->rb_R_FE1;
-                rb_R_FE2->Checked=config->rb_R_FE2;
-                chk_TYPE_G1->Checked=config->chk_TYPE_G1;
-                chk_R_7->Checked=config->chk_R_7;
-                chk_R_6->Checked=config->chk_R_6;
-                chk_R_5->Checked=config->chk_R_5;
-                chk_R_4->Checked=config->chk_R_4;
-                chk_R_3->Checked=config->chk_R_3;
-                chk_R_2->Checked=config->chk_R_2;
-                chk_R_1->Checked=config->chk_R_1;
-                chk_R0->Checked=config->chk_R0;
-                chk_R1->Checked=config->chk_R1;
-                chk_R2->Checked=config->chk_R2;
-                chk_R3->Checked=config->chk_R3;
-                chk_R4->Checked=config->chk_R4;
-                chk_R5->Checked=config->chk_R5;
-                chk_R6->Checked=config->chk_R6;
+		nud_acq_threshold->Value = (Decimal)tmp_val;
 
-                /* Galileo */
-                rb_E_FE1->Checked=config->rb_E_FE1;
-                rb_E_FE2->Checked=config->rb_E_FE2;
-                chk_TYPE_E1B->Checked=config->chk_TYPE_E1B;
-                chk_E11->Checked=config->chk_E11;
-                chk_E12->Checked=config->chk_E12;
-                chk_E19->Checked=config->chk_E19;
-                chk_E20->Checked=config->chk_E20;
+		/* GPS */
+		rb_G_FE1->Checked = config->rb_G_FE1;
+		rb_G_FE2->Checked = config->rb_G_FE2;
+		chk_TYPE_L1CA->Checked = config->chk_TYPE_L1CA;
+		chk_G01->Checked = config->chk_G01;
+		chk_G02->Checked = config->chk_G02;
+		chk_G03->Checked = config->chk_G03;
+		chk_G04->Checked = config->chk_G04;
+		chk_G05->Checked = config->chk_G05;
+		chk_G06->Checked = config->chk_G06;
+		chk_G07->Checked = config->chk_G07;
+		chk_G08->Checked = config->chk_G08;
+		chk_G09->Checked = config->chk_G09;
+		chk_G10->Checked = config->chk_G10;
+		chk_G11->Checked = config->chk_G11;
+		chk_G12->Checked = config->chk_G12;
+		chk_G13->Checked = config->chk_G13;
+		chk_G14->Checked = config->chk_G14;
+		chk_G15->Checked = config->chk_G15;
+		chk_G16->Checked = config->chk_G16;
+		chk_G17->Checked = config->chk_G17;
+		chk_G18->Checked = config->chk_G18;
+		chk_G19->Checked = config->chk_G19;
+		chk_G20->Checked = config->chk_G20;
+		chk_G21->Checked = config->chk_G21;
+		chk_G22->Checked = config->chk_G22;
+		chk_G23->Checked = config->chk_G23;
+		chk_G24->Checked = config->chk_G24;
+		chk_G25->Checked = config->chk_G25;
+		chk_G26->Checked = config->chk_G26;
+		chk_G27->Checked = config->chk_G27;
+		chk_G28->Checked = config->chk_G28;
+		chk_G29->Checked = config->chk_G29;
+		chk_G30->Checked = config->chk_G30;
+		chk_G31->Checked = config->chk_G31;
+		chk_G32->Checked = config->chk_G32;
 
-                /* BeiDou */
-                rb_C_FE1->Checked=config->rb_C_FE1;
-                rb_C_FE2->Checked=config->rb_C_FE2;
-                chk_TYPE_B1I->Checked=config->chk_TYPE_B1I;
-                chk_C01->Checked=config->chk_C01;
-                chk_C02->Checked=config->chk_C02;
-                chk_C03->Checked=config->chk_C03;
-                chk_C04->Checked=config->chk_C04;
-                chk_C05->Checked=config->chk_C05;
-                chk_C06->Checked=config->chk_C06;
-                chk_C07->Checked=config->chk_C07;
-                chk_C08->Checked=config->chk_C08;
-                chk_C09->Checked=config->chk_C09;
-                chk_C10->Checked=config->chk_C10;
-                chk_C11->Checked=config->chk_C11;
-                chk_C12->Checked=config->chk_C12;
-                chk_C13->Checked=config->chk_C13;
-                chk_C14->Checked=config->chk_C14;
+		/* GLONASS */
+		rb_R_FE1->Checked = config->rb_R_FE1;
+		rb_R_FE2->Checked = config->rb_R_FE2;
+		chk_TYPE_G1->Checked = config->chk_TYPE_G1;
+		chk_R_7->Checked = config->chk_R_7;
+		chk_R_6->Checked = config->chk_R_6;
+		chk_R_5->Checked = config->chk_R_5;
+		chk_R_4->Checked = config->chk_R_4;
+		chk_R_3->Checked = config->chk_R_3;
+		chk_R_2->Checked = config->chk_R_2;
+		chk_R_1->Checked = config->chk_R_1;
+		chk_R0->Checked = config->chk_R0;
+		chk_R1->Checked = config->chk_R1;
+		chk_R2->Checked = config->chk_R2;
+		chk_R3->Checked = config->chk_R3;
+		chk_R4->Checked = config->chk_R4;
+		chk_R5->Checked = config->chk_R5;
+		chk_R6->Checked = config->chk_R6;
 
-                /* QZSS */
-                chk_TYPE_L1CAQZS->Checked=config->chk_TYPE_L1CAQZS;
-                chk_TYPE_SAIF->Checked=config->chk_TYPE_SAIF;
-                chk_TYPE_LEX->Checked=config->chk_TYPE_LEX;
-                chk_Q01->Checked=config->chk_Q01;
+		/* Galileo */
+		rb_E_FE1->Checked = config->rb_E_FE1;
+		rb_E_FE2->Checked = config->rb_E_FE2;
+		chk_TYPE_E1B->Checked = config->chk_TYPE_E1B;
 
-                /* SBAS */
-                rb_S_FE1->Checked=config->rb_S_FE1;
-                rb_S_FE2->Checked=config->rb_S_FE2;
-                chk_TYPE_SBASL1->Checked=config->chk_TYPE_SBASL1;
-                chk_S120->Checked=config->chk_S120;
-                chk_S121->Checked=config->chk_S121;
-                chk_S122->Checked=config->chk_S122;
-                chk_S123->Checked=config->chk_S123;
-                chk_S124->Checked=config->chk_S124;
-                chk_S125->Checked=config->chk_S125;
-                chk_S126->Checked=config->chk_S126;
-                chk_S127->Checked=config->chk_S127;
-                chk_S128->Checked=config->chk_S128;
-                chk_S129->Checked=config->chk_S129;
-                chk_S130->Checked=config->chk_S130;
-                chk_S131->Checked=config->chk_S131;
-                chk_S132->Checked=config->chk_S132;
-                chk_S133->Checked=config->chk_S133;
-                chk_S134->Checked=config->chk_S134;
-                chk_S135->Checked=config->chk_S135;
-                chk_S136->Checked=config->chk_S136;
-                chk_S137->Checked=config->chk_S137;
-                chk_S138->Checked=config->chk_S138;
+		chk_E1->Checked = config->chk_save_E01;
+		chk_E2->Checked = config->chk_save_E02;
+		chk_E3->Checked = config->chk_save_E03;
+		chk_E4->Checked = config->chk_save_E04;
+		chk_E5->Checked = config->chk_save_E05;
+		chk_E6->Checked = config->chk_save_E06;
+		chk_E7->Checked = config->chk_save_E07;
+		chk_E8->Checked = config->chk_save_E08;
+		chk_E9->Checked = config->chk_save_E09;
+		chk_E10->Checked = config->chk_save_E10;
 
-                chk_plotacq->Checked=config->chk_plotacq;
-                chk_plottrk->Checked=config->chk_plottrk;
+		chk_E11->Checked = config->chk_save_E11;
+		chk_E12->Checked = config->chk_save_E12;
+		chk_E13->Checked = config->chk_save_E13;
+		chk_E14->Checked = config->chk_save_E14;
+		chk_E15->Checked = config->chk_save_E15;
+		chk_E16->Checked = config->chk_save_E16;
+		chk_E17->Checked = config->chk_save_E17;
+		chk_E18->Checked = config->chk_save_E18;
+		chk_E19->Checked = config->chk_save_E19;
+		chk_E20->Checked = config->chk_save_E20;
 
-                cmb_outint->SelectedIndex=config->cmb_outint;
-                chk_rinex->Checked=config->chk_rinex;
-                chk_rtcm->Checked=config->chk_rtcm;
-                chk_lex->Checked=config->chk_lex;
-                chk_saif->Checked=config->chk_saif;
+		chk_E21->Checked = config->chk_save_E21;
+		chk_E22->Checked = config->chk_save_E22;
+		chk_E23->Checked = config->chk_save_E23;
+		chk_E24->Checked = config->chk_save_E24;
+		chk_E25->Checked = config->chk_save_E25;
+		chk_E26->Checked = config->chk_save_E26;
+		chk_E27->Checked = config->chk_save_E27;
+		chk_E28->Checked = config->chk_save_E28;
+		chk_E29->Checked = config->chk_save_E29;
+		chk_E30->Checked = config->chk_save_E30;
 
-                tb_rinex_dir->Text=config->tb_rinex_dir;
-                tb_rtcm_port->Text=config->tb_rtcm_port;
-                tb_lex_port->Text=config->tb_lex_port;
-                tb_saif_port->Text=config->tb_saif_port;
+		chk_E31->Checked = config->chk_save_E31;
+		chk_E32->Checked = config->chk_save_E32;
+		chk_E33->Checked = config->chk_save_E33;
+		chk_E34->Checked = config->chk_save_E34;
+		chk_E35->Checked = config->chk_save_E35;
+		chk_E36->Checked = config->chk_save_E36;
 
-                rb_spec1->Checked=config->rb_spec1;
-                rb_spec2->Checked=config->rb_spec2;
 
-                tb_lat->Text=config->tb_lat;
-                tb_lon->Text=config->tb_lon;
+		/* BeiDou */
+		rb_C_FE1->Checked = config->rb_C_FE1;
+		rb_C_FE2->Checked = config->rb_C_FE2;
+		chk_TYPE_B1I->Checked = config->chk_TYPE_B1I;
+		chk_C01->Checked = config->chk_save_C01;
+		chk_C02->Checked = config->chk_save_C02;
+		chk_C03->Checked = config->chk_save_C03;
+		chk_C04->Checked = config->chk_save_C04;
+		chk_C05->Checked = config->chk_save_C05;
+		chk_C06->Checked = config->chk_save_C06;
+		chk_C07->Checked = config->chk_save_C07;
+		chk_C08->Checked = config->chk_save_C08;
+		chk_C09->Checked = config->chk_save_C09;
+		chk_C10->Checked = config->chk_save_C10;
+		chk_C11->Checked = config->chk_save_C11;
+		chk_C12->Checked = config->chk_save_C12;
+		chk_C13->Checked = config->chk_save_C13;
+		chk_C14->Checked = config->chk_save_C14;
+		chk_C15->Checked = config->chk_save_C15;
+		chk_C16->Checked = config->chk_save_C16;
+		chk_C17->Checked = config->chk_save_C17;
+		chk_C18->Checked = config->chk_save_C18;
+		chk_C19->Checked = config->chk_save_C19;
+		chk_C20->Checked = config->chk_save_C20;
+		chk_C21->Checked = config->chk_save_C21;
+		chk_C22->Checked = config->chk_save_C22;
+		chk_C23->Checked = config->chk_save_C23;
+		chk_C24->Checked = config->chk_save_C24;
+		chk_C25->Checked = config->chk_save_C25;
+		chk_C26->Checked = config->chk_save_C26;
+		chk_C27->Checked = config->chk_save_C27;
+		chk_C28->Checked = config->chk_save_C28;
+		chk_C29->Checked = config->chk_save_C29;
+		chk_C30->Checked = config->chk_save_C30;
 
-            }
-    public: void saveform()
-            {
-                config->tb_input1=tb_input1->Text;
-                config->tb_input2=tb_input2->Text;
-                config->cmb_input=cmb_input->SelectedIndex;
-                config->tb_f1sf=tb_f1sf->Text;
-                config->tb_f2sf=tb_f2sf->Text;
-                config->tb_f1if=tb_f1if->Text;
-                config->tb_f2if=tb_f2if->Text;
-                config->rb_f1IQ=rb_f1IQ->Checked;
-                config->rb_f2IQ=rb_f2IQ->Checked;
-                config->cb_cf1=cb_cf1->SelectedIndex;
-                config->cb_cf2=cb_cf2->SelectedIndex;
-                config->tb_clk=tb_clk->Text;
+		/* QZSS */
+		chk_TYPE_L1CAQZS->Checked = config->chk_TYPE_L1CAQZS;
+		chk_TYPE_SAIF->Checked = config->chk_TYPE_SAIF;
+		chk_TYPE_LEX->Checked = config->chk_TYPE_LEX;
+		chk_Q01->Checked = config->chk_Q01;
 
-                /* GPS */
-                config->rb_G_FE1=rb_G_FE1->Checked;
-                config->rb_G_FE2=rb_G_FE2->Checked;
-                config->chk_TYPE_L1CA=chk_TYPE_L1CA->Checked;
-                config->chk_G01=chk_G01->Checked;
-                config->chk_G02=chk_G02->Checked;
-                config->chk_G03=chk_G03->Checked;
-                config->chk_G04=chk_G04->Checked;
-                config->chk_G05=chk_G05->Checked;
-                config->chk_G06=chk_G06->Checked;
-                config->chk_G07=chk_G07->Checked;
-                config->chk_G08=chk_G08->Checked;
-                config->chk_G09=chk_G09->Checked;
-                config->chk_G10=chk_G10->Checked;
-                config->chk_G11=chk_G11->Checked;
-                config->chk_G12=chk_G12->Checked;
-                config->chk_G13=chk_G13->Checked;
-                config->chk_G14=chk_G14->Checked;
-                config->chk_G15=chk_G15->Checked;
-                config->chk_G16=chk_G16->Checked;
-                config->chk_G17=chk_G17->Checked;
-                config->chk_G18=chk_G18->Checked;
-                config->chk_G19=chk_G19->Checked;
-                config->chk_G20=chk_G20->Checked;
-                config->chk_G21=chk_G21->Checked;
-                config->chk_G22=chk_G22->Checked;
-                config->chk_G23=chk_G23->Checked;
-                config->chk_G24=chk_G24->Checked;
-                config->chk_G25=chk_G25->Checked;
-                config->chk_G26=chk_G26->Checked;
-                config->chk_G27=chk_G27->Checked;
-                config->chk_G28=chk_G28->Checked;
-                config->chk_G29=chk_G29->Checked;
-                config->chk_G30=chk_G30->Checked;
-                config->chk_G31=chk_G31->Checked;
-                config->chk_G32=chk_G32->Checked;
+		/* SBAS */
+		rb_S_FE1->Checked = config->rb_S_FE1;
+		rb_S_FE2->Checked = config->rb_S_FE2;
+		chk_TYPE_SBASL1->Checked = config->chk_TYPE_SBASL1;
+		chk_S120->Checked = config->chk_S120;
+		chk_S121->Checked = config->chk_S121;
+		chk_S122->Checked = config->chk_S122;
+		chk_S123->Checked = config->chk_S123;
+		chk_S124->Checked = config->chk_S124;
+		chk_S125->Checked = config->chk_S125;
+		chk_S126->Checked = config->chk_S126;
+		chk_S127->Checked = config->chk_S127;
+		chk_S128->Checked = config->chk_S128;
+		chk_S129->Checked = config->chk_S129;
+		chk_S130->Checked = config->chk_S130;
+		chk_S131->Checked = config->chk_S131;
+		chk_S132->Checked = config->chk_S132;
+		chk_S133->Checked = config->chk_S133;
+		chk_S134->Checked = config->chk_S134;
+		chk_S135->Checked = config->chk_S135;
+		chk_S136->Checked = config->chk_S136;
+		chk_S137->Checked = config->chk_S137;
+		chk_S138->Checked = config->chk_S138;
 
-                /* GLONASS */
-                config->rb_R_FE1=rb_R_FE1->Checked;
-                config->rb_R_FE2=rb_R_FE2->Checked;
-                config->chk_TYPE_G1=chk_TYPE_G1->Checked;
-                config->chk_R_7=chk_R_7->Checked;
-                config->chk_R_6=chk_R_6->Checked;
-                config->chk_R_5=chk_R_5->Checked;
-                config->chk_R_4=chk_R_4->Checked;
-                config->chk_R_3=chk_R_3->Checked;
-                config->chk_R_2=chk_R_2->Checked;
-                config->chk_R_1=chk_R_1->Checked;
-                config->chk_R0=chk_R0->Checked;
-                config->chk_R1=chk_R1->Checked;
-                config->chk_R2=chk_R2->Checked;
-                config->chk_R3=chk_R3->Checked;
-                config->chk_R4=chk_R4->Checked;
-                config->chk_R5=chk_R5->Checked;
-                config->chk_R6=chk_R6->Checked;
+		chk_plotacq->Checked = config->chk_plotacq;
+		chk_plottrk->Checked = config->chk_plottrk;
 
-                /* Galileo */
-                config->rb_E_FE1=rb_E_FE1->Checked;
-                config->rb_E_FE2=rb_E_FE2->Checked;
-                config->chk_TYPE_E1B=chk_TYPE_E1B->Checked;
-                config->chk_E11=chk_E11->Checked;
-                config->chk_E12=chk_E12->Checked;
-                config->chk_E19=chk_E19->Checked;
-                config->chk_E20=chk_E20->Checked;
+		cmb_outint->SelectedIndex = config->cmb_outint;
+		chk_rinex->Checked = config->chk_rinex;
+		chk_rtcm->Checked = config->chk_rtcm;
+		chk_lex->Checked = config->chk_lex;
+		chk_saif->Checked = config->chk_saif;
 
-                /* BeiDou */
-                config->rb_C_FE1=rb_C_FE1->Checked;
-                config->rb_C_FE2=rb_C_FE2->Checked;
-                config->chk_TYPE_B1I=chk_TYPE_B1I->Checked;
-                config->chk_C01=chk_C01->Checked;
-                config->chk_C02=chk_C02->Checked;
-                config->chk_C03=chk_C03->Checked;
-                config->chk_C04=chk_C04->Checked;
-                config->chk_C05=chk_C05->Checked;
-                config->chk_C06=chk_C06->Checked;
-                config->chk_C07=chk_C07->Checked;
-                config->chk_C08=chk_C08->Checked;
-                config->chk_C09=chk_C09->Checked;
-                config->chk_C10=chk_C10->Checked;
-                config->chk_C11=chk_C11->Checked;
-                config->chk_C12=chk_C12->Checked;
-                config->chk_C13=chk_C13->Checked;
-                config->chk_C14=chk_C14->Checked;
+		tb_rinex_dir->Text = config->tb_rinex_dir;
+		tb_rtcm_port->Text = config->tb_rtcm_port;
+		tb_lex_port->Text = config->tb_lex_port;
+		tb_saif_port->Text = config->tb_saif_port;
 
-                /* QZSS */
-                config->chk_TYPE_L1CAQZS=chk_TYPE_L1CAQZS->Checked;
-                config->chk_TYPE_SAIF=chk_TYPE_SAIF->Checked;
-                config->chk_TYPE_LEX=chk_TYPE_LEX->Checked;
-                config->chk_Q01=chk_Q01->Checked;
+		rb_spec1->Checked = config->rb_spec1;
+		rb_spec2->Checked = config->rb_spec2;
 
-                /* SBAS */
-                config->rb_S_FE1=rb_S_FE1->Checked;
-                config->rb_S_FE2=rb_S_FE2->Checked;
-                config->chk_TYPE_SBASL1=chk_TYPE_SBASL1->Checked;
-                config->chk_S120=chk_S120->Checked;
-                config->chk_S121=chk_S121->Checked;
-                config->chk_S122=chk_S122->Checked;
-                config->chk_S123=chk_S123->Checked;
-                config->chk_S124=chk_S124->Checked;
-                config->chk_S125=chk_S125->Checked;
-                config->chk_S126=chk_S126->Checked;
-                config->chk_S127=chk_S127->Checked;
-                config->chk_S128=chk_S128->Checked;
-                config->chk_S129=chk_S129->Checked;
-                config->chk_S130=chk_S130->Checked;
-                config->chk_S131=chk_S131->Checked;
-                config->chk_S132=chk_S132->Checked;
-                config->chk_S133=chk_S133->Checked;
-                config->chk_S134=chk_S134->Checked;
-                config->chk_S135=chk_S135->Checked;
-                config->chk_S136=chk_S136->Checked;
-                config->chk_S137=chk_S137->Checked;
-                config->chk_S138=chk_S138->Checked;
+		tb_lat->Text = config->tb_lat;
+		tb_lon->Text = config->tb_lon;
 
-                config->chk_plotacq=chk_plotacq->Checked;
-                config->chk_plottrk=chk_plottrk->Checked;
+	}
+	public: void saveform()
+	{
+		config->tb_input1 = tb_input1->Text;
+		config->tb_input2 = tb_input2->Text;
+		config->cmb_input = cmb_input->SelectedIndex;
+		config->tb_f1sf = tb_f1sf->Text;
+		config->tb_f2sf = tb_f2sf->Text;
+		config->tb_f1if = tb_f1if->Text;
+		config->tb_f2if = tb_f2if->Text;
+		config->rb_f1IQ = rb_f1IQ->Checked;
+		config->rb_f2IQ = rb_f2IQ->Checked;
+		config->cb_cf1 = cb_cf1->SelectedIndex;
+		config->cb_cf2 = cb_cf2->SelectedIndex;
+		config->tb_clk = tb_clk->Text;
+		config->acq_threshold = (float)nud_acq_threshold->Value;
 
-                config->cmb_outint=cmb_outint->SelectedIndex;
-                config->chk_rinex=chk_rinex->Checked;
-                config->chk_rtcm=chk_rtcm->Checked;
-                config->chk_lex=chk_lex->Checked;
-                config->chk_saif=chk_saif->Checked;
+		/* GPS */
+		config->rb_G_FE1 = rb_G_FE1->Checked;
+		config->rb_G_FE2 = rb_G_FE2->Checked;
+		config->chk_TYPE_L1CA = chk_TYPE_L1CA->Checked;
+		config->chk_G01 = chk_G01->Checked;
+		config->chk_G02 = chk_G02->Checked;
+		config->chk_G03 = chk_G03->Checked;
+		config->chk_G04 = chk_G04->Checked;
+		config->chk_G05 = chk_G05->Checked;
+		config->chk_G06 = chk_G06->Checked;
+		config->chk_G07 = chk_G07->Checked;
+		config->chk_G08 = chk_G08->Checked;
+		config->chk_G09 = chk_G09->Checked;
+		config->chk_G10 = chk_G10->Checked;
+		config->chk_G11 = chk_G11->Checked;
+		config->chk_G12 = chk_G12->Checked;
+		config->chk_G13 = chk_G13->Checked;
+		config->chk_G14 = chk_G14->Checked;
+		config->chk_G15 = chk_G15->Checked;
+		config->chk_G16 = chk_G16->Checked;
+		config->chk_G17 = chk_G17->Checked;
+		config->chk_G18 = chk_G18->Checked;
+		config->chk_G19 = chk_G19->Checked;
+		config->chk_G20 = chk_G20->Checked;
+		config->chk_G21 = chk_G21->Checked;
+		config->chk_G22 = chk_G22->Checked;
+		config->chk_G23 = chk_G23->Checked;
+		config->chk_G24 = chk_G24->Checked;
+		config->chk_G25 = chk_G25->Checked;
+		config->chk_G26 = chk_G26->Checked;
+		config->chk_G27 = chk_G27->Checked;
+		config->chk_G28 = chk_G28->Checked;
+		config->chk_G29 = chk_G29->Checked;
+		config->chk_G30 = chk_G30->Checked;
+		config->chk_G31 = chk_G31->Checked;
+		config->chk_G32 = chk_G32->Checked;
 
-                config->tb_rinex_dir=tb_rinex_dir->Text;
-                config->tb_rtcm_port=tb_rtcm_port->Text;
-                config->tb_lex_port=tb_lex_port->Text;
-                config->tb_saif_port=tb_saif_port->Text;
+		/* GLONASS */
+		config->rb_R_FE1 = rb_R_FE1->Checked;
+		config->rb_R_FE2 = rb_R_FE2->Checked;
+		config->chk_TYPE_G1 = chk_TYPE_G1->Checked;
+		config->chk_R_7 = chk_R_7->Checked;
+		config->chk_R_6 = chk_R_6->Checked;
+		config->chk_R_5 = chk_R_5->Checked;
+		config->chk_R_4 = chk_R_4->Checked;
+		config->chk_R_3 = chk_R_3->Checked;
+		config->chk_R_2 = chk_R_2->Checked;
+		config->chk_R_1 = chk_R_1->Checked;
+		config->chk_R0 = chk_R0->Checked;
+		config->chk_R1 = chk_R1->Checked;
+		config->chk_R2 = chk_R2->Checked;
+		config->chk_R3 = chk_R3->Checked;
+		config->chk_R4 = chk_R4->Checked;
+		config->chk_R5 = chk_R5->Checked;
+		config->chk_R6 = chk_R6->Checked;
 
-                config->rb_spec1=rb_spec1->Checked;
-                config->rb_spec2=rb_spec2->Checked;
+		/* Galileo */
+		config->rb_E_FE1 = rb_E_FE1->Checked;
+		config->rb_E_FE2 = rb_E_FE2->Checked;
+		config->chk_TYPE_E1B = chk_TYPE_E1B->Checked;
 
-                config->tb_lat=tb_lat->Text;
-                config->tb_lon=tb_lon->Text;
-            }
+		config->chk_save_E01 = chk_E1->Checked;
+		config->chk_save_E02 = chk_E2->Checked;
+		config->chk_save_E03 = chk_E3->Checked;
+		config->chk_save_E04 = chk_E4->Checked;
+		config->chk_save_E05 = chk_E5->Checked;
+		config->chk_save_E06 = chk_E6->Checked;
+		config->chk_save_E07 = chk_E7->Checked;
+		config->chk_save_E08 = chk_E8->Checked;
+		config->chk_save_E09 = chk_E9->Checked;
+		config->chk_save_E10 = chk_E10->Checked;
+
+		config->chk_save_E11 = chk_E11->Checked;
+		config->chk_save_E12 = chk_E12->Checked;
+		config->chk_save_E13 = chk_E13->Checked;
+		config->chk_save_E14 = chk_E14->Checked;
+		config->chk_save_E15 = chk_E15->Checked;
+		config->chk_save_E16 = chk_E16->Checked;
+		config->chk_save_E17 = chk_E17->Checked;
+		config->chk_save_E18 = chk_E18->Checked;
+		config->chk_save_E19 = chk_E19->Checked;
+		config->chk_save_E20 = chk_E20->Checked;
+
+		config->chk_save_E21 = chk_E21->Checked;
+		config->chk_save_E22 = chk_E22->Checked;
+		config->chk_save_E23 = chk_E23->Checked;
+		config->chk_save_E24 = chk_E24->Checked;
+		config->chk_save_E25 = chk_E25->Checked;
+		config->chk_save_E26 = chk_E26->Checked;
+		config->chk_save_E27 = chk_E27->Checked;
+		config->chk_save_E28 = chk_E28->Checked;
+		config->chk_save_E29 = chk_E29->Checked;
+		config->chk_save_E30 = chk_E30->Checked;
+
+		config->chk_save_E31 = chk_E31->Checked;
+		config->chk_save_E32 = chk_E32->Checked;
+		config->chk_save_E33 = chk_E33->Checked;
+		config->chk_save_E34 = chk_E34->Checked;
+		config->chk_save_E35 = chk_E35->Checked;
+		config->chk_save_E36 = chk_E36->Checked;
+
+		/* BeiDou */
+		config->rb_C_FE1 = rb_C_FE1->Checked;
+		config->rb_C_FE2 = rb_C_FE2->Checked;
+		config->chk_TYPE_B1I = chk_TYPE_B1I->Checked;
+
+		config->chk_save_C01 = chk_C01->Checked;
+		config->chk_save_C02 = chk_C02->Checked;
+		config->chk_save_C03 = chk_C03->Checked;
+		config->chk_save_C04 = chk_C04->Checked;
+		config->chk_save_C05 = chk_C05->Checked;
+		config->chk_save_C06 = chk_C06->Checked;
+		config->chk_save_C07 = chk_C07->Checked;
+		config->chk_save_C08 = chk_C08->Checked;
+		config->chk_save_C09 = chk_C09->Checked;
+		config->chk_save_C10 = chk_C10->Checked;
+		config->chk_save_C11 = chk_C11->Checked;
+		config->chk_save_C12 = chk_C12->Checked;
+		config->chk_save_C13 = chk_C13->Checked;
+		config->chk_save_C14 = chk_C14->Checked;
+		config->chk_save_C15 = chk_C15->Checked;
+		config->chk_save_C16 = chk_C16->Checked;
+		config->chk_save_C17 = chk_C17->Checked;
+		config->chk_save_C18 = chk_C18->Checked;
+		config->chk_save_C19 = chk_C19->Checked;
+		config->chk_save_C20 = chk_C20->Checked;
+		config->chk_save_C21 = chk_C21->Checked;
+		config->chk_save_C22 = chk_C22->Checked;
+		config->chk_save_C23 = chk_C23->Checked;
+		config->chk_save_C24 = chk_C24->Checked;
+		config->chk_save_C25 = chk_C25->Checked;
+		config->chk_save_C26 = chk_C26->Checked;
+		config->chk_save_C27 = chk_C27->Checked;
+		config->chk_save_C28 = chk_C28->Checked;
+		config->chk_save_C29 = chk_C29->Checked;
+		config->chk_save_C30 = chk_C30->Checked;
+
+		/* QZSS */
+		config->chk_TYPE_L1CAQZS = chk_TYPE_L1CAQZS->Checked;
+		config->chk_TYPE_SAIF = chk_TYPE_SAIF->Checked;
+		config->chk_TYPE_LEX = chk_TYPE_LEX->Checked;
+		config->chk_Q01 = chk_Q01->Checked;
+
+		/* SBAS */
+		config->rb_S_FE1 = rb_S_FE1->Checked;
+		config->rb_S_FE2 = rb_S_FE2->Checked;
+		config->chk_TYPE_SBASL1 = chk_TYPE_SBASL1->Checked;
+		config->chk_S120 = chk_S120->Checked;
+		config->chk_S121 = chk_S121->Checked;
+		config->chk_S122 = chk_S122->Checked;
+		config->chk_S123 = chk_S123->Checked;
+		config->chk_S124 = chk_S124->Checked;
+		config->chk_S125 = chk_S125->Checked;
+		config->chk_S126 = chk_S126->Checked;
+		config->chk_S127 = chk_S127->Checked;
+		config->chk_S128 = chk_S128->Checked;
+		config->chk_S129 = chk_S129->Checked;
+		config->chk_S130 = chk_S130->Checked;
+		config->chk_S131 = chk_S131->Checked;
+		config->chk_S132 = chk_S132->Checked;
+		config->chk_S133 = chk_S133->Checked;
+		config->chk_S134 = chk_S134->Checked;
+		config->chk_S135 = chk_S135->Checked;
+		config->chk_S136 = chk_S136->Checked;
+		config->chk_S137 = chk_S137->Checked;
+		config->chk_S138 = chk_S138->Checked;
+
+		config->chk_plotacq = chk_plotacq->Checked;
+		config->chk_plottrk = chk_plottrk->Checked;
+
+		config->cmb_outint = cmb_outint->SelectedIndex;
+		config->chk_rinex = chk_rinex->Checked;
+		config->chk_rtcm = chk_rtcm->Checked;
+		config->chk_lex = chk_lex->Checked;
+		config->chk_saif = chk_saif->Checked;
+
+		config->tb_rinex_dir = tb_rinex_dir->Text;
+		config->tb_rtcm_port = tb_rtcm_port->Text;
+		config->tb_lex_port = tb_lex_port->Text;
+		config->tb_saif_port = tb_saif_port->Text;
+
+		config->rb_spec1 = rb_spec1->Checked;
+		config->rb_spec2 = rb_spec2->Checked;
+
+		config->tb_lat = tb_lat->Text;
+		config->tb_lon = tb_lon->Text;
+	}
     private: System::Void chk_spec_CheckStateChanged(System::Object^  sender, System::EventArgs^  e) {
                  if (chk_spec->Checked) {
                      sdr->startspectrum(this);
@@ -4466,6 +5146,18 @@ private:
 
                  cb_cf1->SelectedIndex=0;
              }
+
+	private: Void cb_freq_some() {
+					 cb_cf1->Items->Clear();
+					 cb_cf2->Items->Clear();
+
+					 cb_cf1->Items->Add("1575.420 MHz(L1)");
+					 cb_cf1->Items->Add("1561.098 MHz(B1)");
+					 cb_cf1->Items->Add("1602.000 MHz(G1)");
+					 cb_cf1->Items->Add("1227.600 MHz(L2)");
+
+					 cb_cf1->SelectedIndex = 0;
+				 }
     private: Void cb_freq_all() {
                  cb_cf1->Items->Clear();
                  cb_cf2->Items->Clear();
@@ -4561,5 +5253,35 @@ private:
 	private: System::Void chk_spec_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	}
 
-	};
+	private: System::Void TextBoxMonitor_DoubleClick(System::Object^  sender, System::EventArgs^  e)
+	{
+		if (this->TextBoxMonitor->SelectedIndex >= 0)
+		{
+			
+			if (sat_state_obj == nullptr)
+			{
+				sat_state_obj = gcnew sat_state_class();
+				sat_state_obj->Show();
+				sat_state_obj->Owner = this;
+			}
+			else
+			{
+				if (sat_state_obj->IsDisposed == true)
+					sat_state_obj = gcnew sat_state_class();
+
+				sat_state_obj->Show();
+				sat_state_obj->Owner = this;
+			}
+
+			int index = this->TextBoxMonitor->SelectedIndex;
+			this->sat_state_index = index;
+			//sat_state_obj->set_sat_code(1);
+			
+		}
+	}
+	private: System::Void linkLabel1_LinkClicked(System::Object^  sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^  e) 
+	{
+		System::Diagnostics::Process::Start("https://glonass-iac.ru/en/sostavOG/");
+	}
+};
 }
