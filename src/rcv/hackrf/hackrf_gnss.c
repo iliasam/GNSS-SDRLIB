@@ -6,6 +6,7 @@
 #include "../../../src/sdr.h"
 
 #include "hackrf/hackrf.h"
+#include "hackrf/hackrf_gnss.h"
 #include "pthread/pthread.h"
 
 #include <chrono>

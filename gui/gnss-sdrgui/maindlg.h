@@ -4200,9 +4200,9 @@ private:
 
 					 disable_FE2();
 
-					 config->tb_corrn = "4";//for 8mhz
-					 config->tb_corrd = "4";
-					 config->tb_corrp = "8";
+					 config->tb_corrn = "8";//for 8mhz
+					 config->tb_corrd = "1";
+					 config->tb_corrp = "4";
 					 config->tb_dll2 = "2.0";
 					 config->tb_pll2 = "20.0";
 					 config->tb_fll2 = "50.0";
